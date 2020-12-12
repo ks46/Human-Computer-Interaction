@@ -37,7 +37,7 @@
 		<nav class="navbar navbar-expand-lg navbar-light">
 			<div class="container">
 				<a class="navbar-brand" href="index.html">
-					<img src="img/logo.png" alt="">
+					<img src="img/logo_3.png" alt="">
 				</a>
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
 				 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,41 +49,41 @@
 						<li><a class="active" href="index.html">Home</a></li>
 						<li class="dropdown">
                             <a class="dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">COVID-19</a>
-                            <ul class="dropdown-menu">
+                            <ul class="dropdown-menu show">
                                 <li><a class="dropdown-item" href="#">Ενημέρωση-Έκτακτα Μέτρα</a></li>
-                                <div class="dropright">
-                                    <li><a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">Για Εργοδότες</a></li>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="#">Αναστολή Σύμβασης Εργαζομένων</a></li>
-                                        <li><a class="dropdown-item" href="#">Απασχόληση Εργαζομένων με Τηλεργασία</a></li>
-                                        <li><a class="dropdown-item" href="#">Υπολογισμός Νέων Φορολογικών Εισφορών</a></li>
-                                        <li><a class="dropdown-item" href="#">Ειδικά Επιδόματα</a></li>
-                                    </ul>
+                                <div class="dropdown dropright">
+                                    <li><a class="dropdown-item dropdown-toggle::after" id="navbardrop" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#">Για Εργοδότες</a></li>
+                                    <div class="dropdown-menu show">
+                                        <a class="dropdown-item" href="#">Αναστολή Σύμβασης Εργαζομένων</a>
+                                        <a class="dropdown-item" href="#">Απασχόληση Εργαζομένων με Τηλεργασία</a>
+                                        <a class="dropdown-item" href="#">Υπολογισμός Νέων Φορολογικών Εισφορών</a>
+                                        <a class="dropdown-item" href="#">Ειδικά Επιδόματα</a>
+                                    </div>
                                 </div>
-
-                                <li><a class "dropdown-item" href="#">Για Εργαζόμενους</a></li>
-                            </ul>
-						</li>
-						<li><a href="services.html">Services</a></li>
-						<li class="dropdown">
-							<a class="dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-								Pages
-							</a>
-							<div class="dropdown-menu">
-								<a class="dropdown-item" href="projects.html">Projects</a>
-								<a class="dropdown-item" href="elements.html">Elements</a>
-							</div>
+                                <li><a class="dropdown-item" href="#">Εργαζόμενους</a></li>
+                            </ul>                           
 						</li>
 						<li class="dropdown">
+                            <a class="dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">ΕΡΓΟΔΟΤΕΣ</a>
+                            <div class="dropdown-menu">
+								<a class="dropdown-item" href="#">Νέες Επιχειρήσεις</a>
+								<a class="dropdown-item" href="#">Τροποποίηση Εργασιακής Κατάστασης/Απολαβών Εργαζομένων</a>
+							</div>
+                        </li>
+						<li class="dropdown">
 							<a class="dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
-								Blog
+								ΕΡΓΑΖΟΜΕΝΟΙ
 							</a>
 							<div class="dropdown-menu">
-								<a class="dropdown-item" href="blog-home.html">Blog</a>
-								<a class="dropdown-item" href="blog-single.html">Blog Details</a>
-							</div>
+                                <a class="dropdown-item" href="#">Άδειες</a>
+								<a class="dropdown-item" href="#">Φορολογικές Εισφορές/Ένσημα</a>
+								<a class="dropdown-item" href="#">Κατώτατος Μισθός/Δώρα</a>
+								<a class="dropdown-item" href="#">Μέριμνα για ΑΜΕΑ</a>
+                            </div>
 						</li>
-						<li><a href="contact.html">Contact</a></li>
+                        <li><a href="#">ΑΝΕΡΓΟΙ</a></li>
+						<li><a href="#">ΣΥΝΤΑΞΙΟΥΧΟΙ</a></li>
+                        <li><a href="contact.html">Επικοινωνία</a></li>
 					</ul>
 				</div>
 			</div>
@@ -93,8 +93,9 @@
 
 	<!-- start banner Area -->
 	<section class="home-banner-area relative" id="home" data-parallax="scroll" data-image-src="img/header-bg.jpg">
+        <!-- data-image-src="img/header-bg.jpg" -->
 		<div class="overlay-bg overlay"></div>
-		<h1 class="template-name">arclabs</h1>
+		<!-- <h1 class="template-name">arclabs</h1> -->
 		<div class="container">
 			<div class="row fullscreen">
 				<div class="banner-content col-lg-12">
@@ -105,13 +106,6 @@
 					</h1>
 					<a href="#" class="primary-btn">View project</a>
 				</div>
-			</div>
-		</div>
-		<div class="head-bottom-meta">
-			<div class="d-flex meta-left no-padding">
-				<a href="#"><span class="fa fa-facebook-f"></span></a>
-				<a href="#"><span class="fa fa-twitter"></span></a>
-				<a href="#"><span class="fa fa-instagram"></span></a>
 			</div>
 		</div>
 	</section>
@@ -179,302 +173,15 @@
 	</section>
 	<!-- End About Area -->
 
-	<!-- Start Project Area -->
-	<section class="project-area section-gap-top" id="project">
-		<div class="container">
-			<div class="row d-flex justify-content-center">
-				<div class="col-lg-8">
-					<div class="section-title text-center">
-						<h4>Recent Work</h4>
-						<h2>View Our Project</h2>
-					</div>
-				</div>
-				<div class="col-lg-12">
-					<div class="filters mb-5">
-						<ul>
-							<li class="active" data-filter=".all">All</li>
-							<li data-filter=".popular">Popular</li>
-							<li data-filter=".latest">Latest</li>
-							<li data-filter=".following">Following</li>
-							<li data-filter=".upcoming">Upcoming</li>
-						</ul>
-					</div>
-				</div>
-			</div>
-			<div class="filters-content">
-				<div class="row grid">
-					<div class="col-lg-4 col-md-6 grid-sizer"></div>
-
-					<div class="col-lg-4 col-md-6 grid-item all following" data-wow-delay="0s">
-						<div class="single-project">
-							<div class="relative">
-								<div class="thumb">
-									<img class="image img-fluid" src="img/projects/p1.png" alt="">
-								</div>
-								<div class="middle">
-									<h4>Dell Villa, New York</h4>
-									<div class="cat">Architecture, Modern Design</div>
-								</div>
-								<a class="overlay" href="#"></a>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-lg-8 grid-item col-md-6 all upcoming latest">
-						<div class="single-project">
-							<div class="relative">
-								<div class="thumb">
-									<img class="image img-fluid" src="img/projects/p2.png" alt="">
-								</div>
-								<div class="middle">
-									<h4>Eedn Park, Singapore</h4>
-									<div class="cat">Architecture, Modern Design</div>
-								</div>
-								<a class="overlay" href="#"></a>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-lg-8 grid-item col-md-6 all popular">
-						<div class="single-project">
-							<div class="relative">
-								<div class="thumb">
-									<img class="image img-fluid" src="img/projects/p3.png" alt="">
-								</div>
-								<div class="middle">
-									<h4>Sky Build, Paris</h4>
-									<div class="cat">Architecture, Modern Design</div>
-								</div>
-								<a class="overlay" href="#"></a>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-lg-4 grid-item col-md-6 all latest following">
-						<div class="single-project">
-							<div class="relative">
-								<div class="thumb">
-									<img class="image img-fluid" src="img/projects/p4.png" alt="">
-								</div>
-								<div class="middle">
-									<h4>Dell Villa, New York</h4>
-									<div class="cat">Architecture, Modern Design</div>
-								</div>
-								<a class="overlay" href="#"></a>
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- End Project Area -->
-
-	<!-- Start callto Area -->
-	<section class="callto-area section-gap relative">
-		<div class="overlay overlay-bg"></div>
-		<div class="container">
-			<div class="row">
-				<div class="call-wrap mx-auto">
-					<h1>View Our Project </h1>
-					<a id="play-home-video" class="video-play-button" href="https://www.youtube.com/watch?v=_C5vCGB8Xx0">
-						<span></span>
-					</a>
-					<p>05:35</p>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- End callto Area -->
-
-	<!-- Start testimonial Area -->
-	<section class="testimonial-area relative section-gap" id="testimonial">
-		<div class="container">
-			<div class="row d-flex justify-content-center">
-				<div class="col-lg-12">
-					<div class="section-title text-center">
-						<h4>Testimonials</h4>
-						<h2>Happy Clients</h2>
-					</div>
-				</div>
-			</div>
-			<div class="row">
-				<div class="active-testimonial">
-					<div class="single-testimonial item d-flex flex-row">
-						<div class="thumb">
-							<img class="" src="img/testimonial/t1.png" alt="">
-						</div>
-						<div class="desc">
-							<p>
-								Give dry stars form. Us called an won't winged had land cru abundantly land Midst
-							</p>
-							<h4>Danyel Yarde</h4>
-							<div class="bottom">
-								<p>CEO & Founder</p>
-							</div>
-						</div>
-					</div>
-					<div class="single-testimonial item d-flex flex-row">
-						<div class="thumb">
-							<img class="" src="img/testimonial/t2.png" alt="">
-						</div>
-						<div class="desc">
-							<p>
-								Give dry stars form. Us called an won't winged had land cru abundantly land Midst
-							</p>
-							<h4>Manel djuice</h4>
-							<div class="bottom">
-								<p>CEO & Founder</p>
-							</div>
-						</div>
-					</div>
-					<div class="single-testimonial item d-flex flex-row">
-						<div class="thumb">
-							<img class="" src="img/testimonial/t3.png" alt="">
-						</div>
-						<div class="desc">
-							<p>
-								Give dry stars form. Us called an won't winged had land cru abundantly land Midst
-							</p>
-							<h4>Mark Alviro Wiens</h4>
-							<div class="bottom">
-								<p>CEO & Founder</p>
-							</div>
-						</div>
-					</div>
-					<div class="single-testimonial item d-flex flex-row">
-						<div class="thumb">
-							<img class="" src="img/testimonial/t2.png" alt="">
-						</div>
-						<div class="desc">
-							<p>
-								Give dry stars form. Us called an won't winged had land cru abundantly land Midst
-							</p>
-							<h4>Manel djuice</h4>
-							<div class="bottom">
-								<p>CEO & Founder</p>
-							</div>
-						</div>
-					</div>
-					<div class="single-testimonial item d-flex flex-row">
-						<div class="thumb">
-							<img class="" src="img/testimonial/t1.png" alt="">
-						</div>
-						<div class="desc">
-							<p>
-								Give dry stars form. Us called an won't winged had land cru abundantly land Midst
-							</p>
-							<h4>Mark Alviro Wiens</h4>
-							<div class="bottom">
-								<p>CEO & Founder</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- End testimonial Area -->
-
-	<!-- Start brands Area -->
-	<section class="brands-area">
-		<div class="container no-padding">
-			<div class="brand-wrap section-gap">
-				<div class="row align-items-center active-brand-carusel justify-content-start no-gutters">
-					<div class="col single-brand">
-						<a href="#"><img class="mx-auto" src="img/brands/b1.png" alt=""></a>
-					</div>
-					<div class="col single-brand">
-						<a href="#"><img class="mx-auto" src="img/brands/b2.png" alt=""></a>
-					</div>
-					<div class="col single-brand">
-						<a href="#"><img class="mx-auto" src="img/brands/b3.png" alt=""></a>
-					</div>
-					<div class="col single-brand">
-						<a href="#"><img class="mx-auto" src="img/brands/b4.png" alt=""></a>
-					</div>
-					<div class="col single-brand">
-						<a href="#"><img class="mx-auto" src="img/brands/b5.png" alt=""></a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- End brands Area -->
-
 	<!-- start footer Area -->
-	<footer class="footer-area section-gap">
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-2 col-md-6 single-footer-widget">
-					<h4>Top Products</h4>
-					<ul>
-						<li><a href="#">Managed Website</a></li>
-						<li><a href="#">Manage Reputation</a></li>
-						<li><a href="#">Power Tools</a></li>
-						<li><a href="#">Marketing Service</a></li>
-					</ul>
-				</div>
-				<div class="col-lg-2 col-md-6 single-footer-widget">
-					<h4>Quick Links</h4>
-					<ul>
-						<li><a href="#">Jobs</a></li>
-						<li><a href="#">Brand Assets</a></li>
-						<li><a href="#">Investor Relations</a></li>
-						<li><a href="#">Terms of Service</a></li>
-					</ul>
-				</div>
-				<div class="col-lg-2 col-md-6 single-footer-widget">
-					<h4>Features</h4>
-					<ul>
-						<li><a href="#">Jobs</a></li>
-						<li><a href="#">Brand Assets</a></li>
-						<li><a href="#">Investor Relations</a></li>
-						<li><a href="#">Terms of Service</a></li>
-					</ul>
-				</div>
-				<div class="col-lg-2 col-md-6 single-footer-widget">
-					<h4>Resources</h4>
-					<ul>
-						<li><a href="#">Guides</a></li>
-						<li><a href="#">Research</a></li>
-						<li><a href="#">Experts</a></li>
-						<li><a href="#">Agencies</a></li>
-					</ul>
-				</div>
-				<div class="col-lg-4 col-md-6 single-footer-widget">
-					<h4>Newsletter</h4>
-					<p>You can trust us. we only send promo offers,</p>
-					<div class="form-wrap" id="mc_embed_signup">
-						<form target="_blank" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
-						 method="get" class="form-inline">
-							<input class="form-control" name="EMAIL" placeholder="Your Email Address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your Email Address'"
-							 required="" type="email" />
-							<button class="click-btn btn btn-default">
-								<span>subscribe</span>
-							</button>
-							<div style="position: absolute; left: -5000px;">
-								<input name="b_36c4fd991d266f23781ded980_aefe40901a" tabindex="-1" value="" type="text" />
-							</div>
-
-							<div class="info"></div>
-						</form>
-					</div>
-				</div>
-			</div>
+	<footer class="footer-area" style="height: 50px;">
+        <div class="container">
 			<div class="row footer-bottom d-flex justify-content-between">
-				<p class="col-lg-8 col-sm-12 footer-text m-0 text-white">
+				<p class="col-lg-8 col-sm-12 footer-text m-0 text-white" style="padding:10px;">
 					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 				</p>
-				<div class="col-lg-4 col-sm-12 footer-social">
-					<a href="#"><i class="fa fa-facebook-f"></i></a>
-					<a href="#"><i class="fa fa-twitter"></i></a>
-					<a href="#"><i class="fa fa-dribbble"></i></a>
-					<a href="#"><i class="fa fa-linkedin"></i></a>
-				</div>
 			</div>
 		</div>
 	</footer>
