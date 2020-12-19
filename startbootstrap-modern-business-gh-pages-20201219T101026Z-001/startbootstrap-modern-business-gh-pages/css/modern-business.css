@@ -23,6 +23,10 @@ body {
 
 /* code below this line is extra */
 
+.jumbotron-bg {
+  background-color: #e1e6ea;  /* #d3d9df */
+}
+
 .container-fluid {
   padding-top: 70px;
   padding-bottom: 70px;
