@@ -15,7 +15,7 @@
     <!-- Custom styles for this template -->
     <link href="../css/modern-business.css" rel="stylesheet">
   </head>
-  
+
   <body>
     <header>
       <!-- NOTE: Navigation section starts here -->
@@ -72,10 +72,6 @@
               <li class="nav-item">
                 <a class="nav-link" href="../contact.html">Επικοινωνία</a>
               </li>
-              <!-- TODO: login could be styled either as a button or as a simple
-                         navbar element. Both alterntives provided below,
-                         uncomment code to see the difference and to choose one
-              -->
               <li class="nav-item">
                 <a class="nav-link" href="#">Σύνδεση</a>
               </li>
@@ -95,20 +91,81 @@
         </ol>
       </nav>
       <!-- NOTE: Breadcrumbs section ends here -->
-      
-      <!-- NOTE: Warning section starts here -->
-      <div class="alert alert-danger text-center" role="alert">
-        <h4>Το lockdown παρατείνεται σε εθνικό επίπεδο έως τις 07/01/2021.</h4> 
-      </div>
-      <!-- NOTE: Warning section ends here -->
-      <h3>Τρόπος Εξυπηρέτησης των Πολιτών στις Υπηρεσίες του Υπουργείου</h3>
-      <h5>Η προσέλευση του κοινού στα γραφεία των υπηρεσιών του Υπουργείου γίνεται <b>μόνο</b> κατόπιν ραντεβού, <b>μόνο</b> για επείγοντα θέματα και εφόσον απαιτείται εξυπηρέτηση με φυσική παρουσία. <b>Η χρήση μάσκας είναι υποχρεωτική.</b></h5>
-      <h5>Εναλλακτικά, βρείτε το παράρτημα που σας αφορά και πληροφορηθείτε για τους τρόπους επικοινωνίας και για το πως μπορείτε να κλείσετε ραντεβού.</h5>
-      <a class="btn btn-primary" href="#">Εύρεση Παραρτήματος</a>        
-      <hr>
-      <h4>Ώρες και μέρες προσέλευσης κοινού στα γραφεία του Υπουργείου</h4>
+
+      <!-- NOTE: Alert section starts here -->
+      <!-- <div class="alert alert-danger alert-dismissible text-center" role="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>
+          Το lockdown παρατείνεται σε εθνικό επίπεδο έως τις 07/01/2021.
+        </strong>
+      </div> -->
+      <!-- NOTE: Alert section ends here -->
+
+      <section>
+        <h1 class="h3">Τρόπος Εξυπηρέτησης των Πολιτών στις Υπηρεσίες του Υπουργείου</h1>
+        <p>
+          Η προσέλευση του κοινού
+          <!-- στα γραφεία των υπηρεσιών του Υπουργείου -->
+          γίνεται
+          <strong>κατόπιν ραντεβού</strong>, <strong>μόνο για επείγοντα θέματα</strong>
+          και εφόσον απαιτείται εξυπηρέτηση με φυσική παρουσία.
+          <strong>Η χρήση μάσκας είναι υποχρεωτική.</strong>
+        </p>
+        <p>
+          Συστήνεται στους πολίτες να προτιμούν την ηλεκτρονική ή τηλεφωνική εξυπηρέτηση.
+          Πληροφορηθείτε για τους τρόπους επικοινωνίας και για το πώς μπορείτε να κλείσετε ραντεβού
+          για το παράρτημα που σας αφορά.
+        </p>
+        <a class="btn btn-primary" href="#">Εύρεση Παραρτήματος</a>
+      </section>
+
       <!-- NOTE: Timetable section starts here -->
-      <table class="table table-hover">
+      <section>
+        <h2 class="h3 mt-5">Ώρες και μέρες προσέλευσης κοινού στα γραφεία του Υπουργείου</h2>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Είδος Υπηρεσίας</th>
+              <th scope="col">Μέρες και Ώρες Εισόδου Κοινού</th>
+              <th scope="col">Ηλεκτρονική Επικοινωνία</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-light">
+              <td>
+                <p class="font-weight-bold">Υπηρεσίες Σώματος Επιθεώρησης Εργασίας</p>
+              </td>
+              <td>Δευτέρα έως Παρασκευή</br>09:00 - 13:00</td>
+              <td><a href="#">Βρείτε την διεύθυνση ηλεκτρονικού ταχυδρομείου</br>για το παράρτημα που σας αφορά.</a></td>
+            </tr>
+            <tr class="table-light">
+              <td>
+                <p class="font-weight-bold">Τμήμα Μητρώου Φορέων Κοινωνικής και Αλληλέγγυας Οικονομίας</p>
+              </td>
+              <td>Δευτέρα, Τετάρτη, Παρασκευή</br>09:00 - 12:00</td>
+              <td><a href="mailto:mitrwokoin@ypakp.gr">mitrwokoin@ypakp.gr</a></td>
+            </tr>
+            <tr class="table-light">
+              <td>
+                <p class="font-weight-bold">Υπηρεσίες Πρωτοκόλλου</p>
+              </td>
+              <td>Δευτέρα έως Παρασκευή</br>07:30 - 11:30</td>
+              <td><a href="mailto:protokolo@ypakp.gr">protokolo@ypakp.gr</a></td>
+            </tr>
+            <tr class="table-light">
+              <td>
+                <p class="font-weight-bold">Λοιπές Υπηρεσίες</p>
+              </td>
+              <td>Δευτέρα έως Παρασκευή</br>09:00 - 12:00</td>
+              <td><a href="#">Βρείτε την διεύθυνση ηλεκτρονικού ταχυδρομείου</br>για το παράρτημα που σας αφορά.</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- NOTE: previous version of table left here untoutched, just in case
+          TODO: delete these two comments if new version is OK -->
+      <!-- <table class="table table-hover">
         <thead>
           <tr>
             <th scope="col">Είδος Υπηρεσίας</th>
@@ -154,12 +211,11 @@
             <td><a href="#">Βρείτε την διεύθυνση ηλεκτρονικού ταχυδρομείου</br>για το παράρτημα που σας αφορά.</a></td>
           </tr>
         </tbody>
-      </table>
+      </table> -->
     </div>
-    <!-- NOTE: Timetable section ends here -->    
-    
+    <!-- NOTE: Timetable section ends here -->
+
     <!-- NOTE: Footer section starts here -->
-    <hr>
     <footer class="py-0 bg-light">
       <!-- NOTE: number in py- class above determines the "height" of footer -->
       <div class="container">
@@ -170,6 +226,6 @@
 
     <!-- Javascript plugin for collapsing-->
     <script src="../vendor/jquery/jquery.min.js"></script>
-    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>    
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

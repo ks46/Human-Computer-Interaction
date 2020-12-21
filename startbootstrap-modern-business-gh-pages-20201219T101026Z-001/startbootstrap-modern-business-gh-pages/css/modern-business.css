@@ -32,11 +32,6 @@ body {
   padding-bottom: 70px;
 }
 
-.set-margin-top {
-  margin-top: 3%;
-  /* margin-top: 5%; */
-}
-
 .bg-1 {
     background-color: OrangeRed;
     color: white;
