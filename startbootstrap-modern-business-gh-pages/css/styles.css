@@ -24,7 +24,7 @@ body {
 /* code below this line is extra */
 
 .jumbotron-bg {
-  background-color: #e1e6ea;  /* #d3d9df */
+  background-color: #d3d9df;    /* #e1e6ea; */
 }
 
 .container-fluid {
