@@ -40,3 +40,7 @@ body {
 .breadcrumb-bg {
   background-color: white;
 }
+
+.tab {
+  display: none;
+}
