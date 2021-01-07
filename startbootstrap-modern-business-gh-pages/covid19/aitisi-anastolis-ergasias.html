@@ -105,24 +105,28 @@
             <label for="employerFirstName" class="col-sm-2 col-form-label">Όνομα:</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="employerFirstName" required>
+              <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
             </div>  
           </div>
           <div class="form-group row">
             <label for="employerLastName" class="col-sm-2 col-form-label">Επώνυμο:</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="employerLastName" required>
+              <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
             </div>
           </div>
           <div class="form-group row">
             <label for="employerAFM" class="col-sm-2 col-form-label">ΑΦΜ:</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="employerAFM" maxlength="9" minlength="9" required>
+              <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
             </div>
           </div>
           <div class="form-group row">
             <label for="employerEMail" class="col-sm-2 col-form-label">E-Mail:</label>
             <div class="col-sm-10">
               <input type="email" class="form-control" id="employerEMail" required>
+              <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
             </div>
           </div>
           <hr>
@@ -131,6 +135,7 @@
             <label for="businessName" class="col-sm-2 col-form-label">Επωνυμία:</label>
             <div class="col-sm-10">
               <input type="text" class="form-control" id="businessName" required>
+              <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
             </div>
           </div>
           <div class="form-group row">
@@ -146,6 +151,7 @@
               <option value="7">Σπάρτης</option>
               <option value="8">Tρίπολης</option>
             </select>
+            <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
           </div>
         </div>
 
@@ -155,24 +161,28 @@
               <label for="employeeFirstName" class="col-sm-2 col-form-label">Όνομα:</label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" id="employeeFirstName" required>
+                <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
               </div>  
             </div>
             <div class="form-group row">
               <label for="employeeLastName" class="col-sm-2 col-form-label">Επώνυμο:</label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" id="employeeLastName" required>
+                <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
               </div>
             </div>
             <div class="form-group row">
               <label for="employeeAFM" class="col-sm-2 col-form-label">ΑΦΜ:</label>
               <div class="col-sm-10">
                 <input type="text" class="form-control" id="employeeAFM" maxlength="9" minlength="9" required>
+                <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
               </div>
             </div>
             <div class="form-group row">
               <label for="employeeEMail" class="col-sm-2 col-form-label">E-Mail:</label>
               <div class="col-sm-10">
                 <input type="email" class="form-control" id="employeeEMail" required>
+                <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div> 
               </div>
             </div>
         </div>
@@ -182,13 +192,15 @@
           <div class="form-group row">
             <label for="begOfSusp" class="col-sm-2 col-form-label">Από:</label>
             <div class="col-10">
-              <input class="form-control" type="date" id="begOfSusp" min="2021-01-01" max="2021-01-20" onclick="restrictStartDate()" required>
+              <input class="form-control" type="date" id="begOfSusp" min="2021-01-01" max="2021-01-20" oninput="restrictEndDate()" required>
+              <div class="invalid-feedback">Η επιλογή ημερομηνίας αφετηρίας αναστολής είναι υποχρεωτική.</div>              
             </div>
           </div>
           <div class="form-group row">
             <label for="endOfSusp" class="col-sm-2 col-form-label">Έως:</label>
             <div class="col-10">
-              <input class="form-control" type="date" id="endOfSusp" min="2021-01-01" max="2021-01-20"  onclick="restrictEndDate()" required>
+              <input class="form-control" type="date" id="endOfSusp" min="2021-01-01" max="2021-01-20"oninput="restrictStartDate()" required>
+              <div class="invalid-feedback">Η επιλογή ημερομηνίας λήξης αναστολής είναι υποχρεωτική.</div>
             </div>
           </div>
         </div>
@@ -283,25 +295,41 @@
 
       function validateForm() {
         // This function deals with validation of the form fields
-        <!-- var x, y, i, valid = true; -->
-        <!-- x = document.getElementsByClassName("tab"); -->
-        <!-- y = x[currentTab].getElementsByTagName("input"); -->
+        var x, i, valid = true;
+        var formGroups, input, feedbackMsg;
+        var newClassName;
+        x = document.getElementsByClassName("tab");
+        formGroups = x[currentTab].getElementsByClassName("form-group row");
         <!-- // A loop that checks every input field in the current tab: -->
-        <!-- for (i = 0; i < y.length; i++) { -->
-          <!-- // If a field is empty... -->
-          <!-- if (y[i].value == "") { -->
-            <!-- // add an "invalid" class to the field: -->
-            <!-- y[i].className += " invalid"; -->
-            <!-- // and set the current valid status to false -->
-            <!-- valid = false; -->
-          <!-- } -->
-        <!-- } -->
+        if(currentTab !== x.length - 1){
+          for(i = 0; i < formGroups.length; i++){
+            // If a field is empty...
+            input = formGroups[i].getElementsByTagName("input");
+            if(typeof input[0] === 'undefined'){
+              input = formGroups[i].getElementsByTagName("select");
+            }
+            if(input[0].value == ""){
+              // add an "invalid" class to the field:
+              input[0].className += " is-invalid";
+              formGroups[i].className += " has-danger";
+              // and set the current valid status to false
+              valid = false;
+            }else{
+              // removing class "invalid" from field
+              if(input[0].className.indexOf(" is-invalid") !== -1){
+                newClassName = input[0].className.replace(" is-invalid", "");
+                input[0].className = newClassName;
+                newClassName = formGroups[i].className.replace(" has-danger", "");
+                formGroups[i].className = newClassName;
+              }
+            }
+          }
+        }        
         <!-- // If the valid status is true, mark the step as finished and valid: -->
         <!-- if (valid) { -->
           <!-- document.getElementsByClassName("step")[currentTab].className += " finish"; -->
         <!-- } -->
-        <!-- return valid; // return the valid status -->
-        return true;
+        return valid; // return the valid status
       }
       
       function restrictEndDate(){
