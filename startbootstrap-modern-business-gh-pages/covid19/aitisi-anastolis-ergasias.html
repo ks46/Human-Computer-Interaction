@@ -118,8 +118,8 @@
           <div class="form-group row">
             <label for="employerAFM" class="col-sm-2 col-form-label">ΑΦΜ:</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="employerAFM" maxlength="9" minlength="9" required>
-              <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+              <input type="text" class="form-control" id="employerAFM" maxlength="9" onblur="validateAFM(this.id)" required>
+              <div class="invalid-feedback" id="employerAFMError">Το πεδίο είναι υποχρεωτικό.</div>
             </div>
           </div>
           <div class="form-group row">
@@ -174,7 +174,7 @@
             <div class="form-group row">
               <label for="employeeAFM" class="col-sm-2 col-form-label">ΑΦΜ:</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="employeeAFM" maxlength="9" minlength="9" required>
+                <input type="text" class="form-control" id="employeeAFM" maxlength="9" onblur="validateAFM(this.id)" required>
                 <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
               </div>
             </div>
@@ -330,6 +330,42 @@
           <!-- document.getElementsByClassName("step")[currentTab].className += " finish"; -->
         <!-- } -->
         return valid; // return the valid status
+      }
+      
+      function validateAFM(id){
+        var str = String(id);
+        var AFM = document.getElementById(String(id));
+        var valid = true;
+        var formRow = AFM.parentNode.parentNode;
+        var errorString = new String();
+        var newClassName;
+        if(AFM.value.length != 9){
+          valid = false;
+          errorString = "Το ΑΦΜ πρέπει να είναι 9ψήφιο.\n";
+        }
+        if(AFM.value.match(/^[0-9]+$/) == null){
+          valid = false;
+          errorString += "Το ΑΦΜ πρέπει να περιέχει μόνο ψηφία και όχι γράμματα.\n";
+        }
+        if(!valid){
+          if(AFM.className.indexOf(" is-invalid") == -1){
+            AFM.className += " is-invalid";
+          }
+          if(formRow.className.indexOf(" has-danger") == -1){
+            formRow.className += " has-danger";
+          }
+          AFM.nextSibling.nextSibling.innerHTML = errorString;
+        }else{
+          if(AFM.className.indexOf(" is-invalid") !== -1){
+            newClassName = AFM.className.replace(" is-invalid", "");
+            AFM.className = newClassName;
+          }
+          if(formRow.className.indexOf(" has-danger", "")){
+            newClassName = formRow.className.replace(" has-danger", "");
+            formRow.className = newClassName;
+          }
+          AFM.nextSibling.nextSibling.innerHTML = "Το πεδίο είναι υποχρεωτικό.";
+        }
       }
       
       function restrictEndDate(){
