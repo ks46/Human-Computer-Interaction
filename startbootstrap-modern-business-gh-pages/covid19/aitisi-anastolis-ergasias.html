@@ -182,7 +182,7 @@
           <div class="form-group row">
             <label for="begOfSusp" class="col-sm-2 col-form-label">Από:</label>
             <div class="col-10">
-              <input class="form-control" type="date" id="begOfSusp" min="2021-01-01" max="2021-01-20" required>
+              <input class="form-control" type="date" id="begOfSusp" min="2021-01-01" max="2021-01-20" onclick="restrictStartDate()" required>
             </div>
           </div>
           <div class="form-group row">
@@ -195,8 +195,8 @@
 
         <div style="overflow:auto;">
           <div style="float:right;">
-            <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
-            <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+            <button type="button" class="btn btn-primary" id="prevBtn" onclick="nextPrev(-1)">Προηγούμενο</button>
+            <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Επόμενο</button>
           </div>
         </div>
 
@@ -224,10 +224,23 @@
           if(mm<10){
               mm='0'+mm
           } 
-
       today = yyyy+'-'+mm+'-'+dd;
+      
+      var today2 = new Date();
+      var dd2 = today2.getDate();
+      var mm2 = today2.getMonth()+1; //January is 0!
+      var yyyy2 = today2.getFullYear();
+       if(dd2<10){
+              dd2='0'+dd2
+          } 
+          if(mm2<10){
+              mm2='0'+mm2
+          } 
+
+
+      today2 = yyyy2+'-'+mm2+'-'+dd2;
       document.getElementById("begOfSusp").setAttribute("min", today);
-      document.getElementById("endOfSusp").setAttribute("min", today);
+      document.getElementById("endOfSusp").setAttribute("min", today2);
       
       function showTab(n) {
         // This function will display the specified tab of the form...
@@ -240,9 +253,9 @@
           document.getElementById("prevBtn").style.display = "inline";
         }
         if (n == (x.length - 1)) {
-          document.getElementById("nextBtn").innerHTML = "Submit";
+          document.getElementById("nextBtn").innerHTML = "Υποβολή";
         } else {
-          document.getElementById("nextBtn").innerHTML = "Next";
+          document.getElementById("nextBtn").innerHTML = "Επόμενο";
         }
         
         //... and run a function that will display the correct step indicator:
@@ -295,6 +308,12 @@
         var begSuspDate = new Date();
         begSuspDate = document.getElementById("begOfSusp").value;
         document.getElementById("endOfSusp").setAttribute("min", begSuspDate);
+      }
+      
+      function restrictStartDate(){
+        var endSuspDate = new Date();
+        endSuspDate = document.getElementById("endOfSusp").value;
+        document.getElementById("begOfSusp").setAttribute("max", endSuspDate);
       }
 
       function fixStepIndicator(n) {
