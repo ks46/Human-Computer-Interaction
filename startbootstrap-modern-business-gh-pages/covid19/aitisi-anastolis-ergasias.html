@@ -230,25 +230,24 @@
       var dd = today.getDate();
       var mm = today.getMonth()+1; //January is 0!
       var yyyy = today.getFullYear();
-       if(dd<10){
-              dd='0'+dd
-          } 
-          if(mm<10){
-              mm='0'+mm
-          } 
+      if(dd<10){
+        dd='0'+dd
+      } 
+      if(mm<10){
+        mm='0'+mm
+      } 
       today = yyyy+'-'+mm+'-'+dd;
       
       var today2 = new Date();
       var dd2 = today2.getDate();
       var mm2 = today2.getMonth()+1; //January is 0!
       var yyyy2 = today2.getFullYear();
-       if(dd2<10){
-              dd2='0'+dd2
-          } 
-          if(mm2<10){
-              mm2='0'+mm2
-          } 
-
+      if(dd2<10){
+        dd2='0'+dd2
+      } 
+      if(mm2<10){
+        mm2='0'+mm2
+      } 
 
       today2 = yyyy2+'-'+mm2+'-'+dd2;
       document.getElementById("begOfSusp").setAttribute("min", today);
@@ -333,7 +332,6 @@
       }
       
       function validateAFM(id){
-        var str = String(id);
         var AFM = document.getElementById(String(id));
         var valid = true;
         var formRow = AFM.parentNode.parentNode;
@@ -360,11 +358,40 @@
             newClassName = AFM.className.replace(" is-invalid", "");
             AFM.className = newClassName;
           }
-          if(formRow.className.indexOf(" has-danger", "")){
+          if(formRow.className.indexOf(" has-danger") !== -1){
             newClassName = formRow.className.replace(" has-danger", "");
             formRow.className = newClassName;
           }
           AFM.nextSibling.nextSibling.innerHTML = "Το πεδίο είναι υποχρεωτικό.";
+        }
+      }
+      
+      const employermail = document.getElementById("employerEMail");
+      employermail.addEventListener("blur", function(){invalidEmail("employerEMail")});
+      
+      const employeemail = document.getElementById("employeeEMail");
+      employeemail.addEventListener("blur", function(){invalidEmail("employeeEMail")});
+      
+      function invalidEmail(id) {
+        mail = document.getElementById(id);
+        errorMsg = new String();
+        if(mail.validity.typeMismatch){
+          if(mail.parentNode.parentNode.className.indexOf(" has-danger") == -1){
+            <!-- // first time showing an error for this field -->
+            mail.parentNode.parentNode.className += " has-danger";
+            mail.className += " is-invalid";
+            errorMsg = "Μη έγκυρη μορφή ηλεκτρονικού ταχυδρομείου.\nΠαραδείγμα: marpap15@mail.gr";
+            mail.nextSibling.nextSibling.innerHTML = errorMsg;
+          }
+        }else{
+          if(mail.parentNode.parentNode.className.indexOf(" has-danger") !== -1){
+            var newClassName = mail.parentNode.parentNode.className.replace(" has-danger", "");
+            mail.parentNode.parentNode.className = newClassName;
+            newClassName = mail.className.replace(" is-invalid", "");
+            mail.className = newClassName;
+            errorMsg = "Το πεδίο είναι υποχρεωτικό.";
+            mail.nextSibling.nextSibling.innerHTML = errorMsg;
+          }
         }
       }
       
