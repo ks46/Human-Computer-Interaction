@@ -141,7 +141,7 @@
           <div class="form-group row">
             <label for="DOY" class="col-sm-2 col-form-label">ΔΟΥ:</label>
             <select class="select" id="DOY">
-              <option selected>Επιλέξτε</option>
+              <option value="0" selected>Επιλέξτε</option>
               <option value="1">Αμαλιάδας</option>
               <option value="2">Άργους</option>
               <option value="3">Καλαμάτας</option>
@@ -307,7 +307,7 @@
             if(typeof input[0] === 'undefined'){
               input = formGroups[i].getElementsByTagName("select");
             }
-            if(input[0].value == ""){
+            if(input[0].value == "" || input[0].value == 0){
               // add an "invalid" class to the field:
               input[0].className += " is-invalid";
               formGroups[i].className += " has-danger";
