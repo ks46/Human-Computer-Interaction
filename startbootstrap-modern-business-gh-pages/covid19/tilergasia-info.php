@@ -38,6 +38,8 @@
       <li>Τα ανωτέρω οφείλει να τα γνωστοποιήσει εγγράφως στον εργαζόμενο εντός 8 ημερών από την
       έναρξη της τηλεργασίας.</li>
     </ul>
+
+    <a class="btn btn-primary btn-lg" href="#" role="button">Κάντε Αίτηση</a>
   </section>
 </div>
 <!-- NOTE: Page Content ends here -->

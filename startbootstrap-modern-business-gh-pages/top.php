@@ -6,12 +6,13 @@
   <!-- <meta name="description" content=""> -->
   <!-- <meta name="author" content=""> -->
 
-  <title>Υπουργείο Εργασίας - <?php echo $title ?></title>
+  <title><?php echo $title ?> - Υπουργείο Εργασίας</title>
 
   <!-- Bootstrap core CSS -->
   <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
   <link href="../css/styles.css" rel="stylesheet">
+
 </head>
 
 <body>
@@ -29,10 +30,10 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-              <a class="nav-link" href="../index-level/index.php">Αρχική</a>
+              <a class="nav-link text-dark" href="../index-level/index.php">Αρχική</a>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCOVID" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownCOVID" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 COVID-19
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownCOVID">
@@ -43,7 +44,7 @@
               </div>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownErgodotes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownErgodotes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Εργοδότες
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownErgodotes">
@@ -53,7 +54,7 @@
               </div>
             </li>
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownErgazomenoi" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="nav-link dropdown-toggle text-dark" href="#" id="navbarDropdownErgazomenoi" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Εργαζόμενοι
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownErgazomenoi">
@@ -65,16 +66,16 @@
               </div>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Άνεργοι</a>
+              <a class="nav-link text-dark" href="#">Άνεργοι</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Συνταξιούχοι</a>
+              <a class="nav-link text-dark" href="#">Συνταξιούχοι</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="../index-level/contact.php">Επικοινωνία</a>
+              <a class="nav-link text-dark" href="../index-level/contact.php">Επικοινωνία</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Σύνδεση</a>
+              <a class="nav-link text-dark" href="#">Σύνδεση / Εγγραφή</a>
             </li>
           </ul>
         </div>
