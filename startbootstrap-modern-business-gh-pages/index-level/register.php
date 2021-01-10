@@ -2,8 +2,8 @@
 require_once "../config.php";                             // Include config file
 //
 // Define variables and initialize with empty values
-$username = $password = $confirm_password = $firstname = $lastname = $afm = "";
-$username_err = $password_err = $confirm_password_err = $firstname_err = $lastname_err = $afm_err = "";
+$username = $password = $confirm_password = $first_name = $last_name = $AFM = "";
+$username_err = $password_err = $confirm_password_err = $first_name_err = $last_name_err = $AFM_err = "";
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -12,7 +12,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     $username_err = "Εισάγετε όνομα χρήστη.";
   } else {
     // Prepare a select statement
-    $sql = "SELECT AFM FROM users WHERE username = ?";
+    $sql = "SELECT AFM FROM user WHERE username = ?";
 
     if($stmt = mysqli_prepare($link, $sql)) {
       // Bind variables to the prepared statement as parameters
@@ -61,15 +61,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   // Check input errors before inserting in database
   if(empty($username_err) && empty($password_err) && empty($confirm_password_err)) {
     // Prepare an insert statement
-    $sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+    $sql = "INSERT INTO user (username, password, AFM, first_name, last_name, type) VALUES (?, ?, ?, ?, ?, ?)";
 
     if($stmt = mysqli_prepare($link, $sql)) {
       // Bind variables to the prepared statement as parameters
-      mysqli_stmt_bind_param($stmt, "ss", $param_username, $param_password);
+      mysqli_stmt_bind_param($stmt, "ssssss", $param_username, $param_password, $param_AFM, $param_first_name, $param_last_name, $param_type);
 
       // Set parameters
       $param_username = $username;
       $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
+      $param_AFM = 123456788;
+      $param_first_name = "Κ";
+      $param_last_name = "S";
+      $param_type = "employee";
 
       // Attempt to execute the prepared statement
       if(mysqli_stmt_execute($stmt)) {
@@ -143,47 +147,47 @@ require_once "../top.php";
       <h2 class="py-3">Στοιχεία Χρήστη</h2>
 
       <!-- First name -->
-      <div class="form-group row <?php echo (!empty($firstname_err)) ? 'has-error' : ''; ?>">
+      <!-- <div class="form-group row <?php echo (!empty($first_name_err)) ? 'has-error' : ''; ?>">
         <label for="firstname" class="col-sm-2 col-form-label">Όνομα</label>
         <div class="col-lg-5">
-          <input type="text" name="firstname" class="form-control" value="<?php echo $firstname; ?>" id="firstname" required>
+          <input type="text" name="firstname" class="form-control" value="<?php echo $first_name; ?>" id="firstname" required>
         </div>
-        <span class="help-block"><?php echo $firstname_err; ?></span>
-      </div>
+        <span class="help-block"><?php echo $first_name_err; ?></span>
+      </div> -->
 
       <!-- Last name -->
-      <div class="form-group row <?php echo (!empty($lastname_err)) ? 'has-error' : ''; ?>">
+      <!-- <div class="form-group row <?php echo (!empty($last_name_err)) ? 'has-error' : ''; ?>">
         <label for="lastname" class="col-sm-2 col-form-label">Επώνυμο</label>
         <div class="col-lg-5">
-          <input type="text" name="lastname" class="form-control" value="<?php echo $lastname; ?>" id="lastname" required>
+          <input type="text" name="lastname" class="form-control" value="<?php echo $last_name; ?>" id="lastname" required>
         </div>
-        <span class="help-block"><?php echo $lastname_err; ?></span>
-      </div>
+        <span class="help-block"><?php echo $last_name_err; ?></span>
+      </div> -->
 
       <!-- AFM -->
-      <div class="form-group row <?php echo (!empty($afm_err)) ? 'has-error' : ''; ?>">
+      <!-- <div class="form-group row <?php echo (!empty($AFM_err)) ? 'has-error' : ''; ?>">
         <label for="afm" class="col-sm-2 col-form-label">
           <abbr title="Αριθμός Φορολογικού Μητρώου">Α.Φ.Μ.</abbr>
         </label>
         <div class="col-lg-5">
-          <input type="number" name="afm" class="form-control" value="<?php echo $afm; ?>" id="afm" min="000000000" max="999999999" required>
-          <!-- <input type="text" name="afm" class="form-control" value="<?php echo $afm; ?>" id="afm" required pattern="[0-9]{9}"> -->
-        </div>
-        <span class="help-block"><?php echo $afm_err; ?></span>
-      </div>
+          <input type="number" name="afm" class="form-control" value="<?php echo $AFM; ?>" id="afm" min="000000000" max="999999999" required> -->
+          <!-- <input type="text" name="afm" class="form-control" value="<?php echo $AFM; ?>" id="afm" required pattern="[0-9]{9}"> -->
+        <!-- </div>
+        <span class="help-block"><?php echo $AFM_err; ?></span>
+      </div> -->
 
       <!-- Company_name -->
 
       <!-- Is an Employer? -->
       <!-- TODO: how do we pass this into php ?? -->
-      <div class="form-group row">
+      <!-- <div class="form-group row">
         <label class="form-check-label col-sm-2" for="is_employer">Είμαι Εργοδότης</label>
         <div class="col-sm-10">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" id="is_employer">
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Buttons -->
       <div class="form-group">
