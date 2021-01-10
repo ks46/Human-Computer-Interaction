@@ -27,7 +27,7 @@
       Πληροφορηθείτε για τους τρόπους επικοινωνίας και για το πώς μπορείτε να κλείσετε ραντεβού
       για το παράρτημα που σας αφορά.
     </p>
-    <a class="btn btn-primary" href="#">Εύρεση Παραρτήματος</a>
+    <a class="btn btn-primary" href="../index-level/dateform.php">Εύρεση Παραρτήματος</a>
   </section>
 
   <!-- NOTE: Timetable section starts here -->
