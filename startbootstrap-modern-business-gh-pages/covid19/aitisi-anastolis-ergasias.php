@@ -58,17 +58,20 @@
           </div>
           <div class="form-group row">
             <label for="DOY" class="col-sm-2 col-form-label">ΔΟΥ:</label>
-            <select class="select" id="DOY">
-              <option value="0" selected>Επιλέξτε</option>
-              <option value="1">Αμαλιάδας</option>
-              <option value="2">Άργους</option>
-              <option value="3">Καλαμάτας</option>
-              <option value="4">Κορίνθου</option>
-              <option value="5">Ναυπλίου</option>
-              <option value="6">Πύργου</option>
-              <option value="7">Σπάρτης</option>
-              <option value="8">Tρίπολης</option>
-            </select>
+            <?php   
+              require_once "../config.php";
+              
+              $doy_list = mysqli_query($link, "SELECT * FROM doy");
+              
+              $value = 0;
+              echo "<select class=\"select\" id=\"DOY\">";
+              echo "<option value=\"$value\" selected>Επιλέξτε</option>";
+              while($doy = mysqli_fetch_array($doy_list)){
+                $value++;
+                echo "<option value=\"$value\">$doy[0]</option>";
+              }
+              echo "</select>";
+            ?>
             <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
           </div>
         </div>
