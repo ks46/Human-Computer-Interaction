@@ -1,3 +1,15 @@
+<?php
+// Initialize the session
+if(!isset($_SESSION)) {
+  session_start();
+}
+// // Check if the user is already logged in, if yes then redirect him to welcome page
+// if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+//     header("location: welcome.php");
+//     exit;
+// }
+?>
+
 <!DOCTYPE html>
 <html lang="el">
 <head>
@@ -13,6 +25,7 @@
     <!-- Custom styles for this template -->
   <link href="../css/styles.css" rel="stylesheet">
 
+  
 </head>
 
 <body>
@@ -75,8 +88,23 @@
               <a class="nav-link text-dark" href="../index-level/contact.php">Επικοινωνία</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-dark" href="#">Σύνδεση / Εγγραφή</a>
+              <?php
+                // Check if the user is already logged in, if yes then show user's name
+                if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+              ?>
+                  <a class="nav-link text-dark" href="#">Username</a>
+              <?php } else { ?>
+                  <a class="nav-link text-dark" href="../index-level/login.php">Σύνδεση</a>
+              <?php } ?>
             </li>
+            <?php
+              // Check if the user is already logged in, if yes then show user's name
+              if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
+            ?>
+              <li class="nav-item">
+                <a class="nav-link text-dark" href="../index-level/logout.php">Αποσύνδεση</a>
+              </li>
+            <?php } ?>
           </ul>
         </div>
       </div>

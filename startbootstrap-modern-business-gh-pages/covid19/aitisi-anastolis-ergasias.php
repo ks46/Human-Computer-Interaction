@@ -141,10 +141,6 @@
       </form>
     </div>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- <script src="../vendor/jquery/jquery.min.js"></script> -->
-    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <script>
       var currentTab = 0; // Current tab is set to be the first tab (0)
@@ -341,5 +337,11 @@
         x[n].className += " active";
       }
     </script>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="../vendor/jquery/jquery.min.js"></script> -->
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
   </body>
 </html>
