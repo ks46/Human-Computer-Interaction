@@ -1,5 +1,7 @@
 <?php
 require_once "../config.php";
+// require_once "chromephp-master/ChromePhp.php";
+
 
 function validateAFM($link, $AFM, &$AFM_err){
   $AFM_is_valid = "SELECT * FROM user WHERE AFM = ".$AFM;
@@ -25,13 +27,21 @@ function validateIsEmployer($link, $AFM, &$AFM_err){
   return true;
 }
 
-function validateIsEmployee($link, $AFM, &$AFM_err){
+function validateIsEmployee($link, $AFM, &$AFM_err, $businessName){
   $is_employee = "SELECT * FROM employee WHERE AFM = ".$AFM;
   $result = mysqli_query($link, $is_employee);
   if(mysqli_num_rows($result) != 1){
     $AFM_err = "Δεν υπάρχει υπάλληλος με τέτοιο ΑΦΜ στο σύστημα.";
     mysqli_free_result($result);
     return false;
+  }else{
+    while($row = mysqli_fetch_array($result)){
+      if($row[2] != $businessName){
+        $AFM_err = "Δεν υπάρχει εργαζόμενος στην εταιρεία σας με τέτοιο ΑΦΜ στο σύστημα.";
+        mysqli_free_result($result);
+        return false;
+      }
+    }
   }
   mysqli_free_result($result);
   return true;
@@ -48,6 +58,8 @@ function validateName($link, $AFM, $FirstName, &$FirstName_err, $LastName, &$Las
   }else{
     while($row = mysqli_fetch_array($result)){
       if($row[0] != $FirstName){
+        // ChromePhp::log("row[0]: ".$row[0]);
+        // ChromePhp::log("FirstName: ".$FirstName);
         $FirstName_err = "Το όνομα που δηλώνετε δεν αντιστοιχεί με αυτό στο σύστημα.";
         $valid = false;
       }

@@ -26,6 +26,12 @@ $doy = 0;
 $employer_FirstName_err = $employer_LastName_err = $employer_AFM_err = "";
 $businessName_err = $doy_err = "";
 
+$employeeAFM = $employeeFirstName = $employeeLastName = $employeeEMail = "";
+$employee_FirstName_err = $employee_LastName_err = $employee_AFM_err = "";
+
+$startDate = "";
+$endDate = "";
+
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST") {
   // Empty checks are done via JavaScript before submit
@@ -37,17 +43,43 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   $businessName = trim($_POST["_businessName"]);
   $employerEMail = trim($_POST["employer_EMail"]);
   $doy = trim($_POST["_doy"]);
-  ChromePhp::log("I am in processing and doy = ".$doy);
+  
+  $employeeFirstName = trim($_POST["employee_FirstName"]);
+  $employeeLastName = trim($_POST["employee_LastName"]);
+  $employeeAFM = trim($_POST["employee_AFM"]);
+  $employeeEMail = trim($_POST["employee_EMail"]);
+  
+  $startDate = trim($_POST["_begOfSusp"]);
+  $endDate = trim($_POST["_endOfSusp"]);
+  
+  $validEmployer = true;
+  $validEmployee = true;
   
   if(validateAFM($link, $employerAFM, $employer_AFM_err)){
     if(validateIsEmployer($link, $employerAFM, $employer_AFM_err)){
-      validateName($link, $employerAFM, $employerFirstName, $employer_FirstName_err, $employerLastName, $employer_LastName_err);
+      $validEmployer = validateName($link, $employerAFM, $employerFirstName, $employer_FirstName_err, $employerLastName, $employer_LastName_err);
       if(validateBusinessName($link, $employerAFM, $businessName, $businessName_err)){
         validateDoy($link, $businessName, $doy, $doy_err);
+      }else{
+        $validEmployer = false;
       }
+    }else{
+      $validEmployer = false;
     }
+  }else{
+    $validEmployer = false;
   }
   
+  if(validateAFM($link, $employeeAFM, $employee_AFM_err)){
+    if(validateIsEmployee($link, $employeeAFM, $employee_AFM_err, $businessName)){
+      // ChromePhp::log("valid employee");
+      $validEmployee = validateName($link, $employeeAFM, $employeeFirstName, $employee_FirstName_err, $employeeLastName, $employee_LastName_err);
+    }else{
+      $validEmployee = false;
+    }
+  }else{
+    $validEmployee = false;
+  }
 }
 ?>
 
@@ -72,25 +104,36 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       <form id="suspForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"  >
         <h1>Αίτηση Αναστολής Σύμβασης Εργασίας Υπαλλήλου</h1>
         <div class="tab">
+          <?php 
+            if($validEmployee == false || $validEmployer == false){
+              if($validEmployee == false && $validEmployer == false){
+                echo "<div style=\"color: red;\"> (Κάποια από) τα στοιχεία εργοδότη/επιχείρησης και εργαζόμενου δεν επαληθεύθηκαν. Διορθώστε τα και υποβάλλετε εκ νέου την φόρμα</div>";
+              }else if($validEmployer == true){
+                echo "<div style=\"color: red;\"> (Κάποια από)τα στοιχεία του εργαζόμενου δεν επαληθεύθηκαν. Διορθώστε τα και υποβάλλετε εκ νέου την φόρμα</div>";
+              }else{
+                echo "<div style=\"color: red;\"> (Κάποια από)τα στοιχεία εργοδότη/επιχείρησης δεν επαληθεύθηκαν. Διορθώστε τα και υποβάλλετε εκ νέου την φόρμα</div>";
+              }
+            }
+          ?>
           <h2 class="py-2">Στοιχεία Εργοδότη</h2>
           <div class="form-group row <?php echo (!empty($employer_FirstName_err)) ? 'has-danger' : ''; ?>">
             <label for="employerFirstName" class="col-sm-2 col-form-label">Όνομα:</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control <?php echo (!empty($employer_FirstName_err)) ? 'is-invalid' : ''; ?>" name="employer_FirstName" id="employerFirstName" value="<?php echo(empty($employer_FirstName_err)) ? $employerFirstName : ''; ?>" required>
+              <input type="text" class="form-control <?php echo (!empty($employer_FirstName_err)) ? 'is-invalid' : ''; ?>" name="employer_FirstName" id="employerFirstName" value="<?php echo$employerFirstName; ?>" required>
               <div class="invalid-feedback"><?php echo (!empty($employer_FirstName_err)) ?  $employer_FirstName_err : 'Το πεδίο είναι υποχρεωτικό'; ?>.</div>
             </div>
           </div>
           <div class="form-group row <?php echo (!empty($employer_LastName_err)) ? 'has-danger' : ''; ?>">
             <label for="employerLastName" class="col-sm-2 col-form-label">Επώνυμο:</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control <?php echo (!empty($employer_LastName_err)) ? 'is-invalid' : ''; ?>" name="employer_LastName" id="employerLastName" value="<?php echo(empty($employer_LastName_err)) ? $employerLastName : ''; ?>" required>
+              <input type="text" class="form-control <?php echo (!empty($employer_LastName_err)) ? 'is-invalid' : ''; ?>" name="employer_LastName" id="employerLastName" value="<?php echo$employerLastName; ?>" required>
               <div class="invalid-feedback"><?php echo (!empty($employer_LastName_err)) ?  $employer_LastName_err : 'Το πεδίο είναι υποχρεωτικό'; ?>.</div>
             </div>
           </div>
           <div class="form-group row <?php echo (!empty($employer_AFM_err)) ? 'has-danger' : ''; ?>">
             <label for="employerAFM" class="col-sm-2 col-form-label">ΑΦΜ:</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control <?php echo (!empty($employer_AFM_err)) ? 'is-invalid' : ''; ?>" name="employer_AFM" id="employerAFM" maxlength="9" value="<?php echo(empty($employer_AFM_err)) ? $employerAFM : ''; ?>" onblur="validateAFM(this.id)" required>
+              <input type="text" class="form-control <?php echo (!empty($employer_AFM_err)) ? 'is-invalid' : ''; ?>" name="employer_AFM" id="employerAFM" maxlength="9" value="<?php echo $employerAFM ; ?>" onblur="validateAFM(this.id)" required>
               <div class="invalid-feedback" id="employerAFMError"><?php echo (!empty($employer_AFM_err)) ?  $employer_AFM_err : 'Το πεδίο είναι υποχρεωτικό'; ?>.</div>
             </div>
           </div>
@@ -106,7 +149,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="form-group row <?php echo (!empty($businessName_err)) ? 'has-danger' : ''; ?>">
             <label for="businessName" class="col-sm-2 col-form-label">Επωνυμία:</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control <?php echo (!empty($businessName_err)) ? 'is-invalid' : ''; ?>" name="_businessName" id="businessName" value="<?php echo(empty($businessName_err)) ? $businessName : ''; ?>" required>
+              <input type="text" class="form-control <?php echo (!empty($businessName_err)) ? 'is-invalid' : ''; ?>" name="_businessName" id="businessName" value="<?php echo $businessName; ?>" required>
               <div class="invalid-feedback"><?php echo (!empty($businessName_err)) ?  $businessName_err : 'Το πεδίο είναι υποχρεωτικό'; ?>.</div>
             </div>
           </div>
@@ -139,53 +182,54 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
         <div class="tab">
           <h2>Στοιχεία Υπαλλήλου</h2>
-            <div class="form-group row">
+            <div class="form-group row <?php echo (!empty($employee_FirstName_err)) ? 'has-danger' : ''; ?>">
               <label for="employeeFirstName" class="col-sm-2 col-form-label">Όνομα:</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="employeeFirstName" required>
-                <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+                <input type="text" class="form-control <?php echo (!empty($employee_FirstName_err)) ? 'is-invalid' : ''; ?>" name="employee_FirstName" id="employeeFirstName" value="<?php echo $employeeFirstName; ?>" required>
+                <div class="invalid-feedback"><?php echo (!empty($employee_FirstName_err)) ?  $employee_FirstName_err : 'Το πεδίο είναι υποχρεωτικό'; ?></div>
               </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row <?php echo (!empty($employee_LastName_err)) ? 'has-danger' : ''; ?>">
               <label for="employeeLastName" class="col-sm-2 col-form-label">Επώνυμο:</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="employeeLastName" required>
-                <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+                <input type="text" class="form-control <?php echo (!empty($employee_LastName_err)) ? 'is-invalid' : ''; ?>" name="employee_LastName" id="employeeLastName" value="<?php echo $employeeLastName; ?>" required>
+                <div class="invalid-feedback"><?php echo (!empty($employee_LastName_err)) ?  $employee_LastName_err : 'Το πεδίο είναι υποχρεωτικό'; ?></div>
               </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row <?php echo (!empty($employee_AFM_err)) ? 'has-danger' : ''; ?>">
               <label for="employeeAFM" class="col-sm-2 col-form-label">ΑΦΜ:</label>
               <div class="col-sm-10">
-                <input type="text" class="form-control" id="employeeAFM" maxlength="9" onblur="validateAFM(this.id)" required>
-                <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+                <input type="text" class="form-control <?php echo (!empty($employee_AFM_err)) ? 'is-invalid' : ''; ?>" name="employee_AFM" id="employeeAFM" maxlength="9" onblur="validateAFM(this.id)" value="<?php echo $employeeAFM; ?>" required>
+                <div class="invalid-feedback"><?php echo (!empty($employee_AFM_err)) ?  $employee_AFM_err : 'Το πεδίο είναι υποχρεωτικό'; ?></div>
               </div>
             </div>
             <div class="form-group row">
               <label for="employeeEMail" class="col-sm-2 col-form-label">E-Mail:</label>
               <div class="col-sm-10">
-                <input type="email" class="form-control" id="employeeEMail" required>
+                <input type="email" class="form-control" name="employee_EMail" id="employeeEMail" value="<?php echo($employeeEMail); ?>" required>
                 <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
               </div>
             </div>
         </div>
 
-        <!-- <div class="tab">
+        <div class="tab">
           <h2>Διάστημα Αναστολής Σύμβασης</h2>
           <div class="form-group row">
             <label for="begOfSusp" class="col-sm-2 col-form-label">Από:</label>
             <div class="col-10">
-              <input class="form-control" type="date" id="begOfSusp" min="2021-01-01" max="2021-01-20" oninput="restrictEndDate()" required>
+              <input class="form-control" type="date" name="_begOfSusp" id="begOfSusp" min="2021-01-01" max="2021-01-20" oninput="restrictEndDate()" value="<?php echo $startDate; ?>" required>
               <div class="invalid-feedback">Η επιλογή ημερομηνίας αφετηρίας αναστολής είναι υποχρεωτική.</div>
             </div>
           </div>
           <div class="form-group row">
             <label for="endOfSusp" class="col-sm-2 col-form-label">Έως:</label>
             <div class="col-10">
-              <input class="form-control" type="date" id="endOfSusp" min="2021-01-01" max="2021-01-20"oninput="restrictStartDate()" required>
+              <input class="form-control" type="date" name="_endOfSusp" id="endOfSusp" min="2021-01-01" max="2021-01-20"oninput="restrictStartDate()" value="<?php echo $endDate; ?>" required>
               <div class="invalid-feedback">Η επιλογή ημερομηνίας λήξης αναστολής είναι υποχρεωτική.</div>
             </div>
           </div>
-        </div> -->
+        </div>
+        
         <div class="form-group">
           <div style="overflow:auto;">
             <div style="float:right;"> 
@@ -234,8 +278,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       }
 
       today2 = yyyy2+'-'+mm2+'-'+dd2;
-      // document.getElementById("begOfSusp").setAttribute("min", today);
-      // document.getElementById("endOfSusp").setAttribute("min", today2);
+      document.getElementById("begOfSusp").setAttribute("min", today);
+      document.getElementById("endOfSusp").setAttribute("min", today2);
 
       function showTab(n) {
         // This function will display the specified tab of the form...
@@ -249,7 +293,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         if (n == (x.length - 1)) {
           document.getElementById("nextBtn").innerHTML = "Υποβολή";
-          document.getElementById("nextBtn").type = "submit";
         } else {
           document.getElementById("nextBtn").innerHTML = "Επόμενο";
         }
@@ -352,11 +395,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         }
       }
 
-      // const employermail = document.getElementById("employerEMail");
-      // employermail.addEventListener("blur", function(){invalidEmail("employerEMail")});
+      const employermail = document.getElementById("employerEMail");
+      employermail.addEventListener("blur", function(){invalidEmail("employerEMail")});
 
-      // const employeemail = document.getElementById("employeeEMail");
-      // employeemail.addEventListener("blur", function(){invalidEmail("employeeEMail")});
+      const employeemail = document.getElementById("employeeEMail");
+      employeemail.addEventListener("blur", function(){invalidEmail("employeeEMail")});
 
       function invalidEmail(id) {
         mail = document.getElementById(id);
