@@ -1,6 +1,84 @@
 <?php
+
+// require_once "chromephp-master/ChromePhp.php";
+ 
+// Initialize the session
+if(!isset($_SESSION)) {
+  session_start();
+}
+
+// Check if the user is already logged in, if yes then redirect him to welcome page
+if(!isset($_SESSION["loggedin"])) {
+  header("location: ../index-level/login.php");
+  exit;
+}
+
+// Include config file
+require_once "../config.php";
+
+// Define variables and initialize with empty values
+$employer_FirstName = $employer_LastName = "";
+$employer_FirstName_err = $employer_LastName_err = $employer_AFM_err = "";
+
+// Processing form data when form is submitted
+if($_SERVER["REQUEST_METHOD"] == "POST") {
+  // Empty checks are done via JavaScript before submit
+
+  // Validate credentials
+  $AFM_is_valid = "SELECT * FROM user WHERE AFM = ?";
+  $employerAFM = trim($_POST["employer_AFM"]);
+  $employerFirstName = trim($_POST["employer_FirstName"]);
+  $employerLastName = trim($_POST["employer_LastName"]);
+  
+  // sleep(5);
+  if($stmt_0 = mysqli_prepare($link, $AFM_is_valid)){
+    mysqli_stmt_bind_param($stmt_0, "s", $param_AFM);
+    $param_AFM = $employerAFM;
+    if(mysqli_stmt_execute($stmt_0)){
+      mysqli_stmt_store_result($stmt_0);
+      if(mysqli_stmt_num_rows($stmt_0) != 1) {
+        $employer_AFM_err = "Το ΑΦΜ που καταχωρήσατε δεν αντιστοιχεί με αυτό στο σύστημα";
+      }else{
+        $verify_name = "SELECT first_name, last_name FROM user WHERE AFM = ?";
+        if($stmt_1 = mysqli_prepare($link, $verify_name)){
+          mysqli_stmt_bind_param($stmt_1, "s", $param_AFM);
+          $param_employerFirstName = $employerFirstName;
+          
+          if(mysqli_stmt_execute($stmt_1)){
+            mysqli_stmt_store_result($stmt_1);
+            if(mysqli_stmt_num_rows($stmt_1) == 1){
+              mysqli_stmt_bind_result($stmt_1, $res_employerFirstName, $res_employerLastName);
+              if(mysqli_stmt_fetch($stmt_1)) {
+                if($employerFirstName != $res_employerFirstName){ 
+                  $employer_FirstName_err = "Το όνομα που δηλώνετε δεν αντιστοιχεί με αυτό στο σύστημα";
+                }else if($employerLastName != $res_employerLastName){
+                  $employer_LastName_err = "Το επίθετο που δηλώνετε δεν αντιστοιχεί με αυτό στο σύστημα";
+                }else{
+                  // header("confirmed.php");
+                }
+              }
+            }
+          }else{
+            $employer_FirstName_err = "Το όνομα που δηλώνετε δεν αντιστοιχεί με αυτό στο σύστημα";
+            $employer_LastName_err = "Το επίθετο που δηλώνετε δεν αντιστοιχεί με αυτό στο σύστημα";
+          }
+          mysqli_stmt_close($stmt_1);
+        }
+      }
+    }
+    // Close statement
+    mysqli_stmt_close($stmt_0);
+  }
+  
+  // Close connection
+  mysqli_close($link);
+}
+?>
+
+<?php
   $title="Αναστολή Σύμβασης Εργασίας Υπαλλήλου";
   require_once "../top.php";
+  require_once "../config.php";
 ?>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 
@@ -15,29 +93,29 @@
       </nav>
       <!-- NOTE: Breadcrumbs section ends here -->
 
-      <form id="suspForm" action="">
+      <form id="suspForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
         <h1>Αίτηση Αναστολής Σύμβασης Εργασίας Υπαλλήλου</h1>
         <div class="tab">
           <h2 class="py-2">Στοιχεία Εργοδότη</h2>
-          <div class="form-group row">
+          <div class="form-group row <?php echo (!empty($employer_FirstName_err)) ? 'has-danger' : ''; ?>">
             <label for="employerFirstName" class="col-sm-2 col-form-label">Όνομα:</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="employerFirstName" required>
-              <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+              <input type="text" class="form-control <?php echo (!empty($employer_FirstName_err)) ? 'is-invalid' : ''; ?>" name="employer_FirstName" id="employerFirstName" value="<?php echo(empty($employer_FirstName_err)) ? $employerFirstName : ''; ?>" required>
+              <div class="invalid-feedback"><?php echo (!empty($employer_FirstName_err)) ?  $employer_FirstName_err : 'Το πεδίο είναι υποχρεωτικό'; ?>.</div>
             </div>
           </div>
-          <div class="form-group row">
+          <div class="form-group row <?php echo (!empty($employer_LastName_err)) ? 'has-danger' : ''; ?>">
             <label for="employerLastName" class="col-sm-2 col-form-label">Επώνυμο:</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="employerLastName" required>
-              <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+              <input type="text" class="form-control <?php echo (!empty($employer_LastName_err)) ? 'is-invalid' : ''; ?>" name="employer_LastName" id="employerLastName" value="<?php echo(empty($employer_LastName_err)) ? $employerLastName : ''; ?>" required>
+              <div class="invalid-feedback"><?php echo (!empty($employer_LastName_err)) ?  $employer_LastName_err : 'Το πεδίο είναι υποχρεωτικό'; ?>.</div>
             </div>
           </div>
-          <div class="form-group row">
+          <div class="form-group row <?php echo (!empty($employer_AFM_err)) ? 'has-danger' : ''; ?>">
             <label for="employerAFM" class="col-sm-2 col-form-label">ΑΦΜ:</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="employerAFM" maxlength="9" onblur="validateAFM(this.id)" required>
-              <div class="invalid-feedback" id="employerAFMError">Το πεδίο είναι υποχρεωτικό.</div>
+              <input type="text" class="form-control <?php echo (!empty($employer_AFM_err)) ? 'is-invalid' : ''; ?>" name="employer_AFM" id="employerAFM" maxlength="9" value="<?php echo(empty($employer_AFM_err)) ? $employerAFM : ''; ?>" onblur="validateAFM(this.id)" required>
+              <div class="invalid-feedback" id="employerAFMError"><?php echo (!empty($employer_AFM_err)) ?  $employer_AFM_err : 'Το πεδίο είναι υποχρεωτικό'; ?>.</div>
             </div>
           </div>
           <div class="form-group row">
@@ -59,7 +137,6 @@
           <div class="form-group row">
             <label for="DOY" class="col-sm-2 col-form-label">ΔΟΥ:</label>
             <?php   
-              require_once "../config.php";
               
               $doy_list = mysqli_query($link, "SELECT * FROM doy");
               
@@ -76,7 +153,7 @@
           </div>
         </div>
 
-        <div class="tab">
+        <!-- <div class="tab">
           <h2>Στοιχεία Υπαλλήλου</h2>
             <div class="form-group row">
               <label for="employeeFirstName" class="col-sm-2 col-form-label">Όνομα:</label>
@@ -106,9 +183,9 @@
                 <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
               </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class="tab">
+        <!-- <div class="tab">
           <h2>Διάστημα Αναστολής Σύμβασης</h2>
           <div class="form-group row">
             <label for="begOfSusp" class="col-sm-2 col-form-label">Από:</label>
@@ -124,15 +201,16 @@
               <div class="invalid-feedback">Η επιλογή ημερομηνίας λήξης αναστολής είναι υποχρεωτική.</div>
             </div>
           </div>
-        </div>
-
-        <div style="overflow:auto;">
-          <div style="float:right;">
-            <button type="button" class="btn btn-primary" id="prevBtn" onclick="nextPrev(-1)">Προηγούμενο</button>
-            <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Επόμενο</button>
+        </div> -->
+        <div class="form-group">
+          <div style="overflow:auto;">
+            <div style="float:right;"> 
+              <button type="button" class="btn btn-primary" id="prevBtn" onclick="nextPrev(-1)">Προηγούμενο</button>
+              <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Επόμενο</button>
+            </div>
           </div>
         </div>
-
+        
         <!-- Circles which indicates the steps of the form: -->
         <!-- <div style="text-align:center;margin-top:40px;"> -->
           <!-- <span class="step"></span> -->
@@ -173,8 +251,8 @@
       }
 
       today2 = yyyy2+'-'+mm2+'-'+dd2;
-      document.getElementById("begOfSusp").setAttribute("min", today);
-      document.getElementById("endOfSusp").setAttribute("min", today2);
+      // document.getElementById("begOfSusp").setAttribute("min", today);
+      // document.getElementById("endOfSusp").setAttribute("min", today2);
 
       function showTab(n) {
         // This function will display the specified tab of the form...
@@ -188,6 +266,7 @@
         }
         if (n == (x.length - 1)) {
           document.getElementById("nextBtn").innerHTML = "Υποβολή";
+          document.getElementById("nextBtn").type = "submit";
         } else {
           document.getElementById("nextBtn").innerHTML = "Επόμενο";
         }
@@ -208,8 +287,9 @@
         // if you have reached the end of the form...
         if (currentTab >= x.length) {
           // ... the form gets submitted:
-          document.getElementById("regForm").submit();
-          return false;
+          currentTab = 0;
+          document.getElementById("suspForm").submit();
+          // return false;
         }
         // Otherwise, display the correct tab:
         showTab(currentTab);
@@ -289,11 +369,11 @@
         }
       }
 
-      const employermail = document.getElementById("employerEMail");
-      employermail.addEventListener("blur", function(){invalidEmail("employerEMail")});
+      // const employermail = document.getElementById("employerEMail");
+      // employermail.addEventListener("blur", function(){invalidEmail("employerEMail")});
 
-      const employeemail = document.getElementById("employeeEMail");
-      employeemail.addEventListener("blur", function(){invalidEmail("employeeEMail")});
+      // const employeemail = document.getElementById("employeeEMail");
+      // employeemail.addEventListener("blur", function(){invalidEmail("employeeEMail")});
 
       function invalidEmail(id) {
         mail = document.getElementById(id);
