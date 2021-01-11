@@ -15,11 +15,16 @@ if(!isset($_SESSION["loggedin"])) {
 
 // Include config file
 require_once "../config.php";
+// require_once "chromephp-master/ChromePhp.php";
+
 require_once "aitisi-anastolis-dynamic.php";
 
 // Define variables and initialize with empty values
-$employerFirstName = $employerLastName = $employerAFM = "";
+$employerFirstName = $employerLastName = $employerAFM = $businessName = "";
+$employerEMail = "";
+$doy = 0;
 $employer_FirstName_err = $employer_LastName_err = $employer_AFM_err = "";
+$businessName_err = $doy_err = "";
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -29,9 +34,18 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   $employerAFM = trim($_POST["employer_AFM"]);
   $employerFirstName = trim($_POST["employer_FirstName"]);
   $employerLastName = trim($_POST["employer_LastName"]);
+  $businessName = trim($_POST["_businessName"]);
+  $employerEMail = trim($_POST["employer_EMail"]);
+  $doy = trim($_POST["_doy"]);
+  ChromePhp::log("I am in processing and doy = ".$doy);
   
   if(validateAFM($link, $employerAFM, $employer_AFM_err)){
-    validateEmployerName($link, $employerAFM, $employerFirstName, $employer_FirstName_err, $employerLastName, $employer_LastName_err);
+    if(validateIsEmployer($link, $employerAFM, $employer_AFM_err)){
+      validateName($link, $employerAFM, $employerFirstName, $employer_FirstName_err, $employerLastName, $employer_LastName_err);
+      if(validateBusinessName($link, $employerAFM, $businessName, $businessName_err)){
+        validateDoy($link, $businessName, $doy, $doy_err);
+      }
+    }
   }
   
 }
@@ -83,39 +97,47 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="form-group row">
             <label for="employerEMail" class="col-sm-2 col-form-label">E-Mail:</label>
             <div class="col-sm-10">
-              <input type="email" class="form-control" id="employerEMail" required>
+              <input type="email" class="form-control" name="employer_EMail" id="employerEMail" value="<?php echo($employerEMail); ?>" required>
               <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
             </div>
           </div>
           <hr>
           <h2>Στοιχεία Επιχείρισης</h2>
-          <div class="form-group row">
+          <div class="form-group row <?php echo (!empty($businessName_err)) ? 'has-danger' : ''; ?>">
             <label for="businessName" class="col-sm-2 col-form-label">Επωνυμία:</label>
             <div class="col-sm-10">
-              <input type="text" class="form-control" id="businessName" required>
-              <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+              <input type="text" class="form-control <?php echo (!empty($businessName_err)) ? 'is-invalid' : ''; ?>" name="_businessName" id="businessName" value="<?php echo(empty($businessName_err)) ? $businessName : ''; ?>" required>
+              <div class="invalid-feedback"><?php echo (!empty($businessName_err)) ?  $businessName_err : 'Το πεδίο είναι υποχρεωτικό'; ?>.</div>
             </div>
           </div>
-          <div class="form-group row">
+          <div class="form-group row <?php echo (!empty($doy_err)) ? 'has-danger' : ''; ?>">
             <label for="DOY" class="col-sm-2 col-form-label">ΔΟΥ:</label>
+            <select class="select <?php echo (!empty($doy_err)) ? 'is-invalid' : ''; ?>" name="_doy" id="DOY">
             <?php   
               
-              $doy_list = mysqli_query($link, "SELECT * FROM doy");
+              $doy_list = mysqli_query($link, "SELECT * FROM doy ORDER BY Name ASC");
               
               $value = 0;
-              echo "<select class=\"select\" id=\"DOY\">";
-              echo "<option value=\"$value\" selected>Επιλέξτε</option>";
-              while($doy = mysqli_fetch_array($doy_list)){
+              if($doy == 0){
+                echo "<option value=\"$value\" selected>Επιλέξτε</option>";
+              }else{
+                echo "<option value=\"$value\">Επιλέξτε</option>";
+              }
+              while($row = mysqli_fetch_array($doy_list)){
                 $value++;
-                echo "<option value=\"$value\">$doy[0]</option>";
+                echo "<option value=\"$value\"";
+                if($doy == $value){
+                  echo " selected";
+                }
+                echo ">$row[0]</option>";
               }
               echo "</select>";
             ?>
-            <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+            <div class="invalid-feedback"><?php echo (!empty($doy_err)) ?  $doy_err : 'Το πεδίο είναι υποχρεωτικό'; ?>.</div>
           </div>
         </div>
 
-        <!-- <div class="tab">
+        <div class="tab">
           <h2>Στοιχεία Υπαλλήλου</h2>
             <div class="form-group row">
               <label for="employeeFirstName" class="col-sm-2 col-form-label">Όνομα:</label>
@@ -145,7 +167,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
               </div>
             </div>
-        </div> -->
+        </div>
 
         <!-- <div class="tab">
           <h2>Διάστημα Αναστολής Σύμβασης</h2>
