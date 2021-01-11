@@ -1,6 +1,14 @@
 <?php
   $title="Επικοινωνία - Κλείστε Ραντεβού";
   require_once "../top.php";
+  require_once "../config.php";
+  // include_once('sdi1700060.sql');
+  // if($_POST['Name']){
+      // $Name = $_POST['Name'];
+      // if()
+  // }
+  $res = mysqli_query($link,"Select * FROM regionalunit");
+//path cd /mnt/c/xampp/htdocs
 ?>
 
 <!-- Page Content -->
@@ -9,7 +17,8 @@
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-bg">
       <li class="breadcrumb-item"><a href="index.php">Αρχική</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Επικοινωνία</li>
+      <li class="breadcrumb-item"><a href="contact.php">Επικοινωνία</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Κλείσιμο Ραντεβού</li>
     </ol>
   </nav>
   <!-- NOTE: breadcrumb section ends here -->
@@ -21,107 +30,340 @@
     μόνο κατόπιν ραντεβού.
     </strong>
     <!-- <br> -->
-     <a href="../covid19/ores-leitourgias-grafeion.php" class="alert-link">Μάθετε περισσότερα</a>.
-  </div>
+    </div>
   <!-- NOTE: alert section ends here -->
 
 
   <!-- NOTE: contact info section starts here -->
-  <section>
-    <h1 class="h3">Στοιχεία Επικοινωνίας</h1>
-    <div class="row">
-      <!-- Contact Details Column -->
-      <div class="col-lg-5 mb-4">
-        <address>
-          <h2 class="h4">Υπουργείο Εργασίας</h2>
-          <p>Σταδίου 29, Αθήνα 105 59</p>
-          <p>
-            Ώρες Λειτουργίας:
-            Τρίτη - Παρασκευή 9:00 - 15:00
-          </p>
-          <p>Τηλεφωνικό Κέντρο:
-            <a href="tel:+302131516649">213-151-6649</a> - <a href="tel:+302131516651">213-151-6651</a>
-          </p>
-          <p>
-            Email:
-            <a href="mailto:pliroforisi-politi@ypakp.gr">pliroforisi-politi@ypakp.gr</a>
-          </p>
-        </address>
-      </div>
+  <form id="suspForm" action="">
+        <h1>Κλείσιμο Ραντεβού</h1>
+        <div class="tab">
+          <h2 class="py-2">Βρείτε παράρτημα με βάση την περιφερειακή σας ενότητα</h2>
+          <div class="form-group row">
+            <label for="DOY" class="col-sm-2 col-form-label">Περιφερειακή Ενότητα:</label>
+            
+            <select class="select" id="DOY">
+              <option value="0" selected>Επιλέξτε</option>
+             
+              <?php
+                // $res = mysqli_query($link,"Select * FROM regionalunit");
+                $i = 1;
+                while( $row = mysqli_fetch_array($res)){
+                    echo "<option value=\"$i\">$row[0]</option>";
+                }
+               ?>
+               
+              
+              <!--<option value="1">Μεσσηνίας</option>
+              <option value="2">Εύβοιας</option>
+              <option value="3">Κεντρικού Τομέα Αθηνών</option>
+              
+              <option value="1">Αμαλιάδας</option>
+              <option value="2">Άργους</option>
+              <option value="3">Καλαμάτας</option>
+              <option value="4">Κορίνθου</option>
+              <option value="5">Ναυπλίου</option>
+              <option value="6">Πύργου</option>
+              <option value="7">Σπάρτης</option>
+              <option value="8">Tρίπολης</option> -->
+            </select>
+            <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+          </div>
+          <div class="form-group row">
+            <label for="BRANCH" class="col-sm-2 col-form-label">Παράρτημα:</label>
+            <!-- Branch drop down
+            <?php                    
+                // $res2 = mysqli_query($link,"Select * FROM branch");
+                // while( $row = mysqli_fetch_array($res2)){
+                    // echo "$row[0].$row[1]<br/>";
+                    // // $res2 = mysqli_query($link,"Select * FROM branch WHERE row[0].row[1] == ")
+                // }
+            ?>
+            -->
+            <select class="select" id="BRANCH">
+              <option value="0" selected>Επιλέξτε</option> 
+              <?php
+                $res2 = mysqli_query($link,"Select * FROM branch");
+                $i = 1;
+                while( $row2 = mysqli_fetch_array($res2)){
+                    echo "<option value=\"$i\">$row2[0] - $row2[1]</option>";
+                }
+               ?>
+            </select>
+            <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+          </div>
+        </div>
 
-      <!-- Map Column -->
-      <!-- Embedded Google Map -->
-      <div class="col-lg-7 mb-4">
-        <iframe style="width: 100%; height: 250px; border: 0;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3144.859105629967!2d23.728891015323633!3d37.980417279722495!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14a1bd3bacfad54f%3A0xb64e5b8e619348ea!2sStadiou%2029%2C%20Athina%20105%2059!5e0!3m2!1sen!2sgr!4v1608727678815!5m2!1sen!2sgr"></iframe>
-      </div>
+        <div class="tab">
+          <h2>Στοιχεία Υπαλλήλου</h2>
+            <div class="form-group row">
+              <label for="employeeFirstName" class="col-sm-2 col-form-label">Όνομα:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="employeeFirstName" required>
+                <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="employeeLastName" class="col-sm-2 col-form-label">Επώνυμο:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="employeeLastName" required>
+                <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="employeeAFM" class="col-sm-2 col-form-label">ΑΦΜ:</label>
+              <div class="col-sm-10">
+                <input type="text" class="form-control" id="employeeAFM" maxlength="9" onblur="validateAFM(this.id)" required>
+                <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="employeeEMail" class="col-sm-2 col-form-label">E-Mail:</label>
+              <div class="col-sm-10">
+                <input type="email" class="form-control" id="employeeEMail" required>
+                <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+              </div>
+            </div>
+        </div>
 
-      <div class="col-lg-12 mb-4">
-        <h3 class="h4">Λοιπές Υπηρεσίες</h3>
-        <p>
-          Βρείτε το παράρτημα που σας αφορά και πληροφορηθείτε για τους τρόπους επικοινωνίας
-          και για το πώς μπορείτε να κλείσετε ραντεβού.
-        </p>
-        <a class="btn btn-primary" href="#">Εύρεση Παραρτήματος</a>
-      </div>
-    </div>
-  </section>
-  <!-- NOTE: contact info section ends here -->
+        <div class="tab">
+          <h2>Διάστημα Αναστολής Σύμβασης</h2>
+          <div class="form-group row">
+            <label for="begOfSusp" class="col-sm-2 col-form-label">Από:</label>
+            <div class="col-10">
+              <input class="form-control" type="date" id="begOfSusp" min="2021-01-01" max="2021-01-20" oninput="restrictEndDate()" required>
+              <div class="invalid-feedback">Η επιλογή ημερομηνίας αφετηρίας αναστολής είναι υποχρεωτική.</div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="endOfSusp" class="col-sm-2 col-form-label">Έως:</label>
+            <div class="col-10">
+              <input class="form-control" type="date" id="endOfSusp" min="2021-01-01" max="2021-01-20"oninput="restrictStartDate()" required>
+              <div class="invalid-feedback">Η επιλογή ημερομηνίας λήξης αναστολής είναι υποχρεωτική.</div>
+            </div>
+          </div>
+        </div>
 
-  <hr>
+        <div style="overflow:auto;">
+          <div style="float:right;">
+            <button type="button" class="btn btn-primary" id="prevBtn" onclick="nextPrev(-1)">Προηγούμενο</button>
+            <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Επόμενο</button>
+          </div>
+        </div>
 
-  <!-- NOTE: Contact Form starts here -->
-  <!-- In order to set the email address and subject line for the contact form go to the bin/contact_me.php file. -->
-  <div class="row mt-4">
-    <div class="col-lg-8 mb-4">
-      <h4>Φόρμα Επικοινωνίας</h4>
-      <form name="sentMessage" id="contactForm" novalidate>
-        <div class="control-group form-group">
-          <div class="controls">
-            <label>Όνομα:</label>
-            <input type="text" class="form-control" id="firstname" required data-validation-required-message="Εισάγετε όνομα">
-            <p class="help-block"></p>
-          </div>
-        </div>
-        <div class="control-group form-group">
-          <div class="controls">
-            <label>Επώνυμο:</label>
-            <input type="text" class="form-control" id="lastname" required data-validation-required-message="Εισάγετε επώνυμο">
-            <p class="help-block"></p>
-          </div>
-        </div>
-        <div class="control-group form-group">
-          <div class="controls">
-            <label>Τηλέφωνο:</label>
-            <input type="tel" class="form-control" id="phone" required data-validation-required-message="Εισάγετε αριθμό τηλεφώνου">
-          </div>
-        </div>
-        <div class="control-group form-group">
-          <div class="controls">
-            <label>Διεύθυνση Email:</label>
-            <input type="email" class="form-control" id="email" required data-validation-required-message="Εισάγετε διεύθυνση email">
-          </div>
-        </div>
-        <div class="control-group form-group">
-          <div class="controls">
-            <label>Θέμα:</label>
-            <input type="email" class="form-control" id="email" required data-validation-required-message="Επιλέξτε θέμα">
-          </div>
-        </div>
-        <div class="control-group form-group">
-          <div class="controls">
-            <label>Μήνυμα:</label>
-            <textarea rows="10" cols="100" class="form-control" id="message" required data-validation-required-message="Εισάγετε το κείμενο που θέλετε να στείλετε" maxlength="999" style="resize:none"></textarea>
-          </div>
-        </div>
-        <div id="success"></div>
-        <button type="submit" class="btn btn-primary" id="sendMessageButton">Αποστολή</button>
+        <!-- Circles which indicates the steps of the form: -->
+        <!-- <div style="text-align:center;margin-top:40px;"> -->
+          <!-- <span class="step"></span> -->
+          <!-- <span class="step"></span> -->
+          <!-- <span class="step"></span> -->
+          <!-- <span class="step"></span> -->
+        <!-- </div> -->
+
       </form>
     </div>
-    <!-- NOTE: Contact Form ends here -->
-  </div>
-  <!-- /.row -->
-</div>
 <!-- End of Content -->
 
+<script>
+      var currentTab = 0; // Current tab is set to be the first tab (0)
+      showTab(currentTab); // Display the current tab
 
+      var today = new Date();
+      var dd = today.getDate();
+      var mm = today.getMonth()+1; //January is 0!
+      var yyyy = today.getFullYear();
+      if(dd<10){
+        dd='0'+dd
+      }
+      if(mm<10){
+        mm='0'+mm
+      }
+      today = yyyy+'-'+mm+'-'+dd;
+
+      var today2 = new Date();
+      var dd2 = today2.getDate();
+      var mm2 = today2.getMonth()+1; //January is 0!
+      var yyyy2 = today2.getFullYear();
+      if(dd2<10){
+        dd2='0'+dd2
+      }
+      if(mm2<10){
+        mm2='0'+mm2
+      }
+
+      today2 = yyyy2+'-'+mm2+'-'+dd2;
+      document.getElementById("begOfSusp").setAttribute("min", today);
+      document.getElementById("endOfSusp").setAttribute("min", today2);
+
+      function showTab(n) {
+        // This function will display the specified tab of the form...
+        var x = document.getElementsByClassName("tab");
+        x[n].style.display = "block";
+        //... and fix the Previous/Next buttons:
+        if (n == 0) {
+          document.getElementById("prevBtn").style.display = "none";
+        } else {
+          document.getElementById("prevBtn").style.display = "inline";
+        }
+        if (n == (x.length - 1)) {
+          document.getElementById("nextBtn").innerHTML = "Υποβολή";
+        } else {
+          document.getElementById("nextBtn").innerHTML = "Επόμενο";
+        }
+
+        //... and run a function that will display the correct step indicator:
+        <!-- fixStepIndicator(n); -->
+      }
+
+      function nextPrev(n) {
+        // This function will figure out which tab to display
+        var x = document.getElementsByClassName("tab");
+        // Exit the function if any field in the current tab is invalid:
+        if (n == 1 && !validateForm()) return false;
+        // Hide the current tab:
+        x[currentTab].style.display = "none";
+        // Increase or decrease the current tab by 1:
+        currentTab = currentTab + n;
+        // if you have reached the end of the form...
+        if (currentTab >= x.length) {
+          // ... the form gets submitted:
+          document.getElementById("regForm").submit();
+          return false;
+        }
+        // Otherwise, display the correct tab:
+        showTab(currentTab);
+      }
+
+      function validateForm() {
+        // This function deals with validation of the form fields
+        var x, i, valid = true;
+        var formGroups, input, feedbackMsg;
+        var newClassName;
+        x = document.getElementsByClassName("tab");
+        formGroups = x[currentTab].getElementsByClassName("form-group row");
+        <!-- // A loop that checks every input field in the current tab: -->
+        if(currentTab !== x.length - 1){
+          for(i = 0; i < formGroups.length; i++){
+            // If a field is empty...
+            input = formGroups[i].getElementsByTagName("input");
+            if(typeof input[0] === 'undefined'){
+              input = formGroups[i].getElementsByTagName("select");
+            }
+            if(input[0].value == "" || input[0].value == 0){
+              // add an "invalid" class to the field:
+              input[0].className += " is-invalid";
+              formGroups[i].className += " has-danger";
+              // and set the current valid status to false
+              valid = false;
+            }else{
+              // removing class "invalid" from field
+              if(input[0].className.indexOf(" is-invalid") !== -1){
+                newClassName = input[0].className.replace(" is-invalid", "");
+                input[0].className = newClassName;
+                newClassName = formGroups[i].className.replace(" has-danger", "");
+                formGroups[i].className = newClassName;
+              }
+            }
+          }
+        }
+        <!-- // If the valid status is true, mark the step as finished and valid: -->
+        <!-- if (valid) { -->
+          <!-- document.getElementsByClassName("step")[currentTab].className += " finish"; -->
+        <!-- } -->
+        return valid; // return the valid status
+      }
+
+      function validateAFM(id){
+        var AFM = document.getElementById(String(id));
+        var valid = true;
+        var formRow = AFM.parentNode.parentNode;
+        var errorString = new String();
+        var newClassName;
+        if(AFM.value.length != 9){
+          valid = false;
+          errorString = "Το ΑΦΜ πρέπει να είναι 9ψήφιο.\n";
+        }
+        if(AFM.value.match(/^[0-9]+$/) == null){
+          valid = false;
+          errorString += "Το ΑΦΜ πρέπει να περιέχει μόνο ψηφία και όχι γράμματα.\n";
+        }
+        if(!valid){
+          if(AFM.className.indexOf(" is-invalid") == -1){
+            AFM.className += " is-invalid";
+          }
+          if(formRow.className.indexOf(" has-danger") == -1){
+            formRow.className += " has-danger";
+          }
+          AFM.nextSibling.nextSibling.innerHTML = errorString;
+        }else{
+          if(AFM.className.indexOf(" is-invalid") !== -1){
+            newClassName = AFM.className.replace(" is-invalid", "");
+            AFM.className = newClassName;
+          }
+          if(formRow.className.indexOf(" has-danger") !== -1){
+            newClassName = formRow.className.replace(" has-danger", "");
+            formRow.className = newClassName;
+          }
+          AFM.nextSibling.nextSibling.innerHTML = "Το πεδίο είναι υποχρεωτικό.";
+        }
+      }
+
+      const employermail = document.getElementById("employerEMail");
+      employermail.addEventListener("blur", function(){invalidEmail("employerEMail")});
+
+      const employeemail = document.getElementById("employeeEMail");
+      employeemail.addEventListener("blur", function(){invalidEmail("employeeEMail")});
+
+      function invalidEmail(id) {
+        mail = document.getElementById(id);
+        errorMsg = new String();
+        if(mail.validity.typeMismatch){
+          if(mail.parentNode.parentNode.className.indexOf(" has-danger") == -1){
+            <!-- // first time showing an error for this field -->
+            mail.parentNode.parentNode.className += " has-danger";
+            mail.className += " is-invalid";
+            errorMsg = "Μη έγκυρη μορφή ηλεκτρονικού ταχυδρομείου.\nΠαραδείγμα: marpap15@mail.gr";
+            mail.nextSibling.nextSibling.innerHTML = errorMsg;
+          }
+        }else{
+          if(mail.parentNode.parentNode.className.indexOf(" has-danger") !== -1){
+            var newClassName = mail.parentNode.parentNode.className.replace(" has-danger", "");
+            mail.parentNode.parentNode.className = newClassName;
+            newClassName = mail.className.replace(" is-invalid", "");
+            mail.className = newClassName;
+            errorMsg = "Το πεδίο είναι υποχρεωτικό.";
+            mail.nextSibling.nextSibling.innerHTML = errorMsg;
+          }
+        }
+      }
+
+      function restrictEndDate(){
+        var begSuspDate = new Date();
+        begSuspDate = document.getElementById("begOfSusp").value;
+        document.getElementById("endOfSusp").setAttribute("min", begSuspDate);
+      }
+
+      function restrictStartDate(){
+        var endSuspDate = new Date();
+        endSuspDate = document.getElementById("endOfSusp").value;
+        document.getElementById("begOfSusp").setAttribute("max", endSuspDate);
+      }
+
+      function fixStepIndicator(n) {
+        // This function removes the "active" class of all steps...
+        var i, x = document.getElementsByClassName("step");
+        for (i = 0; i < x.length; i++) {
+          x[i].className = x[i].className.replace(" active", "");
+        }
+        //... and adds the "active" class on the current step:
+        x[n].className += " active";
+      }
+    </script>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- <script src="../vendor/jquery/jquery.min.js"></script> -->
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    
+  </body>
+</html>
 <?php require_once "../bottom.php"; ?>
