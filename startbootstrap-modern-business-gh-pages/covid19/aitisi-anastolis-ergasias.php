@@ -15,9 +15,10 @@ if(!isset($_SESSION["loggedin"])) {
 
 // Include config file
 require_once "../config.php";
+require_once "aitisi-anastolis-dynamic.php";
 
 // Define variables and initialize with empty values
-$employer_FirstName = $employer_LastName = "";
+$employerFirstName = $employerLastName = $employerAFM = "";
 $employer_FirstName_err = $employer_LastName_err = $employer_AFM_err = "";
 
 // Processing form data when form is submitted
@@ -25,53 +26,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   // Empty checks are done via JavaScript before submit
 
   // Validate credentials
-  $AFM_is_valid = "SELECT * FROM user WHERE AFM = ?";
   $employerAFM = trim($_POST["employer_AFM"]);
   $employerFirstName = trim($_POST["employer_FirstName"]);
   $employerLastName = trim($_POST["employer_LastName"]);
   
-  // sleep(5);
-  if($stmt_0 = mysqli_prepare($link, $AFM_is_valid)){
-    mysqli_stmt_bind_param($stmt_0, "s", $param_AFM);
-    $param_AFM = $employerAFM;
-    if(mysqli_stmt_execute($stmt_0)){
-      mysqli_stmt_store_result($stmt_0);
-      if(mysqli_stmt_num_rows($stmt_0) != 1) {
-        $employer_AFM_err = "Το ΑΦΜ που καταχωρήσατε δεν αντιστοιχεί με αυτό στο σύστημα";
-      }else{
-        $verify_name = "SELECT first_name, last_name FROM user WHERE AFM = ?";
-        if($stmt_1 = mysqli_prepare($link, $verify_name)){
-          mysqli_stmt_bind_param($stmt_1, "s", $param_AFM);
-          $param_employerFirstName = $employerFirstName;
-          
-          if(mysqli_stmt_execute($stmt_1)){
-            mysqli_stmt_store_result($stmt_1);
-            if(mysqli_stmt_num_rows($stmt_1) == 1){
-              mysqli_stmt_bind_result($stmt_1, $res_employerFirstName, $res_employerLastName);
-              if(mysqli_stmt_fetch($stmt_1)) {
-                if($employerFirstName != $res_employerFirstName){ 
-                  $employer_FirstName_err = "Το όνομα που δηλώνετε δεν αντιστοιχεί με αυτό στο σύστημα";
-                }else if($employerLastName != $res_employerLastName){
-                  $employer_LastName_err = "Το επίθετο που δηλώνετε δεν αντιστοιχεί με αυτό στο σύστημα";
-                }else{
-                  // header("confirmed.php");
-                }
-              }
-            }
-          }else{
-            $employer_FirstName_err = "Το όνομα που δηλώνετε δεν αντιστοιχεί με αυτό στο σύστημα";
-            $employer_LastName_err = "Το επίθετο που δηλώνετε δεν αντιστοιχεί με αυτό στο σύστημα";
-          }
-          mysqli_stmt_close($stmt_1);
-        }
-      }
-    }
-    // Close statement
-    mysqli_stmt_close($stmt_0);
+  if(validateAFM($link, $employerAFM, $employer_AFM_err)){
+    validateEmployerName($link, $employerAFM, $employerFirstName, $employer_FirstName_err, $employerLastName, $employer_LastName_err);
   }
   
-  // Close connection
-  mysqli_close($link);
 }
 ?>
 
@@ -81,7 +43,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   require_once "../config.php";
 ?>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-
+    
 
     <div class="container mt-4">
       <!-- NOTE: Breadcrumbs section starts here -->
@@ -93,7 +55,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       </nav>
       <!-- NOTE: Breadcrumbs section ends here -->
 
-      <form id="suspForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+      <form id="suspForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"  >
         <h1>Αίτηση Αναστολής Σύμβασης Εργασίας Υπαλλήλου</h1>
         <div class="tab">
           <h2 class="py-2">Στοιχεία Εργοδότη</h2>
@@ -221,7 +183,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
       </form>
     </div>
-
 
     <script>
       var currentTab = 0; // Current tab is set to be the first tab (0)
@@ -425,6 +386,5 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- <script src="../vendor/jquery/jquery.min.js"></script> -->
     <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
   </body>
 </html>
