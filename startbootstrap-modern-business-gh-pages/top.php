@@ -52,6 +52,7 @@ if(!isset($_SESSION)) {
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownCOVID">
                 <a class="dropdown-item" href="../covid19/ores-leitourgias-grafeion.php">Λειτουργία Υπηρεσιών Υπουργείου</a>
                 <a class="dropdown-item" href="../covid19/covid19-info.php">Ενημέρωση - Έκτακτα Μέτρα</a>
+                <a class="dropdown-item" href="../covid19/anastoli-info.php">Αναστολή Συμβάσεων Εργαζομένων</a>
                 <a class="dropdown-item" href="../covid19/tilergasia-info.php">Απασχόληση Εργαζομένων με Τηλεργασία</a>
                 <a class="dropdown-item" href="../covid19/adeia-eidikou-skopou-info.php">Άδεια Ειδικού Σκοπού</a>
               </div>

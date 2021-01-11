@@ -32,6 +32,10 @@ $employee_FirstName_err = $employee_LastName_err = $employee_AFM_err = "";
 $startDate = "";
 $endDate = "";
 
+$validEmployer = true;
+$validEmployee = true;
+
+
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST") {
   // Empty checks are done via JavaScript before submit
@@ -51,10 +55,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   
   $startDate = trim($_POST["_begOfSusp"]);
   $endDate = trim($_POST["_endOfSusp"]);
-  
-  $validEmployer = true;
-  $validEmployee = true;
-  
+
   if(validateAFM($link, $employerAFM, $employer_AFM_err)){
     if(validateIsEmployer($link, $employerAFM, $employer_AFM_err)){
       $validEmployer = validateName($link, $employerAFM, $employerFirstName, $employer_FirstName_err, $employerLastName, $employer_LastName_err);
@@ -80,6 +81,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   }else{
     $validEmployee = false;
   }
+  
+  header("location: confirmation.php");
+
 }
 ?>
 
