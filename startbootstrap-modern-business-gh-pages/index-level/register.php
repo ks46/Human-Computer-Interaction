@@ -1,15 +1,15 @@
 <?php
 require_once "../config.php";                             // Include config file
-//
+
 // Define variables and initialize with empty values
-$username = $password = $confirm_password = $first_name = $last_name = $AFM = "";
-$username_err = $password_err = $confirm_password_err = $first_name_err = $last_name_err = $AFM_err = "";
+$username = $password = $confirm_password = $first_name = $last_name = $AFM = $company_name = "";
+$username_err = $password_err = $confirm_password_err = $first_name_err = $last_name_err = $AFM_err = $select_err = $company_name_err = "";
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST") {
   // Validate username
   if(empty(trim($_POST["username"]))) {
-    $username_err = "Εισάγετε όνομα χρήστη.";
+    $username_err = "Συμπληρώστε το πεδίο.";
   } else {
     // Prepare a select statement
     $sql = "SELECT AFM FROM user WHERE username = ?";
@@ -27,12 +27,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         mysqli_stmt_store_result($stmt);
 
         if(mysqli_stmt_num_rows($stmt) == 1) {
-          $username_err = "Αυτό το όνομα χρήστη χρησιμοπιείται ήδη.";
+          $username_err = "Αυτό το όνομα χρήστη χρησιμοποιείται ήδη.";
         } else {
           $username = trim($_POST["username"]);
         }
       } else {
-          echo "Προέκυψε κάποιο λάθος, παρακαλώ δοκιμάστε ξανά αργότερα.";
+          echo "Παρουσιάστηκε κάποιο σφάλμα, παρακαλώ δοκιμάστε ξανά αργότερα.";
       }
       // Close statement
       mysqli_stmt_close($stmt);
@@ -41,7 +41,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
   // Validate password
   if(empty(trim($_POST["password"]))) {
-    $password_err = "Εισάγετε κωδικό.";
+    $password_err = "Συμπληρώστε το πεδίο.";
   } elseif(strlen(trim($_POST["password"])) < 6) {
     $password_err = "Ο κωδικός θα πρέπει να έχει τουλάχιστον 6 χαρακτήρες.";
   } else {
@@ -50,13 +50,60 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
   // Validate confirm password
   if(empty(trim($_POST["confirm_password"]))) {
-    $confirm_password_err = "Επιβεβαιώστε τον κωδικό σας.";
+    $confirm_password_err = "Συμπληρώστε το πεδίο.";
   } else {
     $confirm_password = trim($_POST["confirm_password"]);
     if(empty($password_err) && ($password != $confirm_password)) {
       $confirm_password_err = "Ο κωδικός δεν ταιριάζει και στα δύο πεδία.";
     }
   }
+
+  // Validate first_name
+  if(empty(trim($_POST["first_name"]))) {
+    $first_name_err = "Συμπληρώστε το πεδίο.";
+  } else {
+    $first_name = trim($_POST["first_name"]);
+  }
+
+  // Validate last_name
+  if(empty(trim($_POST["last_name"]))) {
+    $last_name_err = "Συμπληρώστε το πεδίο.";
+  } else {
+    $last_name = trim($_POST["last_name"]);
+  }
+
+  // Validate AFM
+  if(empty(trim($_POST["AFM"]))) {
+    $AFM_err = "Συμπληρώστε το πεδίο.";
+  } else {
+    // Prepare a select statement
+    $sql = "SELECT AFM FROM user WHERE AFM = ?";
+
+    if($stmt = mysqli_prepare($link, $sql)) {
+      // Bind variables to the prepared statement as parameters
+      mysqli_stmt_bind_param($stmt, "i", $param_AFM);
+
+      // Set parameters
+      $param_AFM = trim($_POST["AFM"]);
+
+      // Attempt to execute the prepared statement
+      if(mysqli_stmt_execute($stmt)) {
+        // store result
+        mysqli_stmt_store_result($stmt);
+
+        if(mysqli_stmt_num_rows($stmt) == 1) {
+          $AFM_err = "Υπάρχει ήδη λογαριασμός με αυτόν τον αριθμό ΑΦΜ.";
+        } else {
+          $AFM = trim($_POST["AFM"]);
+        }
+      } else {
+          echo "Παρουσιάστηκε κάποιο σφάλμα, παρακαλώ δοκιμάστε ξανά αργότερα.";
+      }
+      // Close statement
+      mysqli_stmt_close($stmt);
+    }
+  }
+
 
   // Check input errors before inserting in database
   if(empty($username_err) && empty($password_err) && empty($confirm_password_err)) {
@@ -70,9 +117,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       // Set parameters
       $param_username = $username;
       $param_password = password_hash($password, PASSWORD_DEFAULT); // Creates a password hash
-      $param_AFM = 123456788;
-      $param_first_name = "Κ";
-      $param_last_name = "S";
+      // $param_AFM = 123456788;
+      $param_first_name = $first_name;
+      $param_last_name = $last_name;
       $param_type = "employee";
 
       // Attempt to execute the prepared statement
@@ -112,23 +159,23 @@ require_once "../top.php";
   <section>
     <h1>Εγγραφή νέου χρήστη</h1>
     <p class="lead">Συμπληρώστε την ακόλουθη φόρμα για να εγγραφείτε στο site του Υπουργείου Εργασίας</p>
+    <p>Τα πεδία με αστερίσκο * είναι υποχρεωτικά.</p>
 
-    <!-- action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" -->
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-      <h2 class="mb-3">Στοιχεία Λογαριασμού</h2>
+    <form class="mt-4 mb-5" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+      <!-- <h2 class="mb-3">Στοιχεία Λογαριασμού</h2> -->
 
       <!-- Username -->
       <div class="form-group row <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-        <label for="username" class="col-sm-2 col-form-label">Όνομα Χρήστη</label>
+        <label for="username" class="col-sm-3 col-form-label">Όνομα Χρήστη *</label>
         <div class="col-lg-5">
-          <input type="text" name="username" class="form-control" value="<?php echo $username; ?>" id="username" placeholder="username" required>
+          <input type="text" name="username" class="form-control" value="<?php echo $username; ?>" id="username" placeholder="MariaPapadopoulou" required>
         </div>
         <span class="help-block"><?php echo $username_err; ?></span>
       </div>
 
       <!-- Password -->
       <div class="form-group row <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-        <label for="password" class="col-sm-2 col-form-label">Κωδικός</label>
+        <label for="password" class="col-sm-3 col-form-label">Κωδικός (6 ψηφία τουλάχιστον) *</label>
         <div class="col-lg-5">
           <input type="password" name="password" class="form-control" value="<?php echo $password; ?>" id="password" placeholder="password" required>
         </div>
@@ -137,60 +184,112 @@ require_once "../top.php";
 
       <!-- Password confirmation -->
       <div class="form-group row <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
-        <label for="password" class="col-sm-2 col-form-label">Επιβεβαίωση Κωδικού</label>
+        <label for="password" class="col-sm-3 col-form-label">Επιβεβαίωση Κωδικού *</label>
         <div class="col-lg-5">
           <input type="password" name="confirm_password" class="form-control" value="<?php echo $confirm_password; ?>" id="confirm_password" placeholder="password" required>
         </div>
         <span class="help-block"><?php echo $confirm_password_err; ?></span>
       </div>
 
-      <h2 class="py-3">Στοιχεία Χρήστη</h2>
+      <!-- <h2 class="py-3">Στοιχεία Χρήστη</h2> -->
 
       <!-- First name -->
-      <!-- <div class="form-group row <?php echo (!empty($first_name_err)) ? 'has-error' : ''; ?>">
-        <label for="firstname" class="col-sm-2 col-form-label">Όνομα</label>
+      <div class="form-group row <?php echo (!empty($first_name_err)) ? 'has-error' : ''; ?>">
+        <label for="first_name" class="col-sm-3 col-form-label">Όνομα *</label>
         <div class="col-lg-5">
-          <input type="text" name="firstname" class="form-control" value="<?php echo $first_name; ?>" id="firstname" required>
+          <input type="text" name="first_name" class="form-control" value="<?php echo $first_name; ?>" id="first_name" placeholder="Μαρία" required>
         </div>
         <span class="help-block"><?php echo $first_name_err; ?></span>
-      </div> -->
+      </div>
 
       <!-- Last name -->
-      <!-- <div class="form-group row <?php echo (!empty($last_name_err)) ? 'has-error' : ''; ?>">
-        <label for="lastname" class="col-sm-2 col-form-label">Επώνυμο</label>
+      <div class="form-group row <?php echo (!empty($last_name_err)) ? 'has-error' : ''; ?>">
+        <label for="last_name" class="col-sm-3 col-form-label">Επώνυμο *</label>
         <div class="col-lg-5">
-          <input type="text" name="lastname" class="form-control" value="<?php echo $last_name; ?>" id="lastname" required>
+          <input type="text" name="last_name" class="form-control" value="<?php echo $last_name; ?>" id="last_name" placeholder="Παπαδοπούλου" required>
         </div>
         <span class="help-block"><?php echo $last_name_err; ?></span>
-      </div> -->
+      </div>
 
       <!-- AFM -->
-      <!-- <div class="form-group row <?php echo (!empty($AFM_err)) ? 'has-error' : ''; ?>">
-        <label for="afm" class="col-sm-2 col-form-label">
-          <abbr title="Αριθμός Φορολογικού Μητρώου">Α.Φ.Μ.</abbr>
+      <div class="form-group row <?php echo (!empty($AFM_err)) ? 'has-error' : ''; ?>">
+        <label for="AFM" class="col-sm-3 col-form-label">
+          <abbr title="Αριθμός Φορολογικού Μητρώου">Α.Φ.Μ.</abbr> *
         </label>
         <div class="col-lg-5">
-          <input type="number" name="afm" class="form-control" value="<?php echo $AFM; ?>" id="afm" min="000000000" max="999999999" required> -->
-          <!-- <input type="text" name="afm" class="form-control" value="<?php echo $AFM; ?>" id="afm" required pattern="[0-9]{9}"> -->
-        <!-- </div>
+          <input type="number" name="AFM" class="form-control" value="<?php echo $AFM; ?>" id="AFM" min="000000000" max="999999999" placeholder="123456789" required>
+        </div>
         <span class="help-block"><?php echo $AFM_err; ?></span>
-      </div> -->
-
-      <!-- Company_name -->
+      </div>
 
       <!-- Is an Employer? -->
       <!-- TODO: how do we pass this into php ?? -->
-      <!-- <div class="form-group row">
-        <label class="form-check-label col-sm-2" for="is_employer">Είμαι Εργοδότης</label>
-        <div class="col-sm-10">
+      <div class="form-group row mt-4 mb-1">
+        <label class="form-check-label col-sm-3" for="is_employer">Είμαι Εργοδότης</label>
+        <div class="col-lg-5">
           <div class="form-check">
             <input class="form-check-input" type="checkbox" id="is_employer">
+            <p class="ml-2">Επιλέξτε μόνο εάν είστε εργοδότης</p>
           </div>
         </div>
+      </div>
+
+      <!-- Company_name for employees -->
+      <div class="form-group row mt-0 <?php echo (!empty($AFM_err)) ? 'has-error' : ''; ?>">
+        <label for="AFM" class="col-sm-3 col-form-label">Εταιρεία Απασχόλησης *</label>
+        <div class="col-lg-5">
+          <select class="custom-select">
+            <option value="deafault" selected>Επιλέξτε εταιρεία</option>
+            <!-- retrieve all company names from database as separate options -->
+            <?php
+              // Prepare a select statement
+              $sql = "SELECT Company_Name FROM company";
+              if($stmt = mysqli_prepare($link, $sql)) {
+                // Attempt to execute the prepared statement
+                if(mysqli_stmt_execute($stmt)) {
+                  $result = mysqli_stmt_get_result($stmt);
+                  // fetch company name from each row of result
+                  while ($company_name = mysqli_fetch_array($result)[0]) {
+            ?>
+            <option value=<?php echo $company_name; ?>>
+              <?php echo $company_name; ?>
+            </option>
+            <?php
+                  }
+                } else {
+                    echo "Παρουσιάστηκε κάποιο σφάλμα, παρακαλώ δοκιμάστε ξανά αργότερα.";
+                }
+                // Close statement
+                mysqli_stmt_close($stmt);
+              }
+            ?>
+          </select>
+        </div>
+        <!-- <span class="help-block"><?php echo $select_err; ?></span>    -->
+      </div>
+
+      <!-- Company_name for employers -->
+      <!-- Company name -->
+      <!-- <div class="form-group row mt-0 <?php echo (!empty($company_name_err)) ? 'has-error' : ''; ?>">
+        <label for="Company_Name" class="col-sm-3 col-form-label">Επωνυμία Εταιρείας *</label>
+        <div class="col-lg-5">
+          <input type="text" name="Company_Name" class="form-control" value="<?php echo $company_name; ?>" id="Company_Name" placeholder="" required>
+        </div>
+        <span class="help-block"><?php echo $company_name_err; ?></span>
       </div> -->
 
+      <!-- Has young children?? NOTE: available ONLY IF user registers as an employee -->
+      <div class="form-group row">
+        <label class="form-check-label col-sm-3" for="has_young_children">Έχω παιδιά κάτω των 12 ετών</label>
+        <div class="col-lg-5">
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" id="has_young_children">
+          </div>
+        </div>
+      </div>
+
       <!-- Buttons -->
-      <div class="form-group">
+      <div class="form-group mt-4">
         <input type="submit" class="btn btn-primary" value="Εγγραφή">
         <input type="reset" class="btn btn-link mx-3" value="Καθαρισμός πεδίων">
       </div>

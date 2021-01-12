@@ -22,14 +22,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
 
   // Check if username is empty
   if(empty(trim($_POST["username"]))){
-      $username_err = "Please enter username.";
+      $username_err = "Εισάγετε το όνομα χρήστη σας.";
   } else{
       $username = trim($_POST["username"]);
   }
 
   // Check if password is empty
   if(empty(trim($_POST["password"]))){
-      $password_err = "Please enter your password.";
+      $password_err = "Εισάγετε τον κωδικό σας.";
   } else{
       $password = trim($_POST["password"]);
   }
@@ -65,19 +65,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
               $_SESSION["AFM"] = $AFM;
               $_SESSION["username"] = $username;
 
-              // Redirect user to welcome page
+              // Redirect user to welcome page      // TODO: redirect to user's profile ???
               header("location: index.php");
             } else {
               // Display an error message if password is not valid
-              $password_err = "The password you entered was not valid.";
+              $password_err = "Λανθασμένος κωδικός.";
             }
           }
         } else {
           // Display an error message if username doesn't exist
-          $username_err = "No account found with that username.";
+          $username_err = "Δεν υπάρχει λογαριασμός με αυτό το όνομα χρήστη.";
         }
       } else {
-        echo "Oops! Something went wrong. Please try again later.";
+        echo "Παρουσιάστηκε κάποιο σφάλμα, παρακαλώ δοκιμάστε ξανά αργότερα.";
       }
 
       // Close statement
@@ -95,28 +95,40 @@ $title = "Σύνδεση Χρήστη";
 require_once "../top.php" ?>
 
 
-    <div class="container mt-4">
-      <!-- <p>
-        <?php echo password_hash("geokouv89", PASSWORD_DEFAULT); ?>
-      </p> -->
-        <h2>Login</h2>
-        <p>Please fill in your credentials to login.</p>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
-                <label>Username</label>
-                <input type="text" name="username" class="form-control" value="<?php echo $username; ?>">
-                <span class="help-block"><?php echo $username_err; ?></span>
-            </div>
-            <div class="form-group <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
-                <label>Password</label>
-                <input type="password" name="password" class="form-control">
-                <span class="help-block"><?php echo $password_err; ?></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Login">
-            </div>
-            <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
-        </form>
-    </div>
+<div class="container mt-5">
+  <!-- NOTE: form section starts here -->
+  <section style="margin: auto; width: 60%; padding: 10px;">
+  <!-- <section style="padding: 70px 0;  text-align: center;"> -->
+    <h1>Σύνδεση Χρήστη</h1>
+    <p class="lead">Συμπληρώστε τα στοιχεία σας για να συνδεθείτε</p>
+
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+      <!-- Username -->
+      <div class="form-group row <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+        <label for="username" class="col-sm-2 col-form-label">Όνομα Χρήστη</label>
+        <div class="col-lg-5">
+          <input type="text" name="username" class="form-control" value="<?php echo $username; ?>" id="username" placeholder="username" required>
+        </div>
+        <span class="help-block"><?php echo $username_err; ?></span>
+      </div>
+
+      <!-- Password -->
+      <div class="form-group row <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
+        <label for="password" class="col-sm-2 col-form-label">Κωδικός</label>
+        <div class="col-lg-5">
+          <input type="password" name="password" class="form-control" value="<?php echo $password; ?>" id="password" placeholder="password" required>
+        </div>
+        <span class="help-block"><?php echo $password_err; ?></span>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="form-group">
+          <input type="submit" class="btn btn-primary" value="Σύνδεση">
+      </div>
+      <p class="lead my-5">Δεν έχετε λογαριασμό; <a class="btn btn-sm btn-primary" href="register.php">Κάντε εγγραφή</a></p>
+    </form>
+  </section>
+  <!-- NOTE: form section ends here -->
+</div>
 
 <?php require_once "../bottom.php"; ?>
