@@ -163,6 +163,18 @@ require_once "../top.php";
 
     <form class="mt-4 mb-5" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
       <!-- <h2 class="mb-3">Στοιχεία Λογαριασμού</h2> -->
+      <!-- Type of user -->
+      <div class="form-group row <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+        <label for="user_type" class="col-sm-3 col-form-label">Ιδιότητα *</label>
+        <div class="col-lg-5">
+          <select class="custom-select" oninput="showTab()">
+            <option value="default" selected>Επιλέξτε ιδιότητα</option>
+            <option value="employee">Εργαζόμενος</option>
+            <option value="employer">Εργοδότης</option>
+          </select>
+        </div>
+        <span class="help-block"><?php echo $username_err; ?></span>
+      </div>
 
       <!-- Username -->
       <div class="form-group row <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
@@ -190,8 +202,6 @@ require_once "../top.php";
         </div>
         <span class="help-block"><?php echo $confirm_password_err; ?></span>
       </div>
-
-      <!-- <h2 class="py-3">Στοιχεία Χρήστη</h2> -->
 
       <!-- First name -->
       <div class="form-group row <?php echo (!empty($first_name_err)) ? 'has-error' : ''; ?>">
@@ -222,26 +232,16 @@ require_once "../top.php";
         <span class="help-block"><?php echo $AFM_err; ?></span>
       </div>
 
-      <!-- Is an Employer? -->
-      <!-- TODO: how do we pass this into php ?? -->
-      <div class="form-group row mt-4 mb-1">
-        <label class="form-check-label col-sm-3" for="is_employer">Είμαι Εργοδότης</label>
-        <div class="col-lg-5">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="is_employer">
-            <p class="ml-2">Επιλέξτε μόνο εάν είστε εργοδότης</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Company_name for employees -->
-      <div class="form-group row mt-0 <?php echo (!empty($AFM_err)) ? 'has-error' : ''; ?>">
-        <label for="AFM" class="col-sm-3 col-form-label">Εταιρεία Απασχόλησης *</label>
-        <div class="col-lg-5">
-          <select class="custom-select">
-            <option value="deafault" selected>Επιλέξτε εταιρεία</option>
-            <!-- retrieve all company names from database as separate options -->
-            <?php
+      <!-- NOTE: the following fields will appear only if user is an employee -->
+      <div class="tab">
+        <!-- company name for employees -->
+        <div class="form-group row mt-0 <?php echo (!empty($AFM_err)) ? 'has-error' : ''; ?>">
+          <label for="AFM" class="col-sm-3 col-form-label">Εταιρεία Απασχόλησης *</label>
+          <div class="col-lg-5">
+            <select class="custom-select">
+              <option value="deafault" selected>Επιλέξτε εταιρεία</option>
+              <!-- retrieve all company names from database as separate options -->
+              <?php
               // Prepare a select statement
               $sql = "SELECT Company_Name FROM company";
               if($stmt = mysqli_prepare($link, $sql)) {
@@ -250,41 +250,44 @@ require_once "../top.php";
                   $result = mysqli_stmt_get_result($stmt);
                   // fetch company name from each row of result
                   while ($company_name = mysqli_fetch_array($result)[0]) {
-            ?>
-            <option value=<?php echo $company_name; ?>>
-              <?php echo $company_name; ?>
-            </option>
-            <?php
+                    ?>
+                    <option value=<?php echo $company_name; ?>>
+                      <?php echo $company_name; ?>
+                    </option>
+                    <?php
                   }
                 } else {
-                    echo "Παρουσιάστηκε κάποιο σφάλμα, παρακαλώ δοκιμάστε ξανά αργότερα.";
+                  echo "Παρουσιάστηκε κάποιο σφάλμα, παρακαλώ δοκιμάστε ξανά αργότερα.";
                 }
                 // Close statement
                 mysqli_stmt_close($stmt);
               }
-            ?>
-          </select>
+              ?>
+            </select>
+          </div>
+          <!-- <span class="help-block"><?php echo $select_err; ?></span>    -->
         </div>
-        <!-- <span class="help-block"><?php echo $select_err; ?></span>    -->
+
+        <!-- Has young children?? NOTE: available ONLY IF user registers as an employee -->
+        <div class="form-group row">
+          <label class="form-check-label col-sm-3" for="has_young_children">Έχω παιδιά κάτω των 12 ετών</label>
+          <div class="col-lg-5">
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" id="has_young_children">
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- Company_name for employers -->
-      <!-- Company name -->
-      <!-- <div class="form-group row mt-0 <?php echo (!empty($company_name_err)) ? 'has-error' : ''; ?>">
-        <label for="Company_Name" class="col-sm-3 col-form-label">Επωνυμία Εταιρείας *</label>
-        <div class="col-lg-5">
-          <input type="text" name="Company_Name" class="form-control" value="<?php echo $company_name; ?>" id="Company_Name" placeholder="" required>
-        </div>
-        <span class="help-block"><?php echo $company_name_err; ?></span>
-      </div> -->
-
-      <!-- Has young children?? NOTE: available ONLY IF user registers as an employee -->
-      <div class="form-group row">
-        <label class="form-check-label col-sm-3" for="has_young_children">Έχω παιδιά κάτω των 12 ετών</label>
-        <div class="col-lg-5">
-          <div class="form-check">
-            <input class="form-check-input" type="checkbox" id="has_young_children">
+      <div class="tab">
+        <!-- Company_name for employers -->
+        <!-- Company name -->
+        <div class="form-group row mt-0 <?php echo (!empty($company_name_err)) ? 'has-error' : ''; ?>">
+          <label for="Company_Name" class="col-sm-3 col-form-label">Επωνυμία Εταιρείας *</label>
+          <div class="col-lg-5">
+            <input type="text" name="Company_Name" class="form-control" value="<?php echo $company_name; ?>" id="Company_Name" placeholder="" required>
           </div>
+        <span class="help-block"><?php echo $company_name_err; ?></span>
         </div>
       </div>
 
@@ -300,5 +303,27 @@ require_once "../top.php";
 
 </div>
 <!-- NOTE: Page Content ends here -->
-
+<script>
+function showTab(n) {
+  // This function will display the specified tab of the form...
+  var x = document.getElementsByClassName("tab");
+  var dropdowns = document.getElementsByTagName("select");
+  var dropdownfirst = dropdowns[0];
+  //... and fix the Previous/Next buttons:
+  if (dropdownfirst.value == "employer") {
+    x[0].style.display = "none";
+    x[1].style.display = "block";
+  } else if(dropdownfirst.value == "employee"){
+    x[1].style.display = "none";
+    x[0].style.display = "block";
+  } else{
+    x[0].style.display = x[1].style.display = "none";
+  }
+  // if (n == (x.length - 1)) {
+  //   document.getElementById("nextBtn").innerHTML = "Υποβολή";
+  // } else {
+  //   document.getElementById("nextBtn").innerHTML = "Επόμενο";
+  // }
+}
+</script>
 <?php require_once "../bottom.php"; ?>
