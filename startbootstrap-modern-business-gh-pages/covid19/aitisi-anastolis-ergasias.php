@@ -1,7 +1,4 @@
-<?php
-
-// require_once "chromephp-master/ChromePhp.php";
- 
+<?php 
 // Initialize the session
 if(!isset($_SESSION)) {
   session_start();
@@ -15,63 +12,79 @@ if(!isset($_SESSION["loggedin"])) {
 
 // Include config file
 require_once "../config.php";
-// require_once "chromephp-master/ChromePhp.php";
-
 require_once "aitisi-anastolis-dynamic.php";
 
 $userAFM = $_SESSION["AFM"];
 $validate_user_is_employer = "SELECT * from employer WHERE AFM = $userAFM";
 $employer = mysqli_query($link, $validate_user_is_employer);
+$Company_Name = "";
 
 if(mysqli_num_rows($employer) == 0){
   // Όχι εργοδότης
   header("location: not-employer-warning.php");
+}else{
+  $row = mysqli_fetch_array($employer); // only one employer by that AFM => only one row
+  $Company_Name = $row[1];
 }
 // Define variables and initialize with empty values
 
-$employeeAFM = $employeeFirstName = $employeeLastName = $employeeEMail = "";
-$employee_FirstName_err = $employee_LastName_err = $employee_AFM_err = "";
+$noEmployeeChosenError = "";
 
 $startDate = "";
 $endDate = "";
 
-$validEmployee = true;
+$employeeHasBeenChosen = false;
+$employerAFM = $_SESSION["AFM"];
 
 
 // Processing form data when form is submitted
 if($_SERVER["REQUEST_METHOD"] == "POST") {
-  // Empty checks are done via JavaScript before submit
-
-  // Validate credentials
+  // the order of elements in the post array is checkbox, radio, radio
+  // so for the first element and every 3rd element after that, we check to
+  // see if its value is not empty
+  // if it is, we don't bother with the radios
+  // if it isn't, we check to see which value was selected and execute a suitable query
+  // if all checkboxes are empty, then the form goes back to the first step
+  // if not, it is submitted
   
-  // $employeeFirstName = trim($_POST["employee_FirstName"]);
-  // $employeeLastName = trim($_POST["employee_LastName"]);
-  // $employeeAFM = trim($_POST["employee_AFM"]);
-  // $employeeEMail = trim($_POST["employee_EMail"]);
-  
-  // $startDate = trim($_POST["_begOfSusp"]);
-  // $endDate = trim($_POST["_endOfSusp"]);
-  
-  // if(validateAFM($link, $employeeAFM, $employee_AFM_err)){
-    // if(validateIsEmployee($link, $employeeAFM, $employee_AFM_err, $businessName)){
-      // // ChromePhp::log("valid employee");
-      // $validEmployee = validateName($link, $employeeAFM, $employeeFirstName, $employee_FirstName_err, $employeeLastName, $employee_LastName_err);
-    // }else{
-      // $validEmployee = false;
-    // }
-  // }else{
-    // $validEmployee = false;
-  // }
-  
-  header("location: confirmation.php");
-
+  $checkbox_iterator = 0;
+  $checkbox_count = 0;
+  $startDate = trim($_POST["_begOfSusp"]);
+  $endDate = trim($_POST["_endOfSusp"]);
+  for($checkbox_iterator = 0; $checkbox_iterator < count($_POST); $checkbox_iterator += 3){
+    if(!empty($_POST["_employee".$checkbox_count])){
+      $employeeHasBeenChosen = true;
+      // echo "<h1>".$_POST["_employee".$checkbox_count]."</h1>";
+      // echo "<h1>".$_POST["status".$checkbox_count]."</h1>";
+      if(!empty("status".$checkbox_count)){
+        $createFormLine = "INSERT INTO employerforms (employerAFM, employeeAFM, startDate, endDate, typeOfForm) VALUES (?, ?, ?, ?, ?)";
+        if($stmt = mysqli_prepare($link, $createFormLine)){
+          echo "<h1>PREP OK</h1>";
+          mysqli_stmt_bind_param($stmt, "iisss", $param_employerAFM, $param_employeeAFM, $param_startDate, $param_endDate, $param_type);
+          $param_employerAFM = $employerAFM;
+          $param_employeeAFM = $_POST["_employee".$checkbox_count];
+          $param_startDate = $startDate;
+          $param_endDate = $endDate;
+          $param_type = $_POST["status".$checkbox_count];
+        }
+        $updateWorkStatus = "UPDATE employee SET workStatus = \"".$_POST["status".$checkbox_count]."\" WHERE AFM = ".$_POST["_employee".$checkbox_count];
+        mysqli_query($link, $updateWorkStatus);
+      }
+    }
+    $checkbox_count++;
+  }
+  if($employeeHasBeenChosen == false){
+    $noEmployeeChosenError = "Δεν επιλέξατε κάποιον υπάλληλο!";
+  }else{
+    // header("location: confirmation.php");
+  }
 }
 ?>
 
 <?php
   $title="Αναστολή Σύμβασης Εργασίας Υπαλλήλου";
   require_once "../top.php";
-  require_once "../config.php";
+
 ?>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
     
@@ -89,35 +102,39 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       <form id="suspForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"  >
         <h1>Αίτηση Ειδικού Εργασιακού Καθεστώτος Υπαλλήλου</h1>
         <div class="tab">
-          <h2>Στοιχεία Υπαλλήλου</h2>
-            <div class="form-group row <?php echo (!empty($employee_FirstName_err)) ? 'has-danger' : ''; ?>">
-              <label for="employeeFirstName" class="col-sm-2 col-form-label">Όνομα:</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control <?php echo (!empty($employee_FirstName_err)) ? 'is-invalid' : ''; ?>" name="employee_FirstName" id="employeeFirstName" value="<?php echo $employeeFirstName; ?>" required>
-                <div class="invalid-feedback"><?php echo (!empty($employee_FirstName_err)) ?  $employee_FirstName_err : 'Το πεδίο είναι υποχρεωτικό'; ?></div>
-              </div>
-            </div>
-            <div class="form-group row <?php echo (!empty($employee_LastName_err)) ? 'has-danger' : ''; ?>">
-              <label for="employeeLastName" class="col-sm-2 col-form-label">Επώνυμο:</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control <?php echo (!empty($employee_LastName_err)) ? 'is-invalid' : ''; ?>" name="employee_LastName" id="employeeLastName" value="<?php echo $employeeLastName; ?>" required>
-                <div class="invalid-feedback"><?php echo (!empty($employee_LastName_err)) ?  $employee_LastName_err : 'Το πεδίο είναι υποχρεωτικό'; ?></div>
-              </div>
-            </div>
-            <div class="form-group row <?php echo (!empty($employee_AFM_err)) ? 'has-danger' : ''; ?>">
-              <label for="employeeAFM" class="col-sm-2 col-form-label">ΑΦΜ:</label>
-              <div class="col-sm-10">
-                <input type="text" class="form-control <?php echo (!empty($employee_AFM_err)) ? 'is-invalid' : ''; ?>" name="employee_AFM" id="employeeAFM" maxlength="9" onblur="validateAFM(this.id)" value="<?php echo $employeeAFM; ?>" required>
-                <div class="invalid-feedback"><?php echo (!empty($employee_AFM_err)) ?  $employee_AFM_err : 'Το πεδίο είναι υποχρεωτικό'; ?></div>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="employeeEMail" class="col-sm-2 col-form-label">E-Mail:</label>
-              <div class="col-sm-10">
-                <input type="email" class="form-control" name="employee_EMail" id="employeeEMail" value="<?php echo($employeeEMail); ?>" required>
-                <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
-              </div>
-            </div>
+          <?php 
+          if($employeeHasBeenChosen == false && $noEmployeeChosenError != ""){
+            echo "<p style=\"color: red; font-size: 20px;\">$noEmployeeChosenError</h2>";
+          }
+          ?>
+          <h3>Επιλέξτε τους υπαλλήλους που θέλετε να θέσετε σε ειδικό εργασιακό καθεστώς</h3>
+          <div class="container mt-4">
+            <?php 
+              $fetch_employees = "SELECT * FROM employee WHERE companyName = \"$Company_Name\" AND workStatus = \"normal\"";
+              $employees = mysqli_query($link, $fetch_employees);
+              $number = 0;
+              while($row = mysqli_fetch_array($employees)){
+                $user_query = "SELECT first_name, last_name FROM user WHERE AFM = $row[0]";
+                $user = mysqli_query($link, $user_query);
+                $user_row = mysqli_fetch_array($user);
+                echo "<div class=\"form-check\">";
+                echo "<input type=\"checkbox\" class=\"form-check-input\" id=\"employee$number\" name=\"_employee$number\" value=\"$row[0]\" onchange=\"displayMyRadioButtons(this.id)\"></input>";
+                echo "<label for=\"employee$number\" class=\"form-check-label\">$user_row[0] $user_row[1]</label>";
+
+                echo "</br>";
+    
+                echo "<div class=\"form-check form-check-inline disabled\" id=\"radios$number\">";
+                echo "<input class=\"form-check-input\" type=\"radio\" name=\"status$number\" id=\"suspended$number\" value=\"suspended\" disabled>";
+                echo "<label class=\"form-check-label\" for=\"suspended$number\">Αναστολή Σύμβασης</label>";
+                echo "<input class=\"form-check-input\" type=\"radio\" name=\"status$number\" id=\"remote$number\" value=\"remote\" disabled>";
+                echo "<label class=\"form-check-label\" for=\"remote$number\">Τηλεργασία</label>";
+                echo "</div>";
+
+                echo "</div>";
+                $number++;
+              }
+            ?>
+          </div>
         </div>
 
         <div class="tab">
@@ -180,6 +197,28 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       today2 = yyyy2+'-'+mm2+'-'+dd2;
       document.getElementById("begOfSusp").setAttribute("min", today);
       document.getElementById("endOfSusp").setAttribute("min", today2);
+      
+      function displayMyRadioButtons(id){
+        var checkbox = document.getElementById(String(id));
+        var no = checkbox.id.slice(8);
+        var radiosno = "radios" + no;
+        var radios = document.getElementById(radiosno);
+        var buttons = document.getElementsByName("status" + no);
+        console.log(buttons);
+        var i;
+        if(radios.className.indexOf(" disabled") == -1){
+          radios.className += " disabled";
+          for(i = 0; i < buttons.length; i++){
+            buttons[i].disabled = true;
+          }
+        }else{
+          var newClassName = radios.className.replace(" disabled", "");
+          radios.className = newClassName;
+          for(i = 0; i < buttons.length; i++){
+            buttons[i].disabled = false;
+          }
+        }
+      }
 
       function showTab(n) {
         // This function will display the specified tab of the form...
@@ -205,7 +244,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         // This function will figure out which tab to display
         var x = document.getElementsByClassName("tab");
         // Exit the function if any field in the current tab is invalid:
-        if (n == 1 && !validateForm()) return false;
+        // if (n == 1 && !validateForm()) return false;
         // Hide the current tab:
         x[currentTab].style.display = "none";
         // Increase or decrease the current tab by 1:
@@ -219,109 +258,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         // Otherwise, display the correct tab:
         showTab(currentTab);
-      }
-
-      function validateForm() {
-        // This function deals with validation of the form fields
-        var x, i, valid = true;
-        var formGroups, input, feedbackMsg;
-        var newClassName;
-        x = document.getElementsByClassName("tab");
-        formGroups = x[currentTab].getElementsByClassName("form-group row");
-        <!-- // A loop that checks every input field in the current tab: -->
-        if(currentTab !== x.length - 1){
-          for(i = 0; i < formGroups.length; i++){
-            // If a field is empty...
-            input = formGroups[i].getElementsByTagName("input");
-            if(typeof input[0] === 'undefined'){
-              input = formGroups[i].getElementsByTagName("select");
-            }
-            if(input[0].value == "" || input[0].value == 0){
-              // add an "invalid" class to the field:
-              input[0].className += " is-invalid";
-              formGroups[i].className += " has-danger";
-              // and set the current valid status to false
-              valid = false;
-            }else{
-              // removing class "invalid" from field
-              if(input[0].className.indexOf(" is-invalid") !== -1){
-                newClassName = input[0].className.replace(" is-invalid", "");
-                input[0].className = newClassName;
-                newClassName = formGroups[i].className.replace(" has-danger", "");
-                formGroups[i].className = newClassName;
-              }
-            }
-          }
-        }
-        <!-- // If the valid status is true, mark the step as finished and valid: -->
-        <!-- if (valid) { -->
-          <!-- document.getElementsByClassName("step")[currentTab].className += " finish"; -->
-        <!-- } -->
-        return valid; // return the valid status
-      }
-
-      function validateAFM(id){
-        var AFM = document.getElementById(String(id));
-        var valid = true;
-        var formRow = AFM.parentNode.parentNode;
-        var errorString = new String();
-        var newClassName;
-        if(AFM.value.length != 9){
-          valid = false;
-          errorString = "Το ΑΦΜ πρέπει να είναι 9ψήφιο.\n";
-        }
-        if(AFM.value.match(/^[0-9]+$/) == null){
-          valid = false;
-          errorString += "Το ΑΦΜ πρέπει να περιέχει μόνο ψηφία και όχι γράμματα.\n";
-        }
-        if(!valid){
-          if(AFM.className.indexOf(" is-invalid") == -1){
-            AFM.className += " is-invalid";
-          }
-          if(formRow.className.indexOf(" has-danger") == -1){
-            formRow.className += " has-danger";
-          }
-          AFM.nextSibling.nextSibling.innerHTML = errorString;
-        }else{
-          if(AFM.className.indexOf(" is-invalid") !== -1){
-            newClassName = AFM.className.replace(" is-invalid", "");
-            AFM.className = newClassName;
-          }
-          if(formRow.className.indexOf(" has-danger") !== -1){
-            newClassName = formRow.className.replace(" has-danger", "");
-            formRow.className = newClassName;
-          }
-          AFM.nextSibling.nextSibling.innerHTML = "Το πεδίο είναι υποχρεωτικό.";
-        }
-      }
-
-      const employermail = document.getElementById("employerEMail");
-      employermail.addEventListener("blur", function(){invalidEmail("employerEMail")});
-
-      const employeemail = document.getElementById("employeeEMail");
-      employeemail.addEventListener("blur", function(){invalidEmail("employeeEMail")});
-
-      function invalidEmail(id) {
-        mail = document.getElementById(id);
-        errorMsg = new String();
-        if(mail.validity.typeMismatch){
-          if(mail.parentNode.parentNode.className.indexOf(" has-danger") == -1){
-            <!-- // first time showing an error for this field -->
-            mail.parentNode.parentNode.className += " has-danger";
-            mail.className += " is-invalid";
-            errorMsg = "Μη έγκυρη μορφή ηλεκτρονικού ταχυδρομείου.\nΠαραδείγμα: marpap15@mail.gr";
-            mail.nextSibling.nextSibling.innerHTML = errorMsg;
-          }
-        }else{
-          if(mail.parentNode.parentNode.className.indexOf(" has-danger") !== -1){
-            var newClassName = mail.parentNode.parentNode.className.replace(" has-danger", "");
-            mail.parentNode.parentNode.className = newClassName;
-            newClassName = mail.className.replace(" is-invalid", "");
-            mail.className = newClassName;
-            errorMsg = "Το πεδίο είναι υποχρεωτικό.";
-            mail.nextSibling.nextSibling.innerHTML = errorMsg;
-          }
-        }
       }
 
       function restrictEndDate(){
