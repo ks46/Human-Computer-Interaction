@@ -93,7 +93,7 @@ if(!isset($_SESSION)) {
                 // Check if the user is already logged in, if yes then show user's name
                 if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true) {
               ?>
-                  <a class="nav-link text-dark" href="#">Username</a>
+                  <a class="nav-link text-dark" href="#"><?php echo $_SESSION["username"]; ?></a>
               <?php } else { ?>
                   <a class="nav-link text-dark" href="../index-level/login.php">Σύνδεση</a>
               <?php } ?>

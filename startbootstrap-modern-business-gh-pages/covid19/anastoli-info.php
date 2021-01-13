@@ -27,7 +27,7 @@ require_once "../top.php";
     <section>
       <p class="lead">Σε αναστολή μπορούν να βγάλουν εργαζομένους όλες οι πληττόμενες επιχειρήσεις.</p>
       <p class="lead">Αν είστε εργοδότης:</p>
-      <a class="btn btn-primary btn-lg" href="aitisi-anastolis-ergasias.php" role="button">Κάντε αίτηση αναστολής.</a>
+      <a class="btn btn-primary btn-lg" href="aitiseis-intermediate.php" role="button">Κάντε αίτηση αναστολής.</a>
       <a class="btn btn-primary btn-lg" href="#" role="button">Κάντε Άρση της Αναστολής</a> 
     </section>
   </div>
