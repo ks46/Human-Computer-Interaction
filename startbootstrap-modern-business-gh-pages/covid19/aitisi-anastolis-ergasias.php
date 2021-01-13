@@ -221,9 +221,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
           document.getElementById("nextBtn").innerHTML = "Επόμενο";
         }
-
-        //... and run a function that will display the correct step indicator:
-        <!-- fixStepIndicator(n); -->
       }
 
       function nextPrev(n) {
@@ -319,16 +316,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         var endSuspDate = new Date();
         endSuspDate = document.getElementById("endOfSusp").value;
         document.getElementById("begOfSusp").setAttribute("max", endSuspDate);
-      }
-
-      function fixStepIndicator(n) {
-        // This function removes the "active" class of all steps...
-        var i, x = document.getElementsByClassName("step");
-        for (i = 0; i < x.length; i++) {
-          x[i].className = x[i].className.replace(" active", "");
-        }
-        //... and adds the "active" class on the current step:
-        x[n].className += " active";
       }
     </script>
 
