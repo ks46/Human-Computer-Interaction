@@ -12,7 +12,6 @@ if(!isset($_SESSION["loggedin"])) {
 
 // Include config file
 require_once "../config.php";
-require_once "aitisi-anastolis-dynamic.php";
 
 $userAFM = $_SESSION["AFM"];
 $validate_user_is_employer = "SELECT * from employer WHERE AFM = $userAFM";
@@ -59,6 +58,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
           $param_startDate = $startDate;
           $param_endDate = $endDate;
           $param_type = $_POST["status".$checkbox_count];
+          if(!mysqli_stmt_execute($stmt)){
+            echo "Problem with insertion.";
+          }
         }
         $updateWorkStatus = "UPDATE employee SET workStatus = \"".$_POST["status".$checkbox_count]."\" WHERE AFM = ".$_POST["_employee".$checkbox_count];
         mysqli_query($link, $updateWorkStatus);
@@ -66,12 +68,12 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     $checkbox_count++;
   }
-  
+  header("location: confirmation.php");
 }
 ?>
 
 <?php
-  $title="Αναστολή Σύμβασης Εργασίας Υπαλλήλου";
+  $title="COVID-19 - Αλλαγή Εργασιακής Κατάστασης Υπαλλήλου";
   require_once "../top.php";
 
 ?>
@@ -98,27 +100,34 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
               $fetch_employees = "SELECT * FROM employee WHERE companyName = \"$Company_Name\" AND workStatus = \"normal\"";
               $employees = mysqli_query($link, $fetch_employees);
               $number = 0;
-              while($row = mysqli_fetch_array($employees)){
-                $user_query = "SELECT first_name, last_name FROM user WHERE AFM = $row[0]";
-                $user = mysqli_query($link, $user_query);
-                $user_row = mysqli_fetch_array($user);
-                echo "<div class=\"form-check\">";
-                echo "<input type=\"checkbox\" class=\"form-check-input\" id=\"employee$number\" name=\"_employee$number\" value=\"$row[0]\" onchange=\"displayMyRadioButtons(this.id)\"></input>";
-                echo "<label for=\"employee$number\" class=\"form-check-label\">$user_row[0] $user_row[1]</label>";
-
-                echo "</br>";
-    
-                echo "<div class=\"form-check form-check-inline disabled\" id=\"radios$number\">";
-                echo "<input class=\"form-check-input\" type=\"radio\" name=\"status$number\" id=\"suspended$number\" value=\"suspended\" disabled>";
-                echo "<label class=\"form-check-label\" for=\"suspended$number\">Αναστολή Σύμβασης</label>";
-                echo "<input class=\"form-check-input\" type=\"radio\" name=\"status$number\" id=\"remote$number\" value=\"remote\" disabled>";
-                echo "<label class=\"form-check-label\" for=\"remote$number\">Τηλεργασία</label>";
-                echo "<div class=\"invalid-feedback\">Δεν επιλέξατε νέα εργασιακή κατάσταση για τον υπάλληλο!</div>";
+              if(mysqli_num_rows($employees) == 0){
+                echo "<div class=\"alert alert-warning\" role=\"alert\" style=\"font-size: 20px;\">";
+                echo "Όλοι οι υπάλληλοί σας βρίσκονται ήδη σε ειδικό εργασιακό καθεστώς!";
+                echo "<hr><a class=\"btn btn-primary btn-lg btn-warning\" href=\"anastoli-info.php\" role=\"button\">Επιστροφή στην ιστοσελίδα των πληροφοριών.</a>";
                 echo "</div>";
+              }else{
+                while($row = mysqli_fetch_array($employees)){
+                  $user_query = "SELECT first_name, last_name FROM user WHERE AFM = $row[0]";
+                  $user = mysqli_query($link, $user_query);
+                  $user_row = mysqli_fetch_array($user);
+                  echo "<div class=\"form-check\">";
+                  echo "<input type=\"checkbox\" class=\"form-check-input\" id=\"employee$number\" name=\"_employee$number\" value=\"$row[0]\" onchange=\"displayMyRadioButtons(this.id)\"></input>";
+                  echo "<label for=\"employee$number\" class=\"form-check-label\">$user_row[0] $user_row[1]</label>";
 
-                echo "</div>";
-                $number++;
-              }
+                  echo "</br>";
+      
+                  echo "<div class=\"form-check form-check-inline disabled\" id=\"radios$number\">";
+                  echo "<input class=\"form-check-input\" type=\"radio\" name=\"status$number\" id=\"suspended$number\" value=\"suspended\" disabled>";
+                  echo "<label class=\"form-check-label\" for=\"suspended$number\">Αναστολή Σύμβασης</label>";
+                  echo "<input class=\"form-check-input\" type=\"radio\" name=\"status$number\" id=\"remote$number\" value=\"remote\" disabled>";
+                  echo "<label class=\"form-check-label\" for=\"remote$number\">Τηλεργασία</label>";
+                  echo "<div class=\"invalid-feedback\">Δεν επιλέξατε νέα εργασιακή κατάσταση για τον υπάλληλο!</div>";
+                  echo "</div>";
+
+                  echo "</div>";
+                  $number++;
+                }
+              } 
             ?>
           </div>
         </div>
@@ -141,15 +150,19 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
           </div>
         </div>
         
-        <div class="form-group">
-          <div style="overflow:auto;">
-            <div style="float:right;"> 
-              <button type="button" class="btn btn-primary" id="prevBtn" onclick="nextPrev(-1)">Προηγούμενο</button>
-              <button type="button" class="btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Επόμενο</button>
-            </div>
-          </div>
-        </div>
-
+        <?php
+          if(mysqli_num_rows($employees) != 0){
+            echo "<div class=\"form-group\">";
+            echo "<div style=\"overflow:auto;\">";
+            echo "<div style=\"float:right;\">"; 
+            echo "<button type=\"button\" class=\"btn btn-primary\" id=\"prevBtn\" onclick=\"nextPrev(-1)\">Προηγούμενο</button>";
+            echo "<button type=\"button\" class=\"btn btn-primary\" id=\"nextBtn\" onclick=\"nextPrev(1)\">Επόμενο</button>";
+            echo "</div>";
+            echo  "</div>";
+            echo "</div>"; 
+          }
+        ?>
+        
       </form>
     </div>
 
