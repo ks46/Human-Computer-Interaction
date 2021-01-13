@@ -28,12 +28,9 @@ if(mysqli_num_rows($employer) == 0){
 }
 // Define variables and initialize with empty values
 
-$noEmployeeChosenError = "";
-
 $startDate = "";
 $endDate = "";
 
-$employeeHasBeenChosen = false;
 $employerAFM = $_SESSION["AFM"];
 
 
@@ -53,13 +50,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   $endDate = trim($_POST["_endOfSusp"]);
   for($checkbox_iterator = 0; $checkbox_iterator < count($_POST); $checkbox_iterator += 3){
     if(!empty($_POST["_employee".$checkbox_count])){
-      $employeeHasBeenChosen = true;
-      // echo "<h1>".$_POST["_employee".$checkbox_count]."</h1>";
-      // echo "<h1>".$_POST["status".$checkbox_count]."</h1>";
       if(!empty("status".$checkbox_count)){
         $createFormLine = "INSERT INTO employerforms (employerAFM, employeeAFM, startDate, endDate, typeOfForm) VALUES (?, ?, ?, ?, ?)";
         if($stmt = mysqli_prepare($link, $createFormLine)){
-          echo "<h1>PREP OK</h1>";
           mysqli_stmt_bind_param($stmt, "iisss", $param_employerAFM, $param_employeeAFM, $param_startDate, $param_endDate, $param_type);
           $param_employerAFM = $employerAFM;
           $param_employeeAFM = $_POST["_employee".$checkbox_count];
@@ -73,11 +66,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     $checkbox_count++;
   }
-  if($employeeHasBeenChosen == false){
-    $noEmployeeChosenError = "Δεν επιλέξατε κάποιον υπάλληλο!";
-  }else{
-    // header("location: confirmation.php");
-  }
+  
 }
 ?>
 
@@ -102,11 +91,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       <form id="suspForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"  >
         <h1>Αίτηση Ειδικού Εργασιακού Καθεστώτος Υπαλλήλου</h1>
         <div class="tab">
-          <?php 
-          if($employeeHasBeenChosen == false && $noEmployeeChosenError != ""){
-            echo "<p style=\"color: red; font-size: 20px;\">$noEmployeeChosenError</h2>";
-          }
-          ?>
+          <p id="noEmployeeChosenError" style="color: red; font-size: 20px; display: none;">Δεν επιλέξατε κάποιον υπάλληλο!</p>
           <h3>Επιλέξτε τους υπαλλήλους που θέλετε να θέσετε σε ειδικό εργασιακό καθεστώς</h3>
           <div class="container mt-4">
             <?php 
@@ -128,6 +113,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "<label class=\"form-check-label\" for=\"suspended$number\">Αναστολή Σύμβασης</label>";
                 echo "<input class=\"form-check-input\" type=\"radio\" name=\"status$number\" id=\"remote$number\" value=\"remote\" disabled>";
                 echo "<label class=\"form-check-label\" for=\"remote$number\">Τηλεργασία</label>";
+                echo "<div class=\"invalid-feedback\">Δεν επιλέξατε νέα εργασιακή κατάσταση για τον υπάλληλο!</div>";
                 echo "</div>";
 
                 echo "</div>";
@@ -244,7 +230,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         // This function will figure out which tab to display
         var x = document.getElementsByClassName("tab");
         // Exit the function if any field in the current tab is invalid:
-        // if (n == 1 && !validateForm()) return false;
+        if (n == 1 && !verifyEmployees()) return false;
         // Hide the current tab:
         x[currentTab].style.display = "none";
         // Increase or decrease the current tab by 1:
@@ -258,6 +244,69 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         // Otherwise, display the correct tab:
         showTab(currentTab);
+      }
+      
+      function verifyEmployees(){
+        var inputs = document.getElementsByTagName("input"); 
+        var i, anyChecked = false;
+        for(i = 0; i < inputs.length; i++){
+          if(inputs[i].type == "checkbox"){
+            if(inputs[i].checked == true){
+              anyChecked = true;
+              break;
+            }
+          }
+        }
+        var error = document.getElementById("noEmployeeChosenError");
+        var missingRadios = false;
+        if(anyChecked == false){
+          error.style.display = "inline";
+          return false;
+        }else{
+          error.style.display = "none";    
+          var div, radios, radio1, radio2;
+          for(i = 0; i < inputs.length; i++){
+            if(inputs[i].type == "checkbox" && inputs[i].checked == true){
+              //get the div, we'll change the class to " has-danger" if needed
+              // or if everything is okay but it wasn't before we'll remove this class name
+              div = inputs[i].nextSibling.nextSibling.nextSibling;
+              //get the radio buttons, same thing with div but with the class " is-invalid"
+              var no = inputs[i].id.slice(8);;
+              var radiosName = "status" + no;
+              radios  = document.getElementsByName(radiosName);
+              if(radios[0].checked == false && radios[1].checked == false){
+                if(div.className.indexOf(" has-danger") == -1){
+                  div.className += " has-danger";
+                }
+                missingRadios = true;
+                if(radios[0].className.indexOf(" is-invalid") == -1){
+                  radios[0].className += " is-invalid";
+                }
+                if(radios[1].className.indexOf(" is-invalid") == -1){
+                  radios[1].className += " is-invalid";
+                }
+              }else{
+                var newClassName;
+                if(div.className.indexOf(" has-danger") != -1){
+                  newClassName = div.className.replace(" has-danger", "");
+                  div.ClassName = newClassName;
+                }
+                if(radios[0].className.indexOf(" is-invalid") != -1){
+                  newClassName = radios[0].className.replace(" is-invalid", "");
+                  radios[0].className = newClassName;
+                }
+                if(radios[1].className.indexOf(" is-invalid") != -1){
+                  newClassName = radios[1].className.replace(" is-invalid", "");
+                  radios[1].className = newClassName;
+                }
+              }
+            }
+          }
+          if(missingRadios == true){
+            return false;
+          }
+        }
+        return true;
       }
 
       function restrictEndDate(){
