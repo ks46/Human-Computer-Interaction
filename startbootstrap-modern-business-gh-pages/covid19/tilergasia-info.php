@@ -39,7 +39,8 @@
       έναρξη της τηλεργασίας.</li>
     </ul>
 
-    <a class="btn btn-primary btn-lg" href="#" role="button">Κάντε Αίτηση</a>
+    <a class="btn btn-primary btn-lg" href="aitiseis-intermediate.php" role="button">Κάντε αίτηση αναστολής.</a>
+    <a class="btn btn-primary btn-lg" href="arsi-anastolis-ergasias.php" role="button">Κάντε Άρση της Αναστολής</a> 
   </section>
 </div>
 <!-- NOTE: Page Content ends here -->
