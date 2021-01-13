@@ -19,12 +19,15 @@ require_once "../config.php";
 
 require_once "aitisi-anastolis-dynamic.php";
 
+$userAFM = $_SESSION["AFM"];
+$validate_user_is_employer = "SELECT * from employer WHERE AFM = $userAFM";
+$employer = mysqli_query($link, $validate_user_is_employer);
+
+if(mysqli_num_rows($employer) == 0){
+  // Όχι εργοδότης
+  header("location: not-employer-warning.php");
+}
 // Define variables and initialize with empty values
-$employerFirstName = $employerLastName = $employerAFM = $businessName = "";
-$employerEMail = "";
-$doy = 0;
-$employer_FirstName_err = $employer_LastName_err = $employer_AFM_err = "";
-$businessName_err = $doy_err = "";
 
 $employeeAFM = $employeeFirstName = $employeeLastName = $employeeEMail = "";
 $employee_FirstName_err = $employee_LastName_err = $employee_AFM_err = "";
@@ -32,7 +35,6 @@ $employee_FirstName_err = $employee_LastName_err = $employee_AFM_err = "";
 $startDate = "";
 $endDate = "";
 
-$validEmployer = true;
 $validEmployee = true;
 
 
@@ -41,46 +43,25 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
   // Empty checks are done via JavaScript before submit
 
   // Validate credentials
-  $employerAFM = trim($_POST["employer_AFM"]);
-  $employerFirstName = trim($_POST["employer_FirstName"]);
-  $employerLastName = trim($_POST["employer_LastName"]);
-  $businessName = trim($_POST["_businessName"]);
-  $employerEMail = trim($_POST["employer_EMail"]);
-  $doy = trim($_POST["_doy"]);
   
-  $employeeFirstName = trim($_POST["employee_FirstName"]);
-  $employeeLastName = trim($_POST["employee_LastName"]);
-  $employeeAFM = trim($_POST["employee_AFM"]);
-  $employeeEMail = trim($_POST["employee_EMail"]);
+  // $employeeFirstName = trim($_POST["employee_FirstName"]);
+  // $employeeLastName = trim($_POST["employee_LastName"]);
+  // $employeeAFM = trim($_POST["employee_AFM"]);
+  // $employeeEMail = trim($_POST["employee_EMail"]);
   
-  $startDate = trim($_POST["_begOfSusp"]);
-  $endDate = trim($_POST["_endOfSusp"]);
-
-  if(validateAFM($link, $employerAFM, $employer_AFM_err)){
-    if(validateIsEmployer($link, $employerAFM, $employer_AFM_err)){
-      $validEmployer = validateName($link, $employerAFM, $employerFirstName, $employer_FirstName_err, $employerLastName, $employer_LastName_err);
-      if(validateBusinessName($link, $employerAFM, $businessName, $businessName_err)){
-        validateDoy($link, $businessName, $doy, $doy_err);
-      }else{
-        $validEmployer = false;
-      }
-    }else{
-      $validEmployer = false;
-    }
-  }else{
-    $validEmployer = false;
-  }
+  // $startDate = trim($_POST["_begOfSusp"]);
+  // $endDate = trim($_POST["_endOfSusp"]);
   
-  if(validateAFM($link, $employeeAFM, $employee_AFM_err)){
-    if(validateIsEmployee($link, $employeeAFM, $employee_AFM_err, $businessName)){
-      // ChromePhp::log("valid employee");
-      $validEmployee = validateName($link, $employeeAFM, $employeeFirstName, $employee_FirstName_err, $employeeLastName, $employee_LastName_err);
-    }else{
-      $validEmployee = false;
-    }
-  }else{
-    $validEmployee = false;
-  }
+  // if(validateAFM($link, $employeeAFM, $employee_AFM_err)){
+    // if(validateIsEmployee($link, $employeeAFM, $employee_AFM_err, $businessName)){
+      // // ChromePhp::log("valid employee");
+      // $validEmployee = validateName($link, $employeeAFM, $employeeFirstName, $employee_FirstName_err, $employeeLastName, $employee_LastName_err);
+    // }else{
+      // $validEmployee = false;
+    // }
+  // }else{
+    // $validEmployee = false;
+  // }
   
   header("location: confirmation.php");
 
@@ -106,84 +87,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       <!-- NOTE: Breadcrumbs section ends here -->
 
       <form id="suspForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post"  >
-        <h1>Αίτηση Αναστολής Σύμβασης Εργασίας Υπαλλήλου</h1>
-        <div class="tab">
-          <?php 
-            if($validEmployee == false || $validEmployer == false){
-              if($validEmployee == false && $validEmployer == false){
-                echo "<div style=\"color: red;\"> (Κάποια από) τα στοιχεία εργοδότη/επιχείρησης και εργαζόμενου δεν επαληθεύθηκαν. Διορθώστε τα και υποβάλλετε εκ νέου την φόρμα</div>";
-              }else if($validEmployer == true){
-                echo "<div style=\"color: red;\"> (Κάποια από)τα στοιχεία του εργαζόμενου δεν επαληθεύθηκαν. Διορθώστε τα και υποβάλλετε εκ νέου την φόρμα</div>";
-              }else{
-                echo "<div style=\"color: red;\"> (Κάποια από)τα στοιχεία εργοδότη/επιχείρησης δεν επαληθεύθηκαν. Διορθώστε τα και υποβάλλετε εκ νέου την φόρμα</div>";
-              }
-            }
-          ?>
-          <h2 class="py-2">Στοιχεία Εργοδότη</h2>
-          <div class="form-group row <?php echo (!empty($employer_FirstName_err)) ? 'has-danger' : ''; ?>">
-            <label for="employerFirstName" class="col-sm-2 col-form-label">Όνομα:</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control <?php echo (!empty($employer_FirstName_err)) ? 'is-invalid' : ''; ?>" name="employer_FirstName" id="employerFirstName" value="<?php echo$employerFirstName; ?>" required>
-              <div class="invalid-feedback"><?php echo (!empty($employer_FirstName_err)) ?  $employer_FirstName_err : 'Το πεδίο είναι υποχρεωτικό'; ?>.</div>
-            </div>
-          </div>
-          <div class="form-group row <?php echo (!empty($employer_LastName_err)) ? 'has-danger' : ''; ?>">
-            <label for="employerLastName" class="col-sm-2 col-form-label">Επώνυμο:</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control <?php echo (!empty($employer_LastName_err)) ? 'is-invalid' : ''; ?>" name="employer_LastName" id="employerLastName" value="<?php echo$employerLastName; ?>" required>
-              <div class="invalid-feedback"><?php echo (!empty($employer_LastName_err)) ?  $employer_LastName_err : 'Το πεδίο είναι υποχρεωτικό'; ?>.</div>
-            </div>
-          </div>
-          <div class="form-group row <?php echo (!empty($employer_AFM_err)) ? 'has-danger' : ''; ?>">
-            <label for="employerAFM" class="col-sm-2 col-form-label">ΑΦΜ:</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control <?php echo (!empty($employer_AFM_err)) ? 'is-invalid' : ''; ?>" name="employer_AFM" id="employerAFM" maxlength="9" value="<?php echo $employerAFM ; ?>" onblur="validateAFM(this.id)" required>
-              <div class="invalid-feedback" id="employerAFMError"><?php echo (!empty($employer_AFM_err)) ?  $employer_AFM_err : 'Το πεδίο είναι υποχρεωτικό'; ?>.</div>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="employerEMail" class="col-sm-2 col-form-label">E-Mail:</label>
-            <div class="col-sm-10">
-              <input type="email" class="form-control" name="employer_EMail" id="employerEMail" value="<?php echo($employerEMail); ?>" required>
-              <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
-            </div>
-          </div>
-          <hr>
-          <h2>Στοιχεία Επιχείρισης</h2>
-          <div class="form-group row <?php echo (!empty($businessName_err)) ? 'has-danger' : ''; ?>">
-            <label for="businessName" class="col-sm-2 col-form-label">Επωνυμία:</label>
-            <div class="col-sm-10">
-              <input type="text" class="form-control <?php echo (!empty($businessName_err)) ? 'is-invalid' : ''; ?>" name="_businessName" id="businessName" value="<?php echo $businessName; ?>" required>
-              <div class="invalid-feedback"><?php echo (!empty($businessName_err)) ?  $businessName_err : 'Το πεδίο είναι υποχρεωτικό'; ?>.</div>
-            </div>
-          </div>
-          <div class="form-group row <?php echo (!empty($doy_err)) ? 'has-danger' : ''; ?>">
-            <label for="DOY" class="col-sm-2 col-form-label">ΔΟΥ:</label>
-            <select class="select <?php echo (!empty($doy_err)) ? 'is-invalid' : ''; ?>" name="_doy" id="DOY">
-            <?php   
-              
-              $doy_list = mysqli_query($link, "SELECT * FROM doy ORDER BY Name ASC");
-              
-              $value = 0;
-              if($doy == 0){
-                echo "<option value=\"$value\" selected>Επιλέξτε</option>";
-              }else{
-                echo "<option value=\"$value\">Επιλέξτε</option>";
-              }
-              while($row = mysqli_fetch_array($doy_list)){
-                $value++;
-                echo "<option value=\"$value\"";
-                if($doy == $value){
-                  echo " selected";
-                }
-                echo ">$row[0]</option>";
-              }
-              echo "</select>";
-            ?>
-            <div class="invalid-feedback"><?php echo (!empty($doy_err)) ?  $doy_err : 'Το πεδίο είναι υποχρεωτικό'; ?>.</div>
-          </div>
-        </div>
-
+        <h1>Αίτηση Ειδικού Εργασιακού Καθεστώτος Υπαλλήλου</h1>
         <div class="tab">
           <h2>Στοιχεία Υπαλλήλου</h2>
             <div class="form-group row <?php echo (!empty($employee_FirstName_err)) ? 'has-danger' : ''; ?>">
@@ -242,14 +146,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
           </div>
         </div>
-        
-        <!-- Circles which indicates the steps of the form: -->
-        <!-- <div style="text-align:center;margin-top:40px;"> -->
-          <!-- <span class="step"></span> -->
-          <!-- <span class="step"></span> -->
-          <!-- <span class="step"></span> -->
-          <!-- <span class="step"></span> -->
-        <!-- </div> -->
 
       </form>
     </div>
