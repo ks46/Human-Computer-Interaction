@@ -65,11 +65,29 @@
                   echo "Κανονική</p>";
                 }else if($employeerow[1] == "suspended"){
                   echo "Σε αναστολή σύμβασης</p>";
-                }else{
+                }else if($employeerow[1] == "remote"){
                   echo "Εξ'αποστάσεως εργασία</p>";
+                }else{
+                  echo "Σε άδεια ειδικού σκοπού</p>";
                 }
                 if($employeerow[1] == "suspended" || $employeerow[1] == "remote"){
                   $fetchDates = "SELECT startDate, endDate FROM employerForms WHERE employeeAFM = $row[0]";
+                  $dates = mysqli_query($link, $fetchDates);
+                  if(mysqli_num_rows($dates) != 1){
+                    echo "<p>Sth went terribly wrong</p>";
+                  }else{
+                    $datesrow = mysqli_fetch_array($dates);
+                    $year0 = str_split($datesrow[0], 4)[0];
+                    $month0 = str_split(str_split($datesrow[0], 5)[1], 2)[0];
+                    $day0 = str_split(str_split($datesrow[0], 8)[1], 2)[0];
+                    $year1 = str_split($datesrow[1], 4)[0];
+                    $month1 = str_split(str_split($datesrow[1], 5)[1], 2)[0];
+                    $day1 = str_split(str_split($datesrow[1], 8)[1], 2)[0];
+                    echo "<p>Από: $day0-$month0-$year0</p>";
+                    echo "<p>Έως: $day1-$month1-$year1</p>";
+                  }
+                }else{
+                  $fetchDates = "SELECT startDate, endDate FROM parentalleavecertificate WHERE employeeAFM = $row[0]";
                   $dates = mysqli_query($link, $fetchDates);
                   if(mysqli_num_rows($dates) != 1){
                     echo "<p>Sth went terribly wrong</p>";
@@ -145,11 +163,17 @@
                   echo "<td>Κανονική</td>";
                 }else if($myEmployeeRow[1] == "remote"){
                   echo "<td>Εξ'Αποστάσεως Απασχόληση</td>";
-                }else{
+                }else if($myEmployeeRow[1] == "suspended"){
                   echo "<td>Αναστολή Σύμβασης</td>";
+                }else{
+                  echo "<td>Άδεια ειδικού σκοπού</td>";
                 }
                 if($myEmployeeRow[1] != "normal"){
-                  $fetchEmployeeDates = "SELECT startDate, endDate FROM employerforms WHERE employeeAFM = $myemployee[0]";
+                  if($myEmployeeRow[1] == "suspended" || $myEmployeeRow[1] == "remote"){
+                    $fetchEmployeeDates = "SELECT startDate, endDate FROM employerforms WHERE employeeAFM = $myemployee[0]";
+                  }else if($myEmployeeRow[1] == "parentalleave"){
+                    $fetchEmployeeDates = "SELECT startDate, endDate FROM parentalleavecertificate WHERE employeeAFM = $myemployee[0]";
+                  }
                   $employeeDates = mysqli_query($link, $fetchEmployeeDates);
                   $employeeDatesRow = mysqli_fetch_array($employeeDates);
                   
@@ -161,10 +185,10 @@
                   $emplday1 = str_split(str_split($employeeDatesRow[1], 8)[1], 2)[0];
                   
                   echo "<td>$emplday0-$emplmonth0-$emplyear0</td>";
-                  echo "<td>$emplday1-$emplmonth1-$emplyear1</td>\n</tr>";
+                  echo "<td>$emplday1-$emplmonth1-$emplyear1</td>\n</tr>";                  
                 }else{
                   echo "<td></td>";
-                  echo "<td></td>\n</tr>";                  
+                  echo "<td></td>\n</tr>"; 
                 }
               }
               echo "</tbody>\n</table>";
