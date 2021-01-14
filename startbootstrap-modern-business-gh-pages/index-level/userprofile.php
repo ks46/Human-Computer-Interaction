@@ -23,10 +23,22 @@
       <!-- Sidebar Column -->
       <div class="col-lg-3 mb-4">
         <div class="list-group">
-          <a href="#" class="list-group-item">Τα στοιχεία μου</a>
+          <a href="#" class="list-group-item" onclick="showTab(0)">Τα στοιχεία μου</a>
+          <?php 
+            $fetchAccountType = "SELECT type FROM user WHERE username = \"".$_SESSION["username"]."\"";
+            $accountType = mysqli_query($link, $fetchAccountType);
+            if(mysqli_num_rows($accountType) == 0){
+              echo "<p>Sth went terribly wrong</p>";
+            }else{
+              $typerow = mysqli_fetch_array($accountType);
+              if($typerow[0] == "employer"){
+                echo "<a href=\"#\" class=\"list-group-item\" onclick=\"showTab(1)\">Οι υπάλληλοί μου</a>";
+              }
+            }
+          ?>
         </div>
       </div>
-      <div class="col-lg-9 mb-4">
+      <div class="col-lg-9 mb-4 tab">
         <h2>Τα στοιχεία μου</h2>
         <?php
           $fetchMyInfo = "SELECT * FROM user WHERE username = \"".$_SESSION["username"]."\"";
@@ -102,9 +114,83 @@
           }
         ?>
       </div>
+      <div class="col-lg-9 mb-4 tab">
+        <?php
+          if($typerow[0] == "employer"){
+            echo "<h2>Οι υπάλληλοί μου</h2>";
+            $fetchMyEmployees = "SELECT * FROM employee WHERE companyName = \"$employerrow[1]\"";
+            $myemployees = mysqli_query($link, $fetchMyEmployees);
+            if(mysqli_num_rows($myemployees) == 0){
+              echo "<p>Δεν υπάρχει κανείς από τους υπαλλήλους σας στην πλατφόρμα.</p>";
+            }else{
+              echo "<table class=\"table table-hover\">";
+              echo "<thead>\n<tr>";
+              echo "<th scope=\"col\">Όνομα</th>";
+              echo "<th scope=\"col\">Επίθετο</th>";
+              echo "<th scope=\"col\">Εργασιακή Κατάσταση</th>";
+              echo "<th scope=\"col\">Από</th>";
+              echo "<th scope=\"col\">Έως</th>";
+              echo "</tr>\n</thead>";
+              echo "<tbody>";
+              while($myemployee = mysqli_fetch_array($myemployees)){
+                $fetchMyEmployeeInfo = "SELECT * FROM user WHERE AFM = $myemployee[0]";
+                $anEmployeesInfo = mysqli_query($link, $fetchMyEmployeeInfo);
+                $myEmployeeRow = mysqli_fetch_array($anEmployeesInfo);
+                echo "<td>$myEmployeeRow[3]</td>";
+                echo "<td>$myEmployeeRow[4]</td>";
+                $fetchMyEmployeeInfo = "SELECT * FROM employee WHERE AFM = $myemployee[0]";
+                $anEmployeesInfo = mysqli_query($link, $fetchMyEmployeeInfo);
+                $myEmployeeRow = mysqli_fetch_array($anEmployeesInfo);
+                if($myEmployeeRow[1] == "normal"){
+                  echo "<td>Κανονική</td>";
+                }else if($myEmployeeRow[1] == "remote"){
+                  echo "<td>Εξ'Αποστάσεως Απασχόληση</td>";
+                }else{
+                  echo "<td>Αναστολή Σύμβασης</td>";
+                }
+                if($myEmployeeRow[1] != "normal"){
+                  $fetchEmployeeDates = "SELECT startDate, endDate FROM employerforms WHERE employeeAFM = $myemployee[0]";
+                  $employeeDates = mysqli_query($link, $fetchEmployeeDates);
+                  $employeeDatesRow = mysqli_fetch_array($employeeDates);
+                  
+                  $emplyear0 = str_split($employeeDatesRow[0], 4)[0];
+                  $emplmonth0 = str_split(str_split($employeeDatesRow[0], 5)[1], 2)[0];
+                  $emplday0 = str_split(str_split($employeeDatesRow[0], 8)[1], 2)[0];
+                  $emplyear1 = str_split($employeeDatesRow[1], 4)[0];
+                  $emplmonth1 = str_split(str_split($employeeDatesRow[1], 5)[1], 2)[0];
+                  $emplday1 = str_split(str_split($employeeDatesRow[1], 8)[1], 2)[0];
+                  
+                  echo "<td>$emplday0-$emplmonth0-$emplyear0</td>";
+                  echo "<td>$emplday1-$emplmonth1-$emplyear1</td>\n</tr>";
+                }else{
+                  echo "<td></td>";
+                  echo "<td></td>\n</tr>";                  
+                }
+              }
+              echo "</tbody>\n</table>";
+            }
+          }
+        ?>
+      </div>
     </div>
   </div>
   
+  <script>
+    var currentTab = 0; // Current tab is set to be the first tab (0)
+    showTab(currentTab); // Display the current tab
+    function showTab(n) {
+      // This function will display the specified tab of the form...
+      var x = document.getElementsByClassName("tab");
+      x[currentTab].style.display = "none";
+      x[n].style.display = "block";
+      currentTab = n;
+      // //... and fix the Previous/Next buttons:
+    }
+  </script>
+  <!-- Bootstrap core JavaScript -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- <script src="../vendor/jquery/jquery.min.js"></script> -->
+  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   
   
 <?php 
