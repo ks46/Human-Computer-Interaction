@@ -33,6 +33,8 @@
               $typerow = mysqli_fetch_array($accountType);
               if($typerow[0] == "employer"){
                 echo "<a href=\"#\" class=\"list-group-item\" onclick=\"showTab(1)\">Οι υπάλληλοί μου</a>";
+              }else{
+                echo "<a href=\"#\" class=\"list-group-item\" onclick=\"showTab(1)\">Οι άδειές μου</a>";
               }
             }
           ?>
@@ -87,21 +89,17 @@
                     echo "<p>Έως: $day1-$month1-$year1</p>";
                   }
                 }else{
-                  $fetchDates = "SELECT startDate, endDate FROM parentalleavecertificate WHERE employeeAFM = $row[0]";
+                  $fetchDates = "SELECT startDate, endDate FROM parentalleavecertificate WHERE employeeAFM = $row[0] ORDER BY startDate DESC";
                   $dates = mysqli_query($link, $fetchDates);
-                  if(mysqli_num_rows($dates) != 1){
-                    echo "<p>Sth went terribly wrong</p>";
-                  }else{
-                    $datesrow = mysqli_fetch_array($dates);
-                    $year0 = str_split($datesrow[0], 4)[0];
-                    $month0 = str_split(str_split($datesrow[0], 5)[1], 2)[0];
-                    $day0 = str_split(str_split($datesrow[0], 8)[1], 2)[0];
-                    $year1 = str_split($datesrow[1], 4)[0];
-                    $month1 = str_split(str_split($datesrow[1], 5)[1], 2)[0];
-                    $day1 = str_split(str_split($datesrow[1], 8)[1], 2)[0];
-                    echo "<p>Από: $day0-$month0-$year0</p>";
-                    echo "<p>Έως: $day1-$month1-$year1</p>";
-                  }
+                  $datesrow = mysqli_fetch_array($dates);
+                  $year0 = str_split($datesrow[0], 4)[0];
+                  $month0 = str_split(str_split($datesrow[0], 5)[1], 2)[0];
+                  $day0 = str_split(str_split($datesrow[0], 8)[1], 2)[0];
+                  $year1 = str_split($datesrow[1], 4)[0];
+                  $month1 = str_split(str_split($datesrow[1], 5)[1], 2)[0];
+                  $day1 = str_split(str_split($datesrow[1], 8)[1], 2)[0];
+                  echo "<p>Από: $day0-$month0-$year0</p>";
+                  echo "<p>Έως: $day1-$month1-$year1</p>";
                 }
                 echo "<p>Τέκνο κάτω των 12 ετών: ";
                 if($employeerow[3] == 0){
@@ -193,6 +191,28 @@
               }
               echo "</tbody>\n</table>";
             }
+          }else{
+            echo "<h2>Οι άδειές μου</h2>";
+            $fetchMyLeaves = "SELECT startDate, endDate FROM parentalleavecertificate WHERE employeeAFM = ".$_SESSION["AFM"]." ORDER BY startDate DESC";
+            $myLeaves = mysqli_query($link, $fetchMyLeaves);
+            echo mysqli_error($link);
+            echo "<table class=\"table table-hover\">";
+            echo "<thead>\n<tr>";
+            echo "<th scope=\"col\">Από</th>";
+            echo "<th scope=\"col\">Έως</th>";
+            echo "</tr>\n</thead>";
+            echo "<tbody>";
+            while($leaveRow = mysqli_fetch_array($myLeaves)){
+              $leaveyear0 = str_split($leaveRow[0], 4)[0];
+              $leavemonth0 = str_split(str_split($leaveRow[0], 5)[1], 2)[0];
+              $leaveday0 = str_split(str_split($leaveRow[0], 8)[1], 2)[0];
+              $leaveyear1 = str_split($leaveRow[1], 4)[0];
+              $leavemonth1 = str_split(str_split($leaveRow[1], 5)[1], 2)[0];
+              $leaveday1 = str_split(str_split($leaveRow[1], 8)[1], 2)[0];
+              echo "<td>$leaveday0-$leavemonth0-$leaveyear0</td>";
+              echo "<td>$leaveday1-$leavemonth1-$leaveyear1</td>\n</tr>";      
+            }
+            echo "</tbody>\n</table>";
           }
         ?>
       </div>
