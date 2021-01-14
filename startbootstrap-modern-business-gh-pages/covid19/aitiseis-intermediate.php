@@ -46,7 +46,7 @@ require_once "../config.php";
           echo "δεν έχει ήδη μεταβληθεί σε ένα από τα 2 ειδικά καθεστώτα και δεν έχουν βρίσκονται σε άδεια ειδικού σκοπού.";
           echo "Αν επιθυμείτε να αλλάξετε την εργασιακή κατάσταση ενός υπαλλήλου από εξ'αποστάσεως απασχόληση σε αναστολή ή το αντίστροφο,";
           echo "κάνετε πρώτα άρση της τρέχουσας κατάστασής του <a href=\"arsi-anastolis-ergasias.php\">εδώ</a>.\n</div>";
-          echo "<a class=\"btn btn-primary btn-lg\" href=\"adeia-eidikou-skopou.php\" role=\"button\">Συνεχίστε στην αίτηση</a>";
+          echo "<a class=\"btn btn-primary btn-lg\" href=\"aitisi-anastolis-ergasias.php\" role=\"button\">Συνεχίστε στην αίτηση</a>";
           echo "</section>";
         }
       }

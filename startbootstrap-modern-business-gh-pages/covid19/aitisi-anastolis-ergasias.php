@@ -137,14 +137,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="form-group row">
             <label for="begOfSusp" class="col-sm-2 col-form-label">Από:</label>
             <div class="col-10">
-              <input class="form-control" type="date" name="_begOfSusp" id="begOfSusp" min="2021-01-01" max="2021-01-20" oninput="restrictEndDate()" value="<?php echo $startDate; ?>" required>
+              <input class="form-control" type="date" name="_begOfSusp" id="begOfSusp" min="2021-01-01" max="2021-02-28" oninput="restrictEndDate()" value="<?php echo $startDate; ?>" required>
               <div class="invalid-feedback">Η επιλογή ημερομηνίας αφετηρίας αναστολής είναι υποχρεωτική.</div>
             </div>
           </div>
           <div class="form-group row">
             <label for="endOfSusp" class="col-sm-2 col-form-label">Έως:</label>
             <div class="col-10">
-              <input class="form-control" type="date" name="_endOfSusp" id="endOfSusp" min="2021-01-01" max="2021-01-20"oninput="restrictStartDate()" value="<?php echo $endDate; ?>" required>
+              <input class="form-control" type="date" name="_endOfSusp" id="endOfSusp" min="2021-01-01" max="2021-02-28"oninput="restrictStartDate()" value="<?php echo $endDate; ?>" required>
               <div class="invalid-feedback">Η επιλογή ημερομηνίας λήξης αναστολής είναι υποχρεωτική.</div>
             </div>
           </div>
@@ -241,6 +241,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         var x = document.getElementsByClassName("tab");
         // Exit the function if any field in the current tab is invalid:
         if (n == 1 && !verifyEmployees()) return false;
+        if(currentTab == x.length - 1 && !verifyDates()) return false;
         // Hide the current tab:
         x[currentTab].style.display = "none";
         // Increase or decrease the current tab by 1:
@@ -317,6 +318,38 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
           }
         }
         return true;
+      }
+      
+      function verifyDates(){
+        // This function deals with validation of the form fields
+        var x, i, valid = true;
+        var formGroups, input, feedbackMsg;
+        var newClassName;
+        x = document.getElementsByClassName("tab");
+        formGroups = x[currentTab].getElementsByClassName("form-group row");
+        <!-- // A loop that checks every input field in the current tab: -->
+        for(i = 0; i < formGroups.length; i++){
+          // If a field is empty...
+          input = formGroups[i].getElementsByTagName("input");
+          if(input[0].value == ""){
+            if(input[0].className.indexOf(" is-invalid") == -1){
+              // add an "invalid" class to the field:
+              input[0].className += " is-invalid";
+              formGroups[i].className += " has-danger";
+            }
+            // and set the current valid status to false
+            valid = false;
+          }else{
+            // removing class "invalid" from field
+            if(input[0].className.indexOf(" is-invalid") !== -1){
+              newClassName = input[0].className.replace(" is-invalid", "");
+              input[0].className = newClassName;
+              newClassName = formGroups[i].className.replace(" has-danger", "");
+              formGroups[i].className = newClassName;
+            }
+          }
+        }
+        return valid; // return the valid status          
       }
 
       function restrictEndDate(){
