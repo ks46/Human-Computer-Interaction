@@ -42,11 +42,49 @@
             if($row[5] == "employee"){
               echo "Υπάλληλος</p>";
               $fetchEmployeeInfo = "SELECT * FROM employee WHERE AFM = $row[0]";
+              $myEmployeeInfo = mysqli_query($link, $fetchEmployeeInfo);
+              if(mysqli_num_rows($myEmployeeInfo) == 0){
+                echo "<p>Sth went terribly wrong</p>";
+              }else{
+                $employeerow = mysqli_fetch_array($myEmployeeInfo);
+                echo "<p>Εταιρεία Απασχόλησης: $employeerow[2]</p>";
+                echo "<p>Εργασιακή Κατάσταση: ";
+                if($employeerow[1] == "normal"){
+                  echo "Κανονική</p>";
+                }else if($employeerow[1] == "suspended"){
+                  echo "Σε αναστολή σύμβασης</p>";
+                }else{
+                  echo "Εξ'αποστάσεως εργασία</p>";
+                }
+                if($employeerow[1] == "suspended" || $employeerow[1] == "remote"){
+                  $fetchDates = "SELECT startDate, endDate FROM employerForms WHERE employeeAFM = $row[0]";
+                  $dates = mysqli_query($link, $fetchDates);
+                  if(mysqli_num_rows($dates) != 1){
+                    echo "<p>Sth went terribly wrong</p>";
+                  }else{
+                    $datesrow = mysqli_fetch_array($dates);
+                    $year0 = str_split($datesrow[0], 4)[0];
+                    $month0 = str_split(str_split($datesrow[0], 5)[1], 2)[0];
+                    $day0 = str_split(str_split($datesrow[0], 8)[1], 2)[0];
+                    $year1 = str_split($datesrow[1], 4)[0];
+                    $month1 = str_split(str_split($datesrow[1], 5)[1], 2)[0];
+                    $day1 = str_split(str_split($datesrow[1], 8)[1], 2)[0];
+                    echo "<p>Από: $day0-$month0-$year0</p>";
+                    echo "<p>Έως: $day1-$month1-$year1</p>";
+                  }
+                }
+                echo "<p>Τέκνο κάτω των 12 ετών: ";
+                if($employeerow[3] == 0){
+                  echo "Όχι</p>";
+                }else{
+                  echo "Ναι</p>";
+                }
+              }
             }else{
               echo "Εργοδότης</p>";
               $fetchEmployerInfo = "SELECT * FROM employer WHERE AFM = $row[0]";
               $myEmployerInfo = mysqli_query($link, $fetchEmployerInfo);
-              if(mysqli_num_rows($myInfo) == 0){
+              if(mysqli_num_rows($myEmployerInfo) == 0){
                 echo "<p>Sth went terribly wrong</p>";
               }else{
                 $employerrow = mysqli_fetch_array($myEmployerInfo);
