@@ -10,9 +10,14 @@
   if($_SERVER["REQUEST_METHOD"] == "POST") {
     $doy = trim($_POST["_doy"]);
 
+    
     $updateDoy = "UPDATE company SET Doy = \"$doy\" WHERE Company_Name= \"$myCompany\"";
     mysqli_query($link, $updateDoy);
-    echo mysqli_error($link);
+
+    $updateCompanyName = "UPDATE employer SET Company_Name = \"".$_POST["_companyName"]."\" WHERE AFM = ".$_SESSION["AFM"];
+    mysqli_query($link, $updateCompanyName);
+  
+    header("location: confirmation.php");
   }
 ?>
 
@@ -35,6 +40,8 @@
     <h1>Επεξεργασία Στοιχείων</h1>
     <form id="changeInfo" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
       <div class="tab">
+        <p>Οι τιμές στα πεδία είναι αυτές που έχετε μέχρι στιγμής καταχωρήσει στο σύστημα.</br>
+        Αν δεν επιθυμείτε να αλλάξατε κάποιο από τα στοιχεία σας, απλά αγνοήστε το.</p>
         <?php 
             $fetchAccountType = "SELECT type FROM user WHERE username = \"".$_SESSION["username"]."\"";
             $accountType = mysqli_query($link, $fetchAccountType);
@@ -42,13 +49,20 @@
               echo "<p>Sth went terribly wrong</p>";
             }else{
               $accountTypeRow = mysqli_fetch_array($accountType);
-              if($accountTypeRow[0] == "employer"){   
+              if($accountTypeRow[0] == "employer"){
+                echo "<div class=\"form-group row\">";
+                echo "<label for=\"companyName\" class=\"col-sm-2 col-form-label\">Νέα Επωνυμία Επιχείρησης</label>";
+                echo "<div class=\"col-10\">";
+                echo "<input type=\"text\" class=\"form-control\" id=\"companyName\" name=\"_companyName\" value=\"$myCompany\" onblur=\"changeNewCompanyName()\">";
+                echo "</div>";
+                echo "</div>";
                 $doy_list = mysqli_query($link, "SELECT * FROM doy ORDER BY Name ASC");
                 $myCompanysDoy = mysqli_query($link, "SELECT Doy FROM company WHERE Company_Name = \"$myCompany\"");
                 $myCompanysDoy = mysqli_fetch_array($myCompanysDoy)[0];
-                echo "<label for=\"DOY\" class=\"col-sm-2 col-form-label\">ΔΟΥ Επιχείρησης:</label>";
+                echo "<div class=\"form-group row\">";
+                echo "<label for=\"DOY\" class=\"col-sm-2 col-form-label\">Νέα ΔΟΥ Επιχείρησης:</label>";
+                echo "<div class=\"col-10\">";
                 echo "<select class=\"select\" name=\"_doy\" id=\"DOY\" oninput=\"changeNewDoy()\">";
-
                 while($row = mysqli_fetch_array($doy_list)){
                   echo "<option value=\"$row[0]\"";
                   if($myCompanysDoy == $row[0]){
@@ -57,13 +71,16 @@
                   echo ">$row[0]</option>";
                 }
                 echo "</select>";
+                echo "</div>";
+                echo "</div>";
               }
             }
         ?>
       </div>
       <div class="tab">
         <h2>Νέα στοιχεία Επιχείρησης</h2>
-          <p id="newDoy">Νέα ΔΟΥ: <b></b></p> 
+          <p id="newCompanyName">Νέα Επωνυμία Επιχείρησης: <b><?php echo $myCompany; ?></b></p> 
+          <p id="newDoy">Νέα ΔΟΥ: <b><?php echo $myCompanysDoy; ?></b></p> 
           <p>Αν είστε σίγουροι για τα νέα στοιχεία, πατήστε 'Υποβολή', αλλιώς πατήστε 'Προηγούμενο' για να τα τροποποιήσετε περαιτέρω.</p>
       </div>
       <div style="overflow:auto;">
@@ -116,10 +133,17 @@
     }
     function changeNewDoy(){
       var newDoyInput = document.getElementById("DOY").value;
-      console.log(newDoyInput);
       var confirmParagraph  = document.getElementById("newDoy");
       var bold = confirmParagraph.firstElementChild;
       bold.innerHTML = newDoyInput;
+    }
+    
+    function changeNewCompanyName(){
+      var newCompanyNameInput = document.getElementById("companyName").value;
+      console.log(newCompanyNameInput);
+      var confirmParagraph  = document.getElementById("newCompanyName");
+      var bold = confirmParagraph.firstElementChild;
+      bold.innerHTML = newCompanyNameInput;
     }
   </script>
   <!-- Bootstrap core JavaScript -->

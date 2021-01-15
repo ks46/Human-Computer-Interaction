@@ -129,6 +129,7 @@
             }
           }
         ?>
+      <a class="btn btn-primary btn-lg" href="edit-userprofile.php" role="button">Αλλαγή Στοιχείων</a>
       </div>
       <div class="col-lg-9 mb-4 tab">
         <?php
