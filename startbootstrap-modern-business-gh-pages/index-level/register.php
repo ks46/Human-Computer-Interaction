@@ -21,13 +21,14 @@ require_once "../top.php";
     <p class="lead">Συμπληρώστε την ακόλουθη φόρμα για να εγγραφείτε στο site του Υπουργείου Εργασίας</p>
     <p>Τα πεδία με αστερίσκο * είναι υποχρεωτικά.</p>
 
-    <form class="mt-4 mb-5 needs-validation" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+    <form class="mt-4 mb-5" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
       <!-- Type of user -->
-      <div class="form-group row <?php echo (!empty($user_type_err)) ? 'has-danger' : 'has-success'; ?>">
+      <div class="form-group row <?php if (!empty($user_type_err)) echo "has-danger"; ?>">
         <label for="user_type" class="col-sm-3 col-form-label">Ιδιότητα *</label>
         <div class="col-lg-5">
-          <select name="user_type" class="custom-select" oninput="showTab()" id="user_type">
+          <select name="user_type" oninput="showTab()" id="user_type"
+                  class="form-control custom-select <?php if (!empty($user_type_err)) echo "is-invalid";?>">
             <option value="default" <?php if (isset($user_type) && ($user_type == "default" || $user_type == "")) echo 'selected'; ?>>
               Επιλέξτε ιδιότητα
             </option>
@@ -39,91 +40,92 @@ require_once "../top.php";
             </option>
           </select>
         </div>
-        <span class="form-control-feedback col-lg-4"><?php echo $user_type_err; ?></span>
+        <span class="col-lg-4 help-block <?php if (!empty($user_type_err)) echo 'with-errors'; ?>">
+          <?php echo $user_type_err; ?>
+        </span>
       </div>
 
       <!-- Username -->
-      <div class="form-group row <?php echo (!empty($username_err)) ? 'has-danger' : 'has-success'; ?>">
+      <div class="form-group row <?php if (!empty($username_err)) echo 'has-danger'; ?>">
         <label for="username" class="col-sm-3 col-form-label">Όνομα Χρήστη *</label>
-        <div class="col-lg-5">
-          <!-- <input type="text" name="username" class="form-control" value="<?php echo $username; ?>" id="username" placeholder="MariaPapadopoulou" required> -->
-          <input type="text" name="username" id="username"
-                 class="form-control <?php echo (!empty($username_err)) ? 'form-control-danger' : 'form-control-success'; ?>"
-                 placeholder="MariaPapadopoulou" required value="<?php echo $username; ?>"
-          />
-        </div>
-        <span class="form-control-feedback col-lg-4"><?php echo $username_err; ?></span>
+        <input type="text" name="username" id="username"
+               class="form-control col-lg-5 <?php if (!empty($username_err)) echo 'is-invalid'; ?>"
+               placeholder="MariaPapadopoulou" required value="<?php echo $username; ?>"
+        />
+        <span class="col-lg-4 help-block <?php if (!empty($username_err)) echo 'with-errors'; ?>">
+          <?php echo $username_err; ?>
+        </span>
       </div>
 
       <!-- Password -->
-      <div class="form-group row <?php echo (!empty($password_err)) ? 'has-danger' : 'has-success'; ?>">
+      <div class="form-group row <?php if (!empty($password_err)) echo 'has-danger'; ?>">
         <label for="password" class="col-sm-3 col-form-label">Κωδικός (6 ψηφία τουλάχιστον) *</label>
-        <div class="col-lg-5">
-          <input type="password" name="password" id="password"
-                 class="form-control <?php echo (!empty($password_err)) ? 'form-control-danger' : 'form-control-success'; ?>"
-                 placeholder="password" required value="<?php echo $password; ?>"
-          />
-        </div>
-        <span class="form-control-feedback col-lg-4"><?php echo $password_err; ?></span>
+        <input type="password" name="password" id="password"
+               class="form-control col-lg-5 <?php if (!empty($password_err)) echo 'is-invalid'; ?>"
+               placeholder="password" required value="<?php echo $password; ?>"
+        />
+        <span class="col-lg-4 help-block <?php if (!empty($password_err)) echo 'with-errors'; ?>">
+          <?php echo $password_err; ?>
+        </span>
       </div>
 
       <!-- Password confirmation -->
-      <div class="form-group row <?php echo (!empty($confirm_password_err)) ? 'has-danger' : 'has-success'; ?>">
+      <div class="form-group row <?php if (!empty($confirm_password_err)) echo 'has-danger'; ?>">
         <label for="confirm_password" class="col-sm-3 col-form-label">Επιβεβαίωση Κωδικού *</label>
-        <div class="col-lg-5">
-          <input type="password" name="confirm_password" id="confirm_password"
-                 class="form-control <?php echo (!empty($confirm_password_err)) ? 'form-control-danger' : 'form-control-success'; ?>"
-                 placeholder="password" required value="<?php echo $confirm_password; ?>"
-          />
-        </div>
-        <span class="form-control-feedback col-lg-4"><?php echo $confirm_password_err; ?></span>
+        <input type="password" name="confirm_password" id="confirm_password"
+               class="form-control col-lg-5 <?php if (!empty($confirm_password_err)) echo 'is-invalid'; ?>"
+               placeholder="password" required value="<?php echo $confirm_password; ?>"
+        />
+        <span class="col-lg-4 help-block <?php if (!empty($confirm_password_err)) echo 'with-errors'; ?>">
+          <?php echo $confirm_password_err; ?>
+        </span>
       </div>
 
       <!-- First name -->
-      <div class="form-group row <?php echo (!empty($first_name_err)) ? 'has-danger' : 'has-success'; ?>">
+      <div class="form-group row <?php if (!empty($first_name_err)) echo 'has-danger'; ?>">
         <label for="first_name" class="col-sm-3 col-form-label">Όνομα *</label>
-        <div class="col-lg-5">
-          <input type="text" name="first_name" id="first_name"
-                 class="form-control <?php echo (!empty($first_name_err)) ? 'form-control-danger' : 'form-control-success'; ?>"
-                 placeholder="Μαρία" required value="<?php echo $first_name; ?>"
-          />
-        </div>
-        <span class="form-control-feedback col-lg-4"><?php echo $first_name_err; ?></span>
+        <input type="text" name="first_name" id="first_name"
+               class="form-control col-lg-5 <?php if (!empty($first_name_err)) echo 'is-invalid'; ?>"
+               placeholder="Μαρία" required value="<?php echo $first_name; ?>"
+        />
+        <span class="col-lg-4 help-block <?php if (!empty($first_name_err)) echo 'with-errors'; ?>">
+          <?php echo $first_name_err; ?>
+        </span>
       </div>
 
       <!-- Last name -->
-      <div class="form-group row <?php echo (!empty($last_name_err)) ? 'has-danger' : 'has-success'; ?>">
+      <div class="form-group row <?php if (!empty($last_name_err)) echo 'has-danger'; ?>">
         <label for="last_name" class="col-sm-3 col-form-label">Επώνυμο *</label>
-        <div class="col-lg-5">
-          <input type="text" name="last_name" id="last_name"
-                class="form-control <?php echo (!empty($last_name_err)) ? 'form-control-danger' : 'form-control-success'; ?>"
-                placeholder="Παπαδοπούλου" required value="<?php echo $last_name; ?>"
-          />
-        </div>
-        <span class="form-control-feedback col-lg-4"><?php echo $last_name_err; ?></span>
+        <input type="text" name="last_name" id="last_name"
+              class="form-control col-lg-5 <?php if (!empty($last_name_err)) echo 'is-invalid'; ?>"
+              placeholder="Παπαδοπούλου" required value="<?php echo $last_name; ?>"
+        />
+        <span class="col-lg-4 help-block <?php if (!empty($last_name_err)) echo 'with-errors'; ?>">
+          <?php echo $last_name_err; ?>
+        </span>
       </div>
 
       <!-- AFM -->
-      <div class="form-group row <?php echo (!empty($AFM_err)) ? 'has-danger' : 'has-success'; ?>">
+      <div class="form-group row <?php if (!empty($AFM_err)) echo 'has-danger'; ?>">
         <label for="AFM" class="col-sm-3 col-form-label">
           <abbr title="Αριθμός Φορολογικού Μητρώου">Α.Φ.Μ.</abbr> *
         </label>
-        <div class="col-lg-5">
-          <input type="number" name="AFM" id="AFM"
-                 class="form-control <?php echo (!empty($AFM_err)) ? 'form-control-danger' : 'form-control-success'; ?>"
-                 pattern="\d{9}" placeholder="012345678" required value="<?php echo $AFM; ?>"
-          >
-        </div>
-        <span class="form-control-feedback col-lg-4"><?php echo $AFM_err; ?></span>
+        <input type="number" name="AFM" id="AFM"
+               class="form-control col-lg-5 <?php if (!empty($AFM_err)) echo 'is-invalid'; ?>"
+               pattern="\d{9}" placeholder="012345678" required value="<?php echo $AFM; ?>"
+        />
+        <span class="col-lg-4 help-block <?php if (!empty($AFM_err)) echo 'with-errors'; ?>">
+          <?php echo $AFM_err; ?>
+        </span>
       </div>
 
       <!-- NOTE: the following fields will appear only if user is an employee -->
       <div class="tab">
         <!-- company name -->
-        <div class="form-group row mt-0 <?php echo (!empty($Company_Name_err)) ? 'has-danger' : 'has-success'; ?>">
+        <div class="form-group row mt-0 <?php if (!empty($Company_Name_err)) echo 'has-danger'; ?>">
           <label for="Company_Name" class="col-sm-3 col-form-label">Εταιρεία Απασχόλησης *</label>
           <div class="col-lg-5">
-            <select class="custom-select" name="Company_Name" id="Company_Name">
+            <select class="custom-select <?php if (!empty($Company_Name_err)) echo 'is-invalid'; ?>" name="Company_Name" id="Company_Name">
               <option value="default" <?php if (isset($Company_Name) && ($Company_Name == "default" || $Company_Name == "")) echo "selected"; ?>>
                 Επιλέξτε εταιρεία
               </option>
@@ -144,7 +146,7 @@ require_once "../top.php";
                     <?php
                   }
                 } else {
-                  echo "Παρουσιάστηκε κάποιο σφάλμα, παρακαλώ δοκιμάστε ξανά αργότερα.";
+                  $Company_Name_err = "Παρουσιάστηκε κάποιο σφάλμα, παρακαλώ δοκιμάστε ξανά αργότερα";
                 }
                 // Close statement
                 mysqli_stmt_close($stmt);
@@ -152,7 +154,9 @@ require_once "../top.php";
               ?>
             </select>
           </div>
-          <span class="form-control-feedback col-lg-4"><?php echo $Company_Name_err; ?></span>
+          <span class="col-lg-4 help-block <?php if (!empty($Company_Name_err)) echo 'with-errors'; ?>">
+            <?php echo $Company_Name_err; ?>
+          </span>
         </div>
 
         <!-- Has young children?? -->
@@ -172,22 +176,22 @@ require_once "../top.php";
       <!-- NOTE: the following fields will appear only if user is an employer -->
       <div class="tab">
         <!-- Company name -->
-        <div class="form-group row mt-0 <?php echo (!empty($employer_Company_Name_err)) ? 'has-danger' : 'has-success'; ?>">
+        <div class="form-group row mt-0 <?php if (!empty($employer_Company_Name_err)) echo 'has-danger'; ?>">
           <label for="employer_Company_Name" class="col-sm-3 col-form-label">Επωνυμία Εταιρείας *</label>
-          <div class="col-lg-5">
-            <input type="text" name="employer_Company_Name" id="employer_Company_Name"
-                   class="form-control <?php echo (!empty($employer_Company_Name_err)) ? 'form-control-danger' : 'form-control-success'; ?>"
-                   placeholder="Η Εταιρεία Μου" value="<?php echo $employer_Company_Name; ?>"
-            >
-          </div>
-        <span class="form-control-feedback col-lg-4"><?php echo $employer_Company_Name_err; ?></span>
+          <input type="text" name="employer_Company_Name" id="employer_Company_Name"
+                 class="form-control col-lg-5 <?php if (!empty($employer_Company_Name_err)) echo 'is-invalid'; ?>"
+                 placeholder="Η Εταιρεία Μου" value="<?php echo $employer_Company_Name; ?>"
+          />
+          <span class="col-lg-4 help-block <?php if (!empty($employer_Company_Name_err)) echo 'with-errors'; ?>">
+            <?php echo $employer_Company_Name_err; ?>
+          </span>
         </div>
 
         <!-- DOY -->
-        <div class="form-group row mt-0 <?php echo (!empty($DOY_err)) ? 'has-danger' : 'has-success'; ?>">
+        <div class="form-group row mt-0 <?php if (!empty($DOY_err)) echo 'has-danger'; ?>">
           <label for="DOY" class="col-sm-3 col-form-label"><abbr title="Δημόσια Οικονομική Υπηρεσία">Δ.Ο.Υ.</abbr> *</label>
           <div class="col-lg-5">
-            <select class="custom-select" name="DOY" id="DOY">
+            <select class="custom-select <?php if (!empty($DOY_err)) echo 'is-invalid'; ?>" name="DOY" id="DOY">
               <option value="deafault" <?php if (isset($DOY) && ($DOY == "default" || $DOY == "")) echo "selected"; ?>>
                 Επιλέξτε ΔΟΥ
               </option>
@@ -208,7 +212,7 @@ require_once "../top.php";
               <?php
                     }
                   } else {
-                    echo "Παρουσιάστηκε κάποιο σφάλμα, παρακαλώ δοκιμάστε ξανά αργότερα.";
+                    $DOY_err = "Παρουσιάστηκε κάποιο σφάλμα, παρακαλώ δοκιμάστε ξανά αργότερα";
                   }
                   // Close statement
                   mysqli_stmt_close($stmt);
@@ -216,7 +220,9 @@ require_once "../top.php";
               ?>
             </select>
           </div>
-          <span class="form-control-feedback col-l-4"><?php echo $DOY_err; ?></span>
+          <span class="col-lg-4 help-block <?php if (!empty($DOY_err)) echo 'with-errors'; ?>">
+            <?php echo $DOY_err; ?>
+          </span>
         </div>
       </div>
 
