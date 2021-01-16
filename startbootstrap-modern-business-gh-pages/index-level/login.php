@@ -125,7 +125,8 @@ require_once "../top.php" ?>
       <div class="form-group">
           <input type="submit" class="btn btn-primary" value="Σύνδεση">
       </div>
-      <p class="lead my-5">Δεν έχετε λογαριασμό; <a class="btn btn-sm btn-primary" href="register.php">Κάντε εγγραφή</a></p>
+      <p class="lead mt-5">Ξεχάσατε τον κωδικό σας; <a class="btn btn-link" href="#" role="button">Κάντε Επαναφορά Κωδικού</a></p>
+      <p class="lead mb-3">Δεν έχετε λογαριασμό; <a class="btn btn-primary ml-3" href="register.php" role="button">Κάντε εγγραφή</a></p>
     </form>
   </section>
   <!-- NOTE: form section ends here -->
