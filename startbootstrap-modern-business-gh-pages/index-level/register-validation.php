@@ -218,6 +218,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             } else {
               $is_form_valid = false;
               echo "Παρουσιάστηκε κάποιο σφάλμα, παρακαλώ δοκιμάστε ξανά αργότερα.";
+              echo mysqli_stmt_error($stmt_insert_employee);
             }
             mysqli_stmt_close($stmt_insert_employee);
           }
@@ -270,8 +271,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   // Close connection
   mysqli_close($link);
 
-  if ($is_form_valid) {
-    header("location: successful-register.php");                     // Redirect
-  }
+  // if ($is_form_valid) {
+    // header("location: successful-register.php");                     // Redirect
+  // }
 }
 ?>

@@ -136,10 +136,10 @@ require_once "../top.php";
                 if (mysqli_stmt_execute($stmt)) {
                   $result = mysqli_stmt_get_result($stmt);
                   // fetch company name from each row of result
-                  while ($company_name = mysqli_fetch_array($result)[0]) {
+                  while ($company_name = mysqli_fetch_array($result)) {
                     ?>
-                    <option value=<?php echo $company_name; ?> <?php if (isset($Company_Name) && ($Company_Name == $company_name)) echo "selected"; ?>>
-                      <?php echo $company_name; ?>
+                    <option value="<?php echo $company_name[0]; ?>" <?php if (isset($Company_Name) && ($Company_Name == $company_name[0])) echo "selected"; ?>>
+                      <?php echo $company_name[0]; ?>
                     </option>
                     <?php
                   }
