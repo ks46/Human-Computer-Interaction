@@ -120,7 +120,7 @@ require_once "../top.php";
       </div>
 
       <!-- NOTE: the following fields will appear only if user is an employee -->
-      <div class="tab">
+      <div class="tab" style="<?php if (isset($user_type) && ($user_type == "employee")) echo "display: block;"; else echo "display: none"; ?>">
         <!-- company name -->
         <div class="form-group row mt-0 <?php if (!empty($Company_Name_err)) echo 'has-danger'; ?>">
           <label for="Company_Name" class="col-sm-3 col-form-label">Εταιρεία Απασχόλησης *</label>
@@ -174,7 +174,7 @@ require_once "../top.php";
       </div>
 
       <!-- NOTE: the following fields will appear only if user is an employer -->
-      <div class="tab">
+      <div class="tab" style="<?php if (isset($user_type) && ($user_type == "employer")) echo "display: block;"; else echo "display: none"; ?>">
         <!-- Company name -->
         <div class="form-group row mt-0 <?php if (!empty($employer_Company_Name_err)) echo 'has-danger'; ?>">
           <label for="employer_Company_Name" class="col-sm-3 col-form-label">Επωνυμία Εταιρείας *</label>
@@ -204,10 +204,10 @@ require_once "../top.php";
                   if (mysqli_stmt_execute($stmt)) {
                     $result = mysqli_stmt_get_result($stmt);
                     // fetch company name from each row of result
-                    while ($doy_name = mysqli_fetch_array($result)[0]) {
+                    while ($doy_name = mysqli_fetch_array($result)) {
               ?>
-              <option value=<?php echo $doy_name; ?> <?php if (isset($DOY) && ($DOY == $doy_name)) echo "selected"; ?>>
-                <?php echo $doy_name; ?>
+              <option value=<?php echo $doy_name[0]; ?> <?php if (isset($DOY) && ($DOY == $doy_name[0])) echo "selected"; ?>>
+                <?php echo $doy_name[0]; ?>
               </option>
               <?php
                     }
@@ -241,6 +241,7 @@ require_once "../top.php";
 <!-- NOTE: Page Content ends here -->
 
 <script>
+
 function showTab() {
   var x = document.getElementsByClassName("tab");
   var dropdowns = document.getElementsByTagName("select");

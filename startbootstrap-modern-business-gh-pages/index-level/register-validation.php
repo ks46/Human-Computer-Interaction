@@ -266,10 +266,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   }
 
   // Close connection
-  mysqli_close($link);
 
-  // if ($is_form_valid) {
-    // header("location: successful-register.php");                     // Redirect
-  // }
+  if ($is_form_valid) {
+    mysqli_close($link);
+    header("location: successful-register.php");                     // Redirect
+  }
 }
 ?>
