@@ -223,40 +223,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             mysqli_stmt_close($stmt_insert_employee);
           }
         } elseif ($user_type == "employer") {
-          // prepare an insert statement into company table
-          $sql = "INSERT INTO company (Company_Name, Doy) VALUES (?, ?)";
-          if ($stmt_insert_company = mysqli_prepare($link, $sql)) {
+          $sql = "INSERT INTO employer (AFM, Company_Name) VALUES (?, ?)";
+          if ($stmt_insert_employer = mysqli_prepare($link, $sql)) {
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt_insert_company, "ss", $param_companyName, $param_Doy);
+            mysqli_stmt_bind_param($stmt_insert_employer, "ss", $param_AFM, $param_companyName);
             // Set parameters
+            $param_AFM = $AFM;
             $param_companyName = $employer_Company_Name;
-            $param_Doy = $DOY;
             // execute query
-            if (mysqli_stmt_execute($stmt_insert_company)) {
-              // query executed successfully
-              // prepare an insert statement into employer table
-              $sql = "INSERT INTO employer (AFM, Company_Name) VALUES (?, ?)";
-              if ($stmt_insert_employer = mysqli_prepare($link, $sql)) {
+            if (mysqli_stmt_execute($stmt_insert_employer)) {
+              // query executed successfully, can redirect to next page
+              $sql = "INSERT INTO company (Company_Name, Doy) VALUES (?, ?)";
+              if ($stmt_insert_company = mysqli_prepare($link, $sql)) {
                 // Bind variables to the prepared statement as parameters
-                mysqli_stmt_bind_param($stmt_insert_employer, "ss", $param_AFM, $param_companyName);
+                mysqli_stmt_bind_param($stmt_insert_company, "ss", $param_companyName, $param_Doy);
                 // Set parameters
-                $param_AFM = $AFM;
                 $param_companyName = $employer_Company_Name;
+                $param_Doy = $DOY;
                 // execute query
-                if (mysqli_stmt_execute($stmt_insert_employer)) {
-                  // query executed successfully, can redirect to next page
+                if (mysqli_stmt_execute($stmt_insert_company)) {
                   $is_form_valid = true;
-                } else {
+                }else {
                   $is_form_valid = false;
                   echo "Παρουσιάστηκε κάποιο σφάλμα, παρακαλώ δοκιμάστε ξανά αργότερα.";
                 }
-                mysqli_stmt_close($stmt_insert_employer);
+                mysqli_stmt_close($stmt_insert_company);
               }
             } else {
               $is_form_valid = false;
               echo "Παρουσιάστηκε κάποιο σφάλμα, παρακαλώ δοκιμάστε ξανά αργότερα.";
             }
-            mysqli_stmt_close($stmt_insert_company);
+            mysqli_stmt_close($stmt_insert_employer);
           }
         }
       } else {
