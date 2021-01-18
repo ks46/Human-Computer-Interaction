@@ -46,7 +46,20 @@
   }else{
     echo "<h1>".mysqli_stmt_error($stmt)."</h1>";
   }
-  $title="COVID-19 - Άδεια Ειδικού Σκοπού - Πληροφορίες";
+  
+  if($_SERVER["REQUEST_METHOD"] == "POST") {
+    $firstName = trim($_POST["firstName"]);
+    $lastName = trim($_POST["lastName"]);
+    $apptDate = trim($_POST["appointmentDate"]);
+    if(!empty($firstName) && !empty($lastName) && !empty($apptDate)){
+      $_SESSION["firstName"] = $firstName;
+      $_SESSION["lastName"] = $lastName;
+      $_SESSION["apptDate"] = $apptDate;
+      header("location: dateform3.php");
+    }
+  }
+  
+  $title="Επικοινωνία - Κλείστε Ραντεβού";
   require_once "../top.php";
 ?>
 
@@ -61,39 +74,33 @@
       </ol>
     </nav>
 
-    <h2>Στοιχεία Ατόμου</h2>
-    <div class="form-group row">
-      <label for="FirstName" class="col-sm-2 col-form-label">Όνομα:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="employeeFirstName">
-        <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
-      </div>
-    </div>
-    <div class="form-group row">
-      <label for="LastName" class="col-sm-2 col-form-label">Επώνυμο:</label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" id="employeeLastName">
-        <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
-      </div>
-    </div>
-    
-    <!--date-->
-    <h2>Επιλέξτε Ημερομηνία</h2>
-    <div class="form-group row">
-        <label for="begOfSusp" class="col-sm-2 col-form-label">Από:</label>
-        <div class="col-10">
-            <!-- <input type="date" id="begOfSusp" min="2021-01-01">-->
-            
-            <!---->
-            
-            <input type="text" id="begOfSusp">
-            
-            <!---->
-            
-            <!-- <input type="time" id="TimeSusp"> -->
-            <div class="invalid-feedback">Η επιλογή ημερομηνίας είναι υποχρεωτική.</div>
+    <form id="apptDateForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+      <h2>Στοιχεία Ατόμου</h2>
+      <div class="form-group row">
+        <label for="FirstName" class="col-sm-2 col-form-label">Όνομα<small>*</small>:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="firstName" id="FirstName" required>
+          <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
         </div>
-    </div>
+      </div>
+      <div class="form-group row <?php echo (empty($lastName)) ? 'has-danger' : ''; ?>">
+        <label for="LastName" class="col-sm-2 col-form-label">Επώνυμο<small>*</small>:</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="lastName" id="LastName" required>
+          <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+        </div>
+      </div>
+      
+      <!--date-->
+      <div class="form-group row">
+        <label for="apptDate" class="col-sm-2 col-form-label">Επιλέξτε Ημερομηνία<small>*</small>:</label>
+        <div class="col-10">              
+          <input type="text" name="appointmentDate" id="apptDate" required>
+          <div class="invalid-feedback">Η επιλογή ημερομηνίας είναι υποχρεωτική.</div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" id="nextBtn">Επιλογή ώρας</button>
+    </form>
   </div>
           
   <script>
@@ -107,9 +114,8 @@
     echo "];";
     ?>
     
-    var toTest = 3;
     $(document).ready(function(){
-      $("#begOfSusp").datepicker({beforeShowDay:nonworkingdates});
+      $("#apptDate").datepicker({beforeShowDay:nonworkingdates});
       function nonworkingdates(datep){
           var day = datep.getDay();
           if(day == 0 || day == 1 || day == 6){
@@ -131,112 +137,6 @@
       }
     });
 
-
-
-   // function valiDate(){
-        // var br = document.getElementById("BRANCH");
-        // var fn = document.getElementById("FirstName");
-        // var ln = document.getElementById("LastName");
-        // var valid1 = true;
-        // var valid2 = true;
-        // var valid3 = true;
-        // // var valid = true;
-        // var erstr1 = new String();
-        // var erstr2 = new String();
-        // var erstr3 = new String();
-        
-        // var frow1 = br.parentNode;
-        // var frow2 = fn.parentNode.parentNode;
-        // var frow3 = ln.parentNode.parentNode;
-        
-        // var ncn1;
-        // var ncn2;
-        // var ncn3;
-        
-        // //var x, i, input, valid = true;
-        // // x = document.getElementsByClassName("tab");
-        // // formGroups = x[currentTab].getElementsByClassName("form-group row");
-        
-        // // for(i=0;i<formGroups.length;i++{
-            // // input = formGroups[i].getElementsByTagName("input");
-            // if(br.value == "default"){
-                // if(br.className.indexOf(" is-invalid") == -1){
-                    // br.className += " is-invalid";
-                // }
-                // erstr1+= "Η επιλογή παραρτήματος είναι υποχρεωτική!\n";
-                // valid1 = false;
-            // }
-            // if(fn == ""){ 
-                // if(fn.className.indexOf(" is-invalid") == -1){
-                    // fn.className += " is-invalid";
-                // }
-                // erstr2+= "Η εισαγωγή ονόματος είναι υποχρεωτική!\n";
-                // valid2 = false;
-            // }
-            // if(ln.value == ""){
-                // if(ln.className.indexOf(" is-invalid") == -1){
-                    // ln.className += " is-invalid";
-                // }
-                // erstr3+= "Η εισαγωγή επωνύμου είναι υποχρεωτική!\n";
-                // valid3 = false;
-            // }
-            
-            // if(!valid1){
-                // if(br.className.indexOf(" is-invalid") == -1){
-                    // br.className += " is-invalid";
-                // }
-                // if(frow1.className.indexOf(" has-danger") == -1){
-                    // frow1.className += " has-danger";
-                // }
-            // }else{
-                // if(br.className.indexOf(" is-invalid") !== -1){
-                    // ncn1 = br.className.replace(" is-invalid", "");
-                    // br.className = ncn1;
-                // }
-                // if(frow1.className.indexOf(" has-danger") !== -1){
-                    // ncn1 = frow1.className.replace(" has-danger", "");
-                // }
-                // br.nextSibling.innerHTML = "Το πεδίο είναι υποχρεωτικό.";
-            // }
-            
-            // if(!valid2){
-                // if(fn.className.indexOf(" is-invalid") == -1){
-                    // fn.className += " is-invalid";
-                // }
-                // if(frow2.className.indexOf(" has-danger") == -1){
-                    // frow2.className += " has-danger";
-                // }
-            // }else{
-                // if(fn.className.indexOf(" is-invalid") !== -1){
-                    // ncn2 = fn.className.replace(" is-invalid", "");
-                    // fn.className = ncn2;
-                // }
-                // if(frow2.className.indexOf(" has-danger") !== -1){
-                    // ncn2 = frow2.className.replace(" has-danger", "");
-                // }
-                // fn.nextSibling.nextSibling.innerHTML = "Το πεδίο είναι υποχρεωτικό.";
-            // }
-            
-            // if(!valid3){
-                // if(ln.className.indexOf(" is-invalid") == -1){
-                    // ln.className += " is-invalid";
-                // }
-                // if(frow3.className.indexOf(" has-danger") == -1){
-                    // frow3.className += " has-danger";
-                // }
-            // }else{
-                // if(ln.className.indexOf(" is-invalid") !== -1){
-                    // ncn3 = ln.className.replace(" is-invalid", "");
-                    // ln.className = ncn3;
-                // }
-                // if(frow3.className.indexOf(" has-danger") !== -1){
-                    // ncn3 = frow3.className.replace(" has-danger", "");
-                // }
-                // ln.nextSibling.nextSibling.innerHTML = "Το πεδίο είναι υποχρεωτικό.";
-            // }
-        // // }
-        // return valid;
-    // }     
   </script>
 
   <!-- NOTE: Footer section starts here -->
