@@ -5,6 +5,38 @@
     session_start();
   }
   
+  if($_SERVER["REQUEST_METHOD"] == "POST") {
+    $time = trim($_POST["apptTime"]);
+    $insertionOK = false;
+    if(!empty($time)){
+      $newAppt = "INSERT INTO appointment VALUES (?, ?, ?, ?, ?)";
+      if($stmt = mysqli_prepare($link, $newAppt)){
+        mysqli_stmt_bind_param($stmt, "ssssd", $param_branchName, $param_firstName, $param_lastName, $param_Date, $param_Time);
+        $param_branchName = $_SESSION["branchName"];
+        $param_firstName = $_SESSION["firstName"];
+        $param_lastName = $_SESSION["lastName"];
+        $param_Time = $time;
+        $month = str_split($_SESSION["apptDate"], 2)[0];
+        $day = str_split(str_split($_SESSION["apptDate"], 3)[1], 2)[0];
+        $year = str_split(str_split($_SESSION["apptDate"], 6)[1], 4)[0];
+        $param_Date = "$year-$month-$day";
+        if(mysqli_stmt_execute($stmt)){
+          $insertionOK = true;
+        }else{
+          echo "<h1>".mysqli_error($link)."</h1>";
+        }
+        mysqli_stmt_close($stmt);
+      }
+    }
+    if($insertionOK){
+      unset($_SESSION["branchName"]);
+      unset($_SESSION["firstName"]);
+      unset($_SESSION["lastName"]);
+      unset($_SESSION["apptDate"]);
+      header("location: confirmation-appointment.php");
+    }
+  }
+  
   $title="Επικοινωνία - Κλείστε Ραντεβού";
   require_once "../top.php";
 ?>
@@ -30,8 +62,12 @@
             $availableTimes = "SELECT Time FROM appointment WHERE Date = ? ORDER BY Time ASC";
             if($stmt = mysqli_prepare($link, $availableTimes)){
               mysqli_stmt_bind_param($stmt, "s", $param_Date);
-              $param_Date = "2021-01-20";
-              // $param_Date = $_SESSION["apptDate"];
+              
+              $month = str_split($_SESSION["apptDate"], 2)[0];
+              $day = str_split(str_split($_SESSION["apptDate"], 3)[1], 2)[0];
+              $year = str_split(str_split($_SESSION["apptDate"], 6)[1], 4)[0];
+              $param_Date = "$year-$month-$day";
+
               $timesArray = array("09.00", "09.30", "10.00", "10.30", "11.00", "11.30");
               $timeValuesArray = array(9, 9.5, 10, 10.5, 11, 11.5);
               if(mysqli_stmt_execute($stmt)){
@@ -44,10 +80,8 @@
                 }
                 $timeValuesArray = array_values($timeValuesArray); 
                 $timesArray = array_values($timesArray);
-                print_r($timeValuesArray);
-                print_r($timesArray);
                 for($i = 0; $i < count($timeValuesArray); $i++){
-                  echo "<option value=\"".$timeValuesArray[$i]."\">".$timesArray[$i]."</option>";
+                  echo "<option value=\"".$timeValuesArray[$i]."\">".$timesArray[$i]."</option>\n";
                 }
               }else{
                 echo "<h1>".mysqli_error($link)."</h1>";
