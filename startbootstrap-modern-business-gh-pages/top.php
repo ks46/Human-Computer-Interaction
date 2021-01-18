@@ -24,7 +24,8 @@ if(!isset($_SESSION)) {
   <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <!-- Custom styles for this template -->
   <link href="../css/styles.css" rel="stylesheet">
-
+  <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
   
 </head>
 
