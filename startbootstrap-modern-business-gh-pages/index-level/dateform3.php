@@ -59,14 +59,15 @@
         <select class="select" name="apptTime" id="appointmentTime" required>
           <option value="default" selected>Επιλέξτε</option>
           <?php   
-            $availableTimes = "SELECT Time FROM appointment WHERE Date = ? ORDER BY Time ASC";
+            $availableTimes = "SELECT Time FROM appointment WHERE Date = ? AND branch = ? ORDER BY Time ASC";
             if($stmt = mysqli_prepare($link, $availableTimes)){
-              mysqli_stmt_bind_param($stmt, "s", $param_Date);
+              mysqli_stmt_bind_param($stmt, "ss", $param_Date, $param_branch);
               
               $month = str_split($_SESSION["apptDate"], 2)[0];
               $day = str_split(str_split($_SESSION["apptDate"], 3)[1], 2)[0];
               $year = str_split(str_split($_SESSION["apptDate"], 6)[1], 4)[0];
               $param_Date = "$year-$month-$day";
+              $param_branch = $_SESSION["branchName"];
 
               $timesArray = array("09.00", "09.30", "10.00", "10.30", "11.00", "11.30");
               $timeValuesArray = array(9, 9.5, 10, 10.5, 11, 11.5);
