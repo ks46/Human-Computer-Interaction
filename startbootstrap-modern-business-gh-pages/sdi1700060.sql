@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Φιλοξενητής: 127.0.0.1
--- Χρόνος δημιουργίας: 15 Ιαν 2021 στις 17:32:14
+-- Χρόνος δημιουργίας: 18 Ιαν 2021 στις 20:44:32
 -- Έκδοση διακομιστή: 10.4.17-MariaDB
 -- Έκδοση PHP: 8.0.0
 
@@ -28,11 +28,28 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `appointment` (
-  `AFM` int(9) NOT NULL,
-  `branchName` varchar(255) NOT NULL,
-  `regUnit` varchar(255) NOT NULL,
-  `apptTime` datetime NOT NULL
+  `branch` varchar(255) NOT NULL,
+  `firstName` varchar(255) NOT NULL,
+  `lastName` varchar(255) NOT NULL,
+  `Date` date NOT NULL,
+  `Time` float NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Άδειασμα δεδομένων του πίνακα `appointment`
+--
+
+INSERT INTO `appointment` (`branch`, `firstName`, `lastName`, `Date`, `Time`) VALUES
+('Βύρωνας', 'Ευστράτιος', 'Κουτίβας', '2021-01-20', 11.5),
+('Γαλάτσι', 'Νικόλαος', 'Κουτίβας', '2021-01-20', 9.5),
+('Καλαμάτα', 'Βασιλική', 'Κουτουμά', '2021-01-19', 11),
+('Καλαμάτα', 'Γιώργος', 'Θεοδωρόπουλος', '2021-01-19', 9),
+('Καλαμάτα', 'Ελεάννα', 'Μαλέσκου', '2021-01-20', 9.5),
+('Καλαμάτα', 'Ιωάννα', 'Μαδούρη', '2021-01-19', 10),
+('Καλαμάτα', 'Κωνσταντίνα', 'Θεοδωροπούλου', '2021-01-19', 11.5),
+('Καλαμάτα', 'Μαρία', 'Παπαδοπούλου', '2021-01-19', 9.5),
+('Καλαμάτα', 'Μαρία', 'Σπάλα', '2021-01-20', 10),
+('Καλαμάτα', 'Ουρανία', 'Χατζηπέτρου', '2021-01-19', 10.5);
 
 -- --------------------------------------------------------
 
@@ -76,7 +93,9 @@ CREATE TABLE `company` (
 --
 
 INSERT INTO `company` (`Company_Name`, `Doy`) VALUES
-('Μεταφορική Κουτίβα', 'Καλαμάτα');
+('Μεταφορική Κουτίβα', 'Καλαμάτα'),
+('χαχα', 'Πύργος'),
+('Μαναβική Αργολίδας', 'Τρίπολη');
 
 -- --------------------------------------------------------
 
@@ -121,7 +140,9 @@ CREATE TABLE `employee` (
 
 INSERT INTO `employee` (`AFM`, `workStatus`, `companyName`, `hasChildYoungerThan12`) VALUES
 (123456788, 'parentalleave', 'Μεταφορική Κουτίβα', 1),
-(234567890, 'normal', 'Μεταφορική Κουτίβα', 0);
+(234567890, 'normal', 'Μεταφορική Κουτίβα', 0),
+(345678901, 'normal', 'Μεταφορική Κουτίβα', 0),
+(876543210, 'normal', 'χαχα', 1);
 
 -- --------------------------------------------------------
 
@@ -139,7 +160,9 @@ CREATE TABLE `employer` (
 --
 
 INSERT INTO `employer` (`AFM`, `Company_Name`) VALUES
-(123456789, 'Μεταφορική Κουτίβα');
+(456789012, 'Μαναβική Αργολίδας'),
+(123456789, 'Μεταφορική Κουτίβα'),
+(987654321, 'χαχα');
 
 -- --------------------------------------------------------
 
@@ -220,7 +243,11 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`AFM`, `username`, `password`, `first_name`, `last_name`, `type`) VALUES
 (123456788, 'ks', '$2y$10$8w.9pAoG8hU9B1vBZJkpueWk5w43fMqY1JBQqTDbbV8JTQw65Fyq.', 'Κωνσταντίνα', 'Σταφυλά', 'employee'),
 (123456789, 'geokouv89', '$2y$10$utDFa1WAvZ5AX0blTlyV3O7jtqacRMxnt5TRRqu.4ci9vr2linkeW', 'Γεωργία', 'Κουτίβα', 'employer'),
-(234567890, 'alexneof', '$2y$10$N69a0.wOAAgS5ugwD8LjuOkYzbTNUlraGhbEMqbj03m2YiVCS.Cey\r\n', 'Αλέξανδρος', 'Νεοφώτιστος', 'employee');
+(234567890, 'alexneof', '$2y$10$N69a0.wOAAgS5ugwD8LjuOkYzbTNUlraGhbEMqbj03m2YiVCS.Cey\r\n', 'Αλέξανδρος', 'Νεοφώτιστος', 'employee'),
+(345678901, 'stavTheod', '$2y$10$SvlJUAWvMkzvVNL1kO4EZOCxVN20RgqHThVFAlcjTjN6sFDegpm1C', 'Σταυρούλα', 'Θεοδωρακοπούλου', 'employee'),
+(456789012, 'panKout', '$2y$10$UtdF82XeJh98.MmF.bDcM.kXVSdxlG2CF8d5VV3R53YiP5MAUhZ8y', 'Παναγιώτης', 'Κουτίβας', 'employer'),
+(876543210, 'MargKont', '$2y$10$9nS3bxTFR45uEC2cFNoqzeg4XDh9DQfMmpzqS3H0JMgV7KRbEMoyO', 'Μαργαρίτα', 'Κοντόλαιμου', 'employee'),
+(987654321, 'MarPap', '$2y$10$9CE617Vn7hR.050RRdSwV.RpqG6I0MQICdq54Rn4yu3Tso/4gJce6', 'Μαρία', 'Παπαδοπούλου', 'employer');
 
 --
 -- Ευρετήρια για άχρηστους πίνακες
@@ -230,9 +257,7 @@ INSERT INTO `user` (`AFM`, `username`, `password`, `first_name`, `last_name`, `t
 -- Ευρετήρια για πίνακα `appointment`
 --
 ALTER TABLE `appointment`
-  ADD PRIMARY KEY (`AFM`,`branchName`,`apptTime`),
-  ADD UNIQUE KEY `regUnit` (`regUnit`),
-  ADD KEY `branchName` (`branchName`);
+  ADD PRIMARY KEY (`branch`,`firstName`,`lastName`,`Date`,`Time`);
 
 --
 -- Ευρετήρια για πίνακα `branch`
@@ -303,9 +328,7 @@ ALTER TABLE `user`
 -- Περιορισμοί για πίνακα `appointment`
 --
 ALTER TABLE `appointment`
-  ADD CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`AFM`) REFERENCES `user` (`AFM`),
-  ADD CONSTRAINT `appointment_ibfk_2` FOREIGN KEY (`branchName`) REFERENCES `branch` (`Name`),
-  ADD CONSTRAINT `appointment_ibfk_3` FOREIGN KEY (`regUnit`) REFERENCES `branch` (`RegUnit`);
+  ADD CONSTRAINT `appointment_ibfk_1` FOREIGN KEY (`branch`) REFERENCES `branch` (`Name`);
 
 --
 -- Περιορισμοί για πίνακα `branch`

@@ -17,9 +17,10 @@ require_once "../top.php";
   <!-- NOTE: form section starts here -->
   <section style="margin: auto; width: 60%; padding: 10px;">
     <h1>Σύνδεση Χρήστη</h1>
+    <!-- TODO: do we need the following message ? -->
     <p class="lead">Συμπληρώστε τα στοιχεία σας για να συνδεθείτε</p>
 
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+    <form class="mt-4" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
       <!-- Username -->
       <div class="form-group row <?php echo (!empty($username_err)) ? 'has-danger' : ''; ?>">
         <label for="username" class="col-sm-2 col-form-label">Όνομα Χρήστη</label>
@@ -55,7 +56,7 @@ require_once "../top.php";
 
       <!-- Submit Button -->
       <div class="form-group">
-          <input type="submit" class="btn btn-primary" value="Σύνδεση">
+        <input type="submit" class="btn btn-primary" value="Σύνδεση">
       </div>
       <p class="lead mt-5">Ξεχάσατε τον κωδικό σας; <a class="btn btn-link" href="#" role="button">Επαναφορά Κωδικού</a></p>
       <p class="lead mb-3">Δεν έχετε λογαριασμό; <a class="btn btn-primary ml-3" href="register.php" role="button">Εγγραφή</a></p>
@@ -63,5 +64,21 @@ require_once "../top.php";
   </section>
   <!-- NOTE: form section ends here -->
 </div>
+
+<script type="text/javascript">
+/* NOTE: for each field form (after submit) that php has found to be invalid,
+         when user re-enters a value in this field, hide result of
+         is-invalid and with-errors classes
+*/
+  var invalid_fields = document.querySelectorAll("input.is-invalid");
+  var invalid_prompts = document.querySelectorAll("span.with-errors");
+  for (let i = 0; i < invalid_fields.length; ++i) {
+    invalid_fields[i].addEventListener('change', function() {
+      this.value = "";
+      invalid_prompts[i].textContent = "";
+    });
+  }
+}
+</script>
 
 <?php require_once "../bottom.php"; ?>
