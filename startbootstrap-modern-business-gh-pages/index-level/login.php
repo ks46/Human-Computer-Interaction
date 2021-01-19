@@ -28,7 +28,7 @@ require_once "../top.php";
                class="form-control col-sm-5 <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>"
                value="<?php echo $username; ?>" placeholder="MariaPapadopoulou" required
         />
-        <span class="col-lg-5 help-block <?php echo (!empty($username_err)) ? 'with-errors' : ''; ?>">
+        <span class="form-text col-lg-5  <?php echo (!empty($username_err)) ? 'invalid-feedback' : ''; ?>">
           <?php echo $username_err; ?>
         </span>
       </div>
@@ -40,7 +40,7 @@ require_once "../top.php";
                class="form-control col-sm-5 <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>"
                value="<?php echo $password; ?>" placeholder="password" required
         />
-        <span class="col-lg-5 help-block <?php echo (!empty($username_err)) ? 'with-errors' : ''; ?>">
+        <span class="form-text col-lg-5  <?php echo (!empty($password_err)) ? 'invalid-feedback' : ''; ?>">
           <?php echo $password_err; ?>
         </span>
       </div>
@@ -48,7 +48,7 @@ require_once "../top.php";
       <!-- General error -->
       <?php if (!empty($err)) { ?>
         <div class="form-group row has-danger">
-          <span class="col-lg-5 help-block with-errors">
+          <span class="col-lg-5  invalid-feedback">
             <?php echo $err; ?>
           </span>
         </div>
@@ -65,19 +65,15 @@ require_once "../top.php";
   <!-- NOTE: form section ends here -->
 </div>
 
+
 <script type="text/javascript">
-/* NOTE: for each field form (after submit) that php has found to be invalid,
-         when user re-enters a value in this field, hide result of
-         is-invalid and with-errors classes
-*/
-  var invalid_fields = document.querySelectorAll("input.is-invalid");
-  var invalid_prompts = document.querySelectorAll("span.with-errors");
-  for (let i = 0; i < invalid_fields.length; ++i) {
-    invalid_fields[i].addEventListener('change', function() {
-      this.value = "";
-      invalid_prompts[i].textContent = "";
-    });
-  }
+// NOTE: attempt #2
+var invalid_fields = document.querySelectorAll("input.is-invalid");
+for (let i = 0; i < invalid_fields.length; ++i) {
+  invalid_fields[i].addEventListener('click', function() {
+    this.value = "";
+    this.classList.remove('is-invalid');
+  });
 }
 </script>
 

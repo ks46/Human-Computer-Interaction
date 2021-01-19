@@ -40,7 +40,7 @@ require_once "../top.php";
             </option>
           </select>
         </div>
-        <span class="col-lg-4 help-block <?php if (!empty($user_type_err)) echo 'with-errors'; ?>">
+        <span class="col-lg-4 form-text help-block <?php if (!empty($user_type_err)) echo 'with-errors'; ?>">
           <?php echo $user_type_err; ?>
         </span>
       </div>
@@ -52,7 +52,7 @@ require_once "../top.php";
                class="form-control col-lg-5 <?php if (!empty($username_err)) echo 'is-invalid'; ?>"
                placeholder="MariaPapadopoulou" required value="<?php echo $username; ?>"
         />
-        <span class="col-lg-4 help-block <?php if (!empty($username_err)) echo 'with-errors'; ?>">
+        <span class="col-lg-4 form-text help-block <?php if (!empty($username_err)) echo 'with-errors'; ?>">
           <?php echo $username_err; ?>
         </span>
       </div>
@@ -64,7 +64,7 @@ require_once "../top.php";
                class="form-control col-lg-5 <?php if (!empty($password_err)) echo 'is-invalid'; ?>"
                placeholder="password" required value="<?php echo $password; ?>"
         />
-        <span class="col-lg-4 help-block <?php if (!empty($password_err)) echo 'with-errors'; ?>">
+        <span class="col-lg-4 form-text help-block <?php if (!empty($password_err)) echo 'with-errors'; ?>">
           <?php echo $password_err; ?>
         </span>
       </div>
@@ -76,7 +76,7 @@ require_once "../top.php";
                class="form-control col-lg-5 <?php if (!empty($confirm_password_err)) echo 'is-invalid'; ?>"
                placeholder="password" required value="<?php echo $confirm_password; ?>"
         />
-        <span class="col-lg-4 help-block <?php if (!empty($confirm_password_err)) echo 'with-errors'; ?>">
+        <span class="col-lg-4 form-text help-block <?php if (!empty($confirm_password_err)) echo 'with-errors'; ?>">
           <?php echo $confirm_password_err; ?>
         </span>
       </div>
@@ -88,7 +88,7 @@ require_once "../top.php";
                class="form-control col-lg-5 <?php if (!empty($first_name_err)) echo 'is-invalid'; ?>"
                placeholder="Μαρία" required value="<?php echo $first_name; ?>"
         />
-        <span class="col-lg-4 help-block <?php if (!empty($first_name_err)) echo 'with-errors'; ?>">
+        <span class="col-lg-4 form-text help-block <?php if (!empty($first_name_err)) echo 'with-errors'; ?>">
           <?php echo $first_name_err; ?>
         </span>
       </div>
@@ -100,7 +100,7 @@ require_once "../top.php";
               class="form-control col-lg-5 <?php if (!empty($last_name_err)) echo 'is-invalid'; ?>"
               placeholder="Παπαδοπούλου" required value="<?php echo $last_name; ?>"
         />
-        <span class="col-lg-4 help-block <?php if (!empty($last_name_err)) echo 'with-errors'; ?>">
+        <span class="col-lg-4 form-text help-block <?php if (!empty($last_name_err)) echo 'with-errors'; ?>">
           <?php echo $last_name_err; ?>
         </span>
       </div>
@@ -114,7 +114,7 @@ require_once "../top.php";
                class="form-control col-lg-5 <?php if (!empty($AFM_err)) echo 'is-invalid'; ?>"
                pattern="\d{9}" placeholder="012345678" required value="<?php echo $AFM; ?>"
         />
-        <span class="col-lg-4 help-block <?php if (!empty($AFM_err)) echo 'with-errors'; ?>">
+        <span class="col-lg-4 form-text help-block <?php if (!empty($AFM_err)) echo 'with-errors'; ?>">
           <?php echo $AFM_err; ?>
         </span>
       </div>
@@ -154,7 +154,7 @@ require_once "../top.php";
               ?>
             </select>
           </div>
-          <span class="col-lg-4 help-block <?php if (!empty($Company_Name_err)) echo 'with-errors'; ?>">
+          <span class="col-lg-4 form-text help-block <?php if (!empty($Company_Name_err)) echo 'with-errors'; ?>">
             <?php echo $Company_Name_err; ?>
           </span>
         </div>
@@ -182,7 +182,7 @@ require_once "../top.php";
                  class="form-control col-lg-5 <?php if (!empty($employer_Company_Name_err)) echo 'is-invalid'; ?>"
                  placeholder="Η Εταιρεία Μου" value="<?php echo $employer_Company_Name; ?>"
           />
-          <span class="col-lg-4 help-block <?php if (!empty($employer_Company_Name_err)) echo 'with-errors'; ?>">
+          <span class="col-lg-4 form-text help-block <?php if (!empty($employer_Company_Name_err)) echo 'with-errors'; ?>">
             <?php echo $employer_Company_Name_err; ?>
           </span>
         </div>
@@ -220,7 +220,7 @@ require_once "../top.php";
               ?>
             </select>
           </div>
-          <span class="col-lg-4 help-block <?php if (!empty($DOY_err)) echo 'with-errors'; ?>">
+          <span class="col-lg-4 form-text help-block <?php if (!empty($DOY_err)) echo 'with-errors'; ?>">
             <?php echo $DOY_err; ?>
           </span>
         </div>
