@@ -26,21 +26,19 @@ require_once "../top.php";
       <!-- Type of user -->
       <div class="form-group row <?php if (!empty($user_type_err)) echo "has-danger"; ?>">
         <label for="user_type" class="col-sm-3 col-form-label">Ιδιότητα *</label>
-        <div class="col-lg-5">
-          <select name="user_type" oninput="showTab()" id="user_type"
-                  class="form-control custom-select <?php if (!empty($user_type_err)) echo "is-invalid";?>">
-            <option value="default" <?php if (isset($user_type) && ($user_type == "default" || $user_type == "")) echo 'selected'; ?>>
-              Επιλέξτε ιδιότητα
-            </option>
-            <option value="employee" <?php if (isset($user_type) && ($user_type == "employee")) echo 'selected'; ?>>
-              Εργαζόμενος
-            </option>
-            <option value="employer" <?php if (isset($user_type) && ($user_type == "employer")) echo 'selected'; ?>>
-              Εργοδότης
-            </option>
-          </select>
-        </div>
-        <span class="col-lg-4 form-text help-block <?php if (!empty($user_type_err)) echo 'with-errors'; ?>">
+        <select name="user_type" oninput="showTab()" id="user_type"
+                class="col-lg-5 form-control custom-select <?php if (!empty($user_type_err)) echo "is-invalid";?>">
+          <option value="default" <?php if (isset($user_type) && ($user_type == "default" || $user_type == "")) echo 'selected'; ?>>
+            Επιλέξτε ιδιότητα
+          </option>
+          <option value="employee" <?php if (isset($user_type) && ($user_type == "employee")) echo 'selected'; ?>>
+            Εργαζόμενος
+          </option>
+          <option value="employer" <?php if (isset($user_type) && ($user_type == "employer")) echo 'selected'; ?>>
+            Εργοδότης
+          </option>
+        </select>
+        <span class="col-lg-4 form-text  <?php if (!empty($user_type_err)) echo 'invalid-feedback'; ?>">
           <?php echo $user_type_err; ?>
         </span>
       </div>
@@ -52,7 +50,7 @@ require_once "../top.php";
                class="form-control col-lg-5 <?php if (!empty($username_err)) echo 'is-invalid'; ?>"
                placeholder="MariaPapadopoulou" required value="<?php echo $username; ?>"
         />
-        <span class="col-lg-4 form-text help-block <?php if (!empty($username_err)) echo 'with-errors'; ?>">
+        <span class="col-lg-4 form-text  <?php if (!empty($username_err)) echo 'invalid-feedback'; ?>">
           <?php echo $username_err; ?>
         </span>
       </div>
@@ -64,7 +62,7 @@ require_once "../top.php";
                class="form-control col-lg-5 <?php if (!empty($password_err)) echo 'is-invalid'; ?>"
                placeholder="password" required value="<?php echo $password; ?>"
         />
-        <span class="col-lg-4 form-text help-block <?php if (!empty($password_err)) echo 'with-errors'; ?>">
+        <span class="col-lg-4 form-text  <?php if (!empty($password_err)) echo 'invalid-feedback'; ?>">
           <?php echo $password_err; ?>
         </span>
       </div>
@@ -76,7 +74,7 @@ require_once "../top.php";
                class="form-control col-lg-5 <?php if (!empty($confirm_password_err)) echo 'is-invalid'; ?>"
                placeholder="password" required value="<?php echo $confirm_password; ?>"
         />
-        <span class="col-lg-4 form-text help-block <?php if (!empty($confirm_password_err)) echo 'with-errors'; ?>">
+        <span class="col-lg-4 form-text  <?php if (!empty($confirm_password_err)) echo 'invalid-feedback'; ?>">
           <?php echo $confirm_password_err; ?>
         </span>
       </div>
@@ -88,7 +86,7 @@ require_once "../top.php";
                class="form-control col-lg-5 <?php if (!empty($first_name_err)) echo 'is-invalid'; ?>"
                placeholder="Μαρία" required value="<?php echo $first_name; ?>"
         />
-        <span class="col-lg-4 form-text help-block <?php if (!empty($first_name_err)) echo 'with-errors'; ?>">
+        <span class="col-lg-4 form-text  <?php if (!empty($first_name_err)) echo 'invalid-feedback'; ?>">
           <?php echo $first_name_err; ?>
         </span>
       </div>
@@ -100,7 +98,7 @@ require_once "../top.php";
               class="form-control col-lg-5 <?php if (!empty($last_name_err)) echo 'is-invalid'; ?>"
               placeholder="Παπαδοπούλου" required value="<?php echo $last_name; ?>"
         />
-        <span class="col-lg-4 form-text help-block <?php if (!empty($last_name_err)) echo 'with-errors'; ?>">
+        <span class="col-lg-4 form-text  <?php if (!empty($last_name_err)) echo 'invalid-feedback'; ?>">
           <?php echo $last_name_err; ?>
         </span>
       </div>
@@ -114,7 +112,7 @@ require_once "../top.php";
                class="form-control col-lg-5 <?php if (!empty($AFM_err)) echo 'is-invalid'; ?>"
                pattern="\d{9}" placeholder="012345678" required value="<?php echo $AFM; ?>"
         />
-        <span class="col-lg-4 form-text help-block <?php if (!empty($AFM_err)) echo 'with-errors'; ?>">
+        <span class="col-lg-4 form-text  <?php if (!empty($AFM_err)) echo 'invalid-feedback'; ?>">
           <?php echo $AFM_err; ?>
         </span>
       </div>
@@ -154,7 +152,7 @@ require_once "../top.php";
               ?>
             </select>
           </div>
-          <span class="col-lg-4 form-text help-block <?php if (!empty($Company_Name_err)) echo 'with-errors'; ?>">
+          <span class="col-lg-4 form-text  <?php if (!empty($Company_Name_err)) echo 'invalid-feedback'; ?>">
             <?php echo $Company_Name_err; ?>
           </span>
         </div>
@@ -182,7 +180,7 @@ require_once "../top.php";
                  class="form-control col-lg-5 <?php if (!empty($employer_Company_Name_err)) echo 'is-invalid'; ?>"
                  placeholder="Η Εταιρεία Μου" value="<?php echo $employer_Company_Name; ?>"
           />
-          <span class="col-lg-4 form-text help-block <?php if (!empty($employer_Company_Name_err)) echo 'with-errors'; ?>">
+          <span class="col-lg-4 form-text  <?php if (!empty($employer_Company_Name_err)) echo 'invalid-feedback'; ?>">
             <?php echo $employer_Company_Name_err; ?>
           </span>
         </div>
@@ -220,7 +218,7 @@ require_once "../top.php";
               ?>
             </select>
           </div>
-          <span class="col-lg-4 form-text help-block <?php if (!empty($DOY_err)) echo 'with-errors'; ?>">
+          <span class="col-lg-4 form-text  <?php if (!empty($DOY_err)) echo 'invalid-feedback'; ?>">
             <?php echo $DOY_err; ?>
           </span>
         </div>
@@ -230,8 +228,6 @@ require_once "../top.php";
       <div class="mt-4">
         <button class="btn btn-primary" type="submit">Εγγραφή</button>
         <button class="btn btn-link" type="reset">Καθαρισμός πεδίων</button>
-        <!-- <input type="submit" class="btn btn-primary" value="Εγγραφή"> -->
-        <!-- <input type="reset" class="btn btn-link mx-3" value="Καθαρισμός πεδίων"> -->
       </div>
     </form>
   </section>
@@ -241,7 +237,6 @@ require_once "../top.php";
 <!-- NOTE: Page Content ends here -->
 
 <script>
-
 function showTab() {
   var x = document.getElementsByClassName("tab");
   var dropdowns = document.getElementsByTagName("select");
@@ -257,5 +252,17 @@ function showTab() {
   }
 }
 </script>
+
+
+<script type="text/javascript">
+var invalid_fields = document.querySelectorAll("input.is-invalid");
+for (let i = 0; i < invalid_fields.length; ++i) {
+  invalid_fields[i].addEventListener('click', function() {
+    this.value = "";
+    this.classList.remove('is-invalid');
+  });
+}
+</script>
+
 
 <?php require_once "../bottom.php"; ?>

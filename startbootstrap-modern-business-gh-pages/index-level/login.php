@@ -48,7 +48,7 @@ require_once "../top.php";
       <!-- General error -->
       <?php if (!empty($err)) { ?>
         <div class="form-group row has-danger">
-          <span class="col-lg-5  invalid-feedback">
+          <span class="col-lg-5 form-text invalid-feedback">
             <?php echo $err; ?>
           </span>
         </div>
@@ -67,7 +67,6 @@ require_once "../top.php";
 
 
 <script type="text/javascript">
-// NOTE: attempt #2
 var invalid_fields = document.querySelectorAll("input.is-invalid");
 for (let i = 0; i < invalid_fields.length; ++i) {
   invalid_fields[i].addEventListener('click', function() {
