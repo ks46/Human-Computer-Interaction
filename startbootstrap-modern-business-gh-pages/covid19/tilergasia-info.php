@@ -38,8 +38,11 @@
       <li>Τα ανωτέρω οφείλει να τα γνωστοποιήσει εγγράφως στον εργαζόμενο εντός 8 ημερών από την
       έναρξη της τηλεργασίας.</li>
     </ul>
-
-    <a class="btn btn-primary btn-lg" href="#" role="button">Κάντε Αίτηση</a>
+      <p>Αν είστε εργοδότης και έχετε λογαριασμό στην πλατφόρμα,
+      το μόνο που απαιτείται είναι να επιλέξετε ποιους υπαλλήλους μπορείτε να απασχολήσετε εξ'αποστάσεως.
+      </p>
+    <a class="btn btn-primary btn-lg" href="aitiseis-intermediate.php" role="button">Επιλέξτε Υπαλλήλους</a>
+    <a class="btn btn-primary btn-lg" href="arsi-anastolis-ergasias.php" role="button">Κάντε Άρση της εξ'αποστάσεως απασχόλησης</a> 
   </section>
 </div>
 <!-- NOTE: Page Content ends here -->
