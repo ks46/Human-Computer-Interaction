@@ -22,7 +22,7 @@
       <div class="col-lg-7">
         <p class="lead">Η προσέλευση του κοινού στα γραφεία του Υπουργείου γίνεται μόνο κατόπιν ραντεβού, για έκτακτες περιπτώσεις</p>
         <p class="lead">
-          <a class="btn btn-primary btn-lg" href="#" role="button">Κλείστε Ραντεβού</a>
+          <a class="btn btn-primary btn-lg" href="dateform.php" role="button">Κλείστε Ραντεβού</a>
         </p>
       </div>
     </div>

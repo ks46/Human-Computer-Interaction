@@ -20,6 +20,7 @@ require_once "../top.php";
     <h1>Εγγραφή νέου χρήστη</h1>
     <p class="lead">Συμπληρώστε την ακόλουθη φόρμα για να εγγραφείτε στο site του Υπουργείου Εργασίας</p>
     <p>Τα πεδία με αστερίσκο * είναι υποχρεωτικά.</p>
+<<<<<<< HEAD
 
     <form class="mt-4 mb-5" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 
