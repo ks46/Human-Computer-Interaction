@@ -34,7 +34,7 @@
 <div class="container">
   <!-- NOTE: FAQ section starts here -->
   <div class="row">
-    <div class="col-lg-4 mb-4">
+    <div class="col-lg-6 mb-4">
       <div class="card h-100">
         <h2 class="card-header h4">Εργαζόμενοι</h2>
         <div class="card-body">
@@ -43,7 +43,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-4 mb-4">
+    <div class="col-lg-6 mb-4">
       <div class="card h-100">
         <h2 class="card-header h4">Εργοδότες</h2>
         <div class="card-body">
@@ -52,7 +52,7 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-4 mb-4">
+    <!-- <div class="col-lg-4 mb-4">
       <div class="card h-100">
         <h2 class="card-header h4">Νέες Επιχειρήσεις</h2>
         <div class="card-body">
@@ -60,7 +60,7 @@
           <p class="card-text"><a class="card-link" href="#">Πώς δηλώνω τους υπαλλήλους μου;</a></p>
         </div>
       </div>
-    </div>
+    </div> -->
   </div>
   <!-- NOTE: FAQ section ends here -->
 </div>
