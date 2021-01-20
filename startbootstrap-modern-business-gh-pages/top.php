@@ -55,8 +55,12 @@ if(!isset($_SESSION)) {
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownCOVID">
                 <a class="dropdown-item" href="../covid19/ores-leitourgias-grafeion.php">Λειτουργία Υπηρεσιών Υπουργείου</a>
                 <a class="dropdown-item" href="../covid19/covid19-info.php">Ενημέρωση - Έκτακτα Μέτρα</a>
+                <div class="dropdown-divider"></div>
+                <h6 class="dropdown-header">Για εργαζόμενους</h6>
                 <a class="dropdown-item" href="../covid19/anastoli-info.php">Αναστολή Συμβάσεων Εργαζομένων</a>
                 <a class="dropdown-item" href="../covid19/tilergasia-info.php">Απασχόληση Εργαζομένων με Τηλεργασία</a>
+                <div class="dropdown-divider"></div>
+                <h6 class="dropdown-header">Για εργoδότες</h6>
                 <a class="dropdown-item" href="../covid19/adeia-eidikou-skopou-info.php">Άδεια Ειδικού Σκοπού</a>
               </div>
             </li>
@@ -65,7 +69,11 @@ if(!isset($_SESSION)) {
                 Εργοδότες
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownErgodotes">
-                <a class="dropdown-item" href="#">Σχετικά με τον COVID-19</a>
+                <h6 class="dropdown-header">Σχετικά με τον COVID-19</h6>
+                <a class="dropdown-item" href="../covid19/anastoli-info.php">Αναστολή Συμβάσεων Εργαζομένων</a>
+                <a class="dropdown-item" href="../covid19/tilergasia-info.php">Απασχόληση Εργαζομένων με Τηλεργασία</a>
+                <div class="dropdown-divider"></div>
+                <h6 class="dropdown-header">Γενικά</h6>
                 <a class="dropdown-item" href="#">Νέες Επιχειρήσεις</a>
                 <a class="dropdown-item" href="#">Τροποποίηση Εργασιακής Κατάστασης - Απολαβών Εργαζομένων</a>
               </div>
@@ -75,7 +83,10 @@ if(!isset($_SESSION)) {
                 Εργαζόμενοι
               </a>
               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownErgazomenoi">
-                <a class="dropdown-item" href="#">Σχετικά με τον COVID-19</a>
+                <h6 class="dropdown-header">Σχετικά με τον COVID-19</h6>
+                <a class="dropdown-item" href="../covid19/adeia-eidikou-skopou-info.php">Άδεια Ειδικού Σκοπού</a>
+                <div class="dropdown-divider"></div>
+                <h6 class="dropdown-header">Γενικά</h6>
                 <a class="dropdown-item" href="#">Άδειες</a>
                 <a class="dropdown-item" href="#">Φορολογικές Εισφορές - Ένσημα</a>
                 <a class="dropdown-item" href="#">Κατώτατος Μισθός - Δώρα</a>

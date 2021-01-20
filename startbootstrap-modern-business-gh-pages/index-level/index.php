@@ -47,8 +47,8 @@
       <div class="card h-100">
         <h2 class="card-header h4">Εργοδότες</h2>
         <div class="card-body">
-          <p class="card-text"><a class="card-link" href="#">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</a></p>
-          <p class="card-text"><a class="card-link" href="#">Molestiae atque exercitationem ut consequuntur</a></p>
+          <p class="card-text"><a class="card-link" href="#">Τι δικαιολογητικά χρειάζομαι για άνοιγμα νέας επιχείρησης;</a></p>
+          <p class="card-text"><a class="card-link" href="#">Πώς δηλώνω τους υπαλλήλους μου;</a></p>
         </div>
       </div>
     </div>
