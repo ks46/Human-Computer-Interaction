@@ -226,7 +226,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
           $sql = "INSERT INTO employer (AFM, Company_Name) VALUES (?, ?)";
           if ($stmt_insert_employer = mysqli_prepare($link, $sql)) {
             // Bind variables to the prepared statement as parameters
-            mysqli_stmt_bind_param($stmt_insert_employer, "ss", $param_AFM, $param_companyName);
+            mysqli_stmt_bind_param($stmt_insert_employer, "is", $param_AFM, $param_companyName);
             // Set parameters
             $param_AFM = $AFM;
             $param_companyName = $employer_Company_Name;
