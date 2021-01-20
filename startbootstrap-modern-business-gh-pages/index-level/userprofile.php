@@ -1,9 +1,4 @@
 <?php
-
-  if(!isset($_SESSION)) {
-    session_start();
-  }
-
   require_once "../config.php";
   $title = "Το προφίλ μου";
   require_once "../top.php";
@@ -17,14 +12,14 @@
         <li class="breadcrumb-item active" aria-current="page">Το προφίλ μου</li>
       </ol>
     </nav>
-    
-    
+
+
     <div class="row">
       <!-- Sidebar Column -->
       <div class="col-lg-3 mb-4">
         <div class="list-group">
           <a href="#" class="list-group-item" onclick="showTab(0)">Τα στοιχεία μου</a>
-          <?php 
+          <?php
             $fetchAccountType = "SELECT type FROM user WHERE username = \"".$_SESSION["username"]."\"";
             $accountType = mysqli_query($link, $fetchAccountType);
             if(mysqli_num_rows($accountType) == 0){
@@ -175,19 +170,19 @@
                   }
                   $employeeDates = mysqli_query($link, $fetchEmployeeDates);
                   $employeeDatesRow = mysqli_fetch_array($employeeDates);
-                  
+
                   $emplyear0 = str_split($employeeDatesRow[0], 4)[0];
                   $emplmonth0 = str_split(str_split($employeeDatesRow[0], 5)[1], 2)[0];
                   $emplday0 = str_split(str_split($employeeDatesRow[0], 8)[1], 2)[0];
                   $emplyear1 = str_split($employeeDatesRow[1], 4)[0];
                   $emplmonth1 = str_split(str_split($employeeDatesRow[1], 5)[1], 2)[0];
                   $emplday1 = str_split(str_split($employeeDatesRow[1], 8)[1], 2)[0];
-                  
+
                   echo "<td>$emplday0-$emplmonth0-$emplyear0</td>";
-                  echo "<td>$emplday1-$emplmonth1-$emplyear1</td>\n</tr>";                  
+                  echo "<td>$emplday1-$emplmonth1-$emplyear1</td>\n</tr>";
                 }else{
                   echo "<td></td>";
-                  echo "<td></td>\n</tr>"; 
+                  echo "<td></td>\n</tr>";
                 }
               }
               echo "</tbody>\n</table>";
@@ -199,8 +194,10 @@
             echo mysqli_error($link);
             echo "<table class=\"table table-hover\">";
             echo "<thead>\n<tr>";
+            echo "<th scope=\"col\">Όνομα Άδειας</th>";
             echo "<th scope=\"col\">Από</th>";
             echo "<th scope=\"col\">Έως</th>";
+            echo "<th scope=\"col\">Ενέργειες</th>";
             echo "</tr>\n</thead>";
             echo "<tbody>";
             while($leaveRow = mysqli_fetch_array($myLeaves)){
@@ -210,8 +207,10 @@
               $leaveyear1 = str_split($leaveRow[1], 4)[0];
               $leavemonth1 = str_split(str_split($leaveRow[1], 5)[1], 2)[0];
               $leaveday1 = str_split(str_split($leaveRow[1], 8)[1], 2)[0];
+              echo "<td>Άδεια Ειδικού Σκοπού</td>";
               echo "<td>$leaveday0-$leavemonth0-$leaveyear0</td>";
-              echo "<td>$leaveday1-$leavemonth1-$leaveyear1</td>\n</tr>";      
+              echo "<td>$leaveday1-$leavemonth1-$leaveyear1</td>";
+              echo "<td><a href=\"#\">Προβολή</a> <a class=\"ml-3\" href=\"#\">Εκτύπωση</a></td>\n</tr>";
             }
             echo "</tbody>\n</table>";
           }
@@ -219,7 +218,7 @@
       </div>
     </div>
   </div>
-  
+
   <script>
     var currentTab = 0; // Current tab is set to be the first tab (0)
     showTab(currentTab); // Display the current tab
@@ -232,7 +231,7 @@
       // //... and fix the Previous/Next buttons:
     }
   </script>
-  
-<?php 
+
+<?php
 require_once "../bottom.php";
 ?>
