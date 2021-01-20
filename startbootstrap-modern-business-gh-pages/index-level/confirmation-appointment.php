@@ -9,15 +9,16 @@ require_once "../top.php";
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb breadcrumb-bg">
       <li class="breadcrumb-item"><a href="../index-level/index.php">Αρχική</a></li>
+      <li class="breadcrumb-item"><a href="../index-level/index.php">Αρχική</a></li>
       <li class="breadcrumb-item active" aria-current="page">Επικοινωνία</li>
     </ol>
   </nav>
   <!-- NOTE: Breadcrumbs section ends here -->
 
   <div class="alert alert-success my-5" role="alert">
-    <h4 class="alert-heading">Το ραντεβού σας οριστικοποιήθηκε!</h4>
+    <h1 class="h4 alert-heading">Το ραντεβού σας οριστικοποιήθηκε!</h1>
     <hr>
-    <p class="mb-0">Προσθέστε το ραντεβού στο ημερολόγιό σας <a href="#">εδώ</a>.</p>
+    <p class="mb-0"><a href="#">Προσθέστε το ραντεβού στο ημερολόγιό σας.</a></p>
     <a class="btn btn-success" href="contact.php" role="button">ΟΚ.</a>
   </div>
 

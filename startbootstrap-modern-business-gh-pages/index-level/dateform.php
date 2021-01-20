@@ -25,7 +25,7 @@
       header("location: dateform2.php");
     }
   }
-  
+
 //path cd /mnt/c/xampp/htdocs
 ?>
 
@@ -63,7 +63,7 @@ require_once "../top.php";
           <h2 class="py-2">Βρείτε παράρτημα με βάση την περιφερειακή σας ενότητα</h2>
           <div class="form-group row">
             <label for="DOY" class="col-sm-2 col-form-label">Περιφερειακή Ενότητα:</label>
-            
+
             <select class="select" name="pe" id="DOY">
               <?php
                 echo "<option value=\"default\"";
@@ -80,14 +80,14 @@ require_once "../top.php";
                 }
                ?>
             </select>
-            
+
             <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
           </div>
           <div class = "tab" style="<?php echo (!empty($toprint)) ? "display: inline;" : "display: none;";?>">
             <div class="form-group row">
                 <label for="BRANCH" class="col-sm-2 col-form-label">Παράρτημα:</label>
                 <!--Branch drop down-->
-            
+
                 <select class="select form-control" name="brn" id="BRANCH">
                     <?php
                         echo "<option value=\"default\"";

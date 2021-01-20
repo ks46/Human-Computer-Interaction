@@ -14,11 +14,11 @@ require_once "../top.php";
       <ol class="breadcrumb breadcrumb-bg">
         <li class="breadcrumb-item"><a href="../index-level/index.php">Αρχική</a></li>
         <li class="breadcrumb-item"><a href="anastoli-info.php">COVID-19 / Αίτηση Αναστολής Εργασίας</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Προαπαιτούμενα Αιτήσεων.</li>
+        <li class="breadcrumb-item active" aria-current="page">Προαπαιτούμενα Αιτήσεων</li>
       </ol>
     </nav>
-    
-    <h2>Προαπαιτούμενα Υποβολής Αίτησης Αναστολής Σύμβασης Εργασίας/Απασχόλησης από Απόσταση Υπαλλήλου.</h2>    
+
+    <h1 class="h2">Προαπαιτούμενα Υποβολής Αίτησης Αναστολής Σύμβασης Εργασίας/Απασχόλησης από Απόσταση Υπαλλήλου.</h1>
     <?php
       if(!isset($_SESSION["loggedin"])){
         echo "<div class=\"alert alert-warning\" role=\"alert\" style=\"font-size: 20px;\">";
@@ -52,7 +52,7 @@ require_once "../top.php";
       }
     ?>
   </div>
-  
+
 <?php
   require_once "../bottom.php";
 ?>
