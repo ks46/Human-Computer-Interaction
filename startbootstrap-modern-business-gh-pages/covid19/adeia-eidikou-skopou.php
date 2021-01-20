@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Initialize the session
 if(!isset($_SESSION)) {
   session_start();
@@ -95,7 +95,7 @@ require_once "../top.php";
         <input class = "inputitem" type="text" name="txtUsername" value="" maxlength="10" size="10"/>
         </p>
       </div> -->
-    
+
       <!-- <div class = "tab">
       <br/>
         <label style="font-size:15px;">Αριθμός τέκνων</label>
@@ -107,7 +107,7 @@ require_once "../top.php";
             <option value="more">Άλλο</option>
         </select>
       </div> -->
-      
+
       <form id="parentalLeave" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
         <div class = "tab">
           <h6 style="font-size:15px; color: red;">Ελάχιστο τέσσερις(4) ημέρες</h6>
@@ -126,7 +126,7 @@ require_once "../top.php";
               <div class="invalid-feedback" id="endDateError">Η επιλογή ημερομηνίας λήξης άδειας είναι υποχρεωτική.</div>
             </div>
           </div>
-        </div>        
+        </div>
         <div style="overflow:auto;">
           <div style="float:right;">
             <button type="button" class = "btn btn-primary" id="prevBtn" onclick="nextPrev(-1)">Προηγούμενο</button>
@@ -134,7 +134,7 @@ require_once "../top.php";
           </div>
         </div>
       </form>
-      
+
     </div>
 </body>
 
@@ -171,7 +171,7 @@ require_once "../top.php";
   today2 = yyyy2+'-'+mm2+'-'+dd2;
   document.getElementById("begOfLeave").setAttribute("min", today);
   document.getElementById("endOfLeave").setAttribute("min", today2);
-      
+
 
   function showTab(n) {
     // This function will display the specified tab of the form ...
@@ -208,7 +208,7 @@ require_once "../top.php";
     // Otherwise, display the correct tab:
     showTab(currentTab);
   }
-  
+
   function verifyDates(){
     // This function deals with validation of the form fields
     var x, i, valid = true;
@@ -238,14 +238,14 @@ require_once "../top.php";
         }
       }
     }
-    return valid; // return the valid status          
+    return valid; // return the valid status
   }
-  
+
   function restrictEndDate(){
     var begLeaveDate = new Date(document.getElementById("begOfLeave").value);
     newEndLeaveDate = new Date(Date.parse(begLeaveDate) + 4*24*60*60*1000);
     console.log(newEndLeaveDate);
-    
+
     var day = newEndLeaveDate.getDate();
     var month = newEndLeaveDate.getMonth()+1; //January is 0!
     var year = newEndLeaveDate.getFullYear();
@@ -269,9 +269,9 @@ require_once "../top.php";
 </script>
 
 <!-- Bootstrap core JavaScript -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 <!-- <script src="../vendor/jquery/jquery.min.js"></script> -->
-<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
 <?php
 require_once "../bottom.php";
 ?>

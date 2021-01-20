@@ -1,14 +1,14 @@
 <?php
 
 // require_once "chromephp-master/ChromePhp.php";
- 
+
 // Initialize the session
 if(!isset($_SESSION)) {
   session_start();
 }
 
 // Include config file
-$title="COVID-19 - Αναστολή Σύμβασης - YΠΑΚΠ";
+$title="Αναστολή Σύμβασης";
 
 require_once "../config.php";
 require_once "../top.php";
@@ -23,7 +23,7 @@ require_once "../top.php";
       </ol>
     </nav>
 
-    <h1>Αναστολής Σύμβασης Εργασίας Υπαλλήλου.</h1>    
+    <h1>Αναστολής Σύμβασης Εργασίας Υπαλλήλου</h1>
     <section>
       <div style="font-size: 20px;">
       <p >Σε αναστολή μπορούν να θέσουν τους εργαζόμενούς τους όλοι οι εργοδότες των οποίων οι επιχειρήσεις:</p>
@@ -35,9 +35,9 @@ require_once "../top.php";
       <p>Αν είστε εργοδότης και έχετε λογαριασμό στην πλατφόρμα,
       το μόνο που απαιτείται είναι να επιλέξετε ποιων υπαλλήλων την σύμβαση θέλετε να αναστείλετε.
       </p>
-      </div> 
+      </div>
       <a class="btn btn-primary btn-lg" href="aitiseis-intermediate.php" role="button">Επιλέξτε Υπαλλήλους</a>
-      <a class="btn btn-primary btn-lg" href="arsi-anastolis-ergasias.php" role="button">Κάντε Άρση της Αναστολής</a> 
+      <a class="btn btn-primary btn-lg ml-3" href="arsi-anastolis-ergasias.php" role="button">Κάντε Άρση της Αναστολής</a>
     </section>
   </div>
 

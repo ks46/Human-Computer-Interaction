@@ -3,7 +3,7 @@
 if(!isset($_SESSION)) {
   session_start();
 }
-$title = "Προαπαιτούμενα Άδειας Ειδικού Σκοπού ";
+$title = "Προαπαιτούμενα Άδειας Ειδικού Σκοπού";
 require_once "../top.php";
 require_once "../config.php";
 ?>
@@ -17,7 +17,7 @@ require_once "../config.php";
         <li class="breadcrumb-item active" aria-current="page">Προαπαιτούμενα Αίτησης</li>
       </ol>
     </nav>
-        
+
     <h2>Προαπαιτούμενα Αίτησης Άδειας Ειδικού Σκοπού</h2>
     <?php
       if(!isset($_SESSION["loggedin"])){
@@ -49,8 +49,8 @@ require_once "../config.php";
       }
     ?>
   </div>
-  
-    
+
+
 <?php
   require_once "../bottom.php";
 ?>
