@@ -24,8 +24,8 @@ require_once "../top.php";
         echo "<div class=\"alert alert-warning\" role=\"alert\" style=\"font-size: 20px;\">";
         echo "Για να αιτηθείτε άδεια ειδικού σκοπού, πρέπει να είστε <b>συνδεδεμένος</b> στην πλατφόρμα ως <b>εργοδότης</b>.";
         echo "</div>";
-        echo "<button class=\"btn btn-primary\">Σύνδεση</button>";
-        echo "<button class=\"btn btn-primary ml-3\">Εγγραφή</button>";
+        echo "<a class=\"btn btn-primary\" href=\"../index-level/login.php\">Σύνδεση</a>";
+        echo "<a class=\"btn btn-primary ml-3\" href=\"../index-level/register.php\">Εγγραφή</a>";
       }else if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
         $amIEmployee = "SELECT * FROM user WHERE AFM = ".$_SESSION["AFM"];
         $result = mysqli_query($link, $amIEmployee);

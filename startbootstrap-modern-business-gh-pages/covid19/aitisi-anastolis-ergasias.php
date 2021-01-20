@@ -141,14 +141,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
           <div class="form-group row">
             <label for="begOfSusp" class="col-sm-2 col-form-label">Από:</label>
             <div class="col-10">
-              <input class="form-control" type="date" name="_begOfSusp" id="begOfSusp" min="2021-01-01" max="2021-02-28" oninput="restrictEndDate()" value="<?php echo $startDate; ?>" required>
+              <input class="form-control" type="date" name="_begOfSusp" id="begOfSusp" min="2021-01-01" value="<?php echo $startDate; ?>" required>
               <div class="invalid-feedback">Η επιλογή ημερομηνίας αφετηρίας αναστολής είναι υποχρεωτική.</div>
             </div>
           </div>
           <div class="form-group row">
             <label for="endOfSusp" class="col-sm-2 col-form-label">Έως:</label>
             <div class="col-10">
-              <input class="form-control" type="date" name="_endOfSusp" id="endOfSusp" min="2021-01-01" max="2021-02-28"oninput="restrictStartDate()" value="<?php echo $endDate; ?>" required>
+              <input class="form-control" type="date" name="_endOfSusp" id="endOfSusp" min="2021-01-01" value="<?php echo $endDate; ?>" required>
               <div class="invalid-feedback">Η επιλογή ημερομηνίας λήξης αναστολής είναι υποχρεωτική.</div>
             </div>
           </div>
