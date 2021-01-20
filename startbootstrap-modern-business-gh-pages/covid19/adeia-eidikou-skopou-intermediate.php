@@ -32,7 +32,7 @@ require_once "../config.php";
         $row = mysqli_fetch_array($result);
         if($row[5] == "employer"){
           echo "<div class=\"alert alert-warning\" role=\"alert\" style=\"font-size: 20px;\">";
-          echo "Για να αιτηθείτε άδεια ειδικού σκοπού, πρέπει να είστε συνδεδεμένοι στην πλατφόρμα ως <b>εργοδότης</b>.";
+          echo "Για να αιτηθείτε άδεια ειδικού σκοπού, πρέπει να είστε συνδεδεμένοι στην πλατφόρμα ως <b>εργαζόμενος</b>.";
           echo "</br>Αυτή την στιγμή, είστε συνδεδεμένοι με λογαριασμό <b>εργοδότη με το όνομα χρήστη: ".$_SESSION["username"]."</b>.";
           echo "</div>";
           echo "<a class=\"btn btn-primary\" href=\"../index-level/logout.php\">Αποσύνδεση</a>";

@@ -115,14 +115,14 @@ require_once "../top.php";
           <div class="form-group row">
             <label for="begOfLeave" class="col-sm-2 col-form-label">Από<small>*</small>:</label>
             <div class="col-10">
-              <input class="form-control" type="date" name="_begOfLeave" id="begOfLeave" min="2021-01-01" max="2021-02-28" oninput="restrictEndDate()" value="<?php echo $startDate; ?>" required>
+              <input class="form-control" type="date" name="_begOfLeave" id="begOfLeave" min="2021-01-01" value="<?php echo $startDate; ?>" required>
               <div class="invalid-feedback">Η επιλογή ημερομηνίας αφετηρίας άδειας είναι υποχρεωτική.</div>
             </div>
           </div>
           <div class="form-group row">
             <label for="endOfLeave" class="col-sm-2 col-form-label">Έως<small>*</small>:</label>
             <div class="col-10">
-              <input class="form-control" type="date" name="_endOfLeave" id="endOfLeave" min="2021-01-01" max="2021-02-28" oninput="restrictStartDate()" value="<?php echo $endDate; ?>" required>
+              <input class="form-control" type="date" name="_endOfLeave" id="endOfLeave" min="2021-01-01" value="<?php echo $endDate; ?>" required>
               <div class="invalid-feedback" id="endDateError">Η επιλογή ημερομηνίας λήξης άδειας είναι υποχρεωτική.</div>
             </div>
           </div>
