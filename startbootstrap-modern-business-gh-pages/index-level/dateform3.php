@@ -4,7 +4,7 @@
   if(!isset($_SESSION)) {
     session_start();
   }
-  
+
   if($_SERVER["REQUEST_METHOD"] == "POST") {
     $time = trim($_POST["apptTime"]);
     $insertionOK = false;
@@ -36,7 +36,7 @@
       header("location: confirmation-appointment.php");
     }
   }
-  
+
   $title="Επικοινωνία - Κλείστε Ραντεβού";
   require_once "../top.php";
 ?>
@@ -51,18 +51,18 @@
         <li class="breadcrumb-item active" aria-current="page">Κλείσιμο Ραντεβού - Επιλογή Ώρας</li>
       </ol>
     </nav>
-    
-    
+
+
     <form id="apptTimeForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
       <div class="form-group row">
-        <label for="DOY" class="col-sm-2 col-form-label">Επιλέξτε Ώρα:</label>
-        <select class="select" name="apptTime" id="appointmentTime" required>
+        <label for="DOY" class="col-sm-3 col-form-label">Επιλέξτε Ώρα:</label>
+        <select class="col-lg-5 form-control custom-select" name="apptTime" id="appointmentTime" required>
           <option value="default" selected>Επιλέξτε</option>
-          <?php   
+          <?php
             $availableTimes = "SELECT Time FROM appointment WHERE Date = ? AND branch = ? ORDER BY Time ASC";
             if($stmt = mysqli_prepare($link, $availableTimes)){
               mysqli_stmt_bind_param($stmt, "ss", $param_Date, $param_branch);
-              
+
               $month = str_split($_SESSION["apptDate"], 2)[0];
               $day = str_split(str_split($_SESSION["apptDate"], 3)[1], 2)[0];
               $year = str_split(str_split($_SESSION["apptDate"], 6)[1], 4)[0];
@@ -79,7 +79,7 @@
                   unset($timeValuesArray[$key]);
                   unset($timesArray[$key]);
                 }
-                $timeValuesArray = array_values($timeValuesArray); 
+                $timeValuesArray = array_values($timeValuesArray);
                 $timesArray = array_values($timesArray);
                 for($i = 0; $i < count($timeValuesArray); $i++){
                   echo "<option value=\"".$timeValuesArray[$i]."\">".$timesArray[$i]."</option>\n";
@@ -98,7 +98,7 @@
       <button type="submit" class="btn btn-primary" id="nextBtn">Οριστικοποίηση Ραντεβού</button>
 
     </form>
-    
+
   </div>
 <?php
   require_once "../bottom.php";

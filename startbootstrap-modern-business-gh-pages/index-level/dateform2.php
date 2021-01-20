@@ -4,7 +4,7 @@
   if(!isset($_SESSION)) {
     session_start();
   }
-  
+
   $fullyBookedDates = array();
   $bookedDates = "SELECT Date FROM appointment WHERE branch = ? ";
   if($stmt = mysqli_prepare($link, $bookedDates)){
@@ -26,13 +26,13 @@
               $month = str_split(str_split($date, 5)[1], 2)[0];
               $day = str_split(str_split($date, 8)[1], 2)[0];
               $aDate = array($day, $month, $year);
-                
+
               if(!in_array($aDate, $fullyBookedDates)){
                 array_push($fullyBookedDates, $aDate);
               }
             }
           }else{
-            echo "<h1>".mysqli_stmt_error($apptStmt)."</h1>"; 
+            echo "<h1>".mysqli_stmt_error($apptStmt)."</h1>";
           }
           mysqli_stmt_close($apptStmt);
         }else{
@@ -46,7 +46,7 @@
   }else{
     echo "<h1>".mysqli_stmt_error($stmt)."</h1>";
   }
-  
+
   if($_SERVER["REQUEST_METHOD"] == "POST") {
     $firstName = trim($_POST["firstName"]);
     $lastName = trim($_POST["lastName"]);
@@ -58,7 +58,7 @@
       header("location: dateform3.php");
     }
   }
-  
+
   $title="Επικοινωνία - Κλείστε Ραντεβού";
   require_once "../top.php";
 ?>
@@ -77,24 +77,24 @@
     <form id="apptDateForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
       <h2>Στοιχεία Ατόμου</h2>
       <div class="form-group row">
-        <label for="FirstName" class="col-sm-2 col-form-label">Όνομα<small>*</small>:</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="firstName" id="FirstName" required>
-          <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
-        </div>
+        <label for="FirstName" class="col-sm-3 col-form-label">Όνομα <small>*</small>:</label>
+        <!-- <div class="col-sm-10"> -->
+        <input type="text" class="form-control col-lg-5" name="firstName" id="FirstName" required>
+        <span class="col-lg-4 form-text invalid-feedback">Το πεδίο είναι υποχρεωτικό.</span>
+        <!-- </div> -->
       </div>
       <div class="form-group row <?php echo (empty($lastName)) ? 'has-danger' : ''; ?>">
-        <label for="LastName" class="col-sm-2 col-form-label">Επώνυμο<small>*</small>:</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="lastName" id="LastName" required>
-          <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
-        </div>
+        <label for="LastName" class="col-sm-3 col-form-label">Επώνυμο <small>*</small>:</label>
+        <!-- <div class="col-sm-10"> -->
+        <input type="text" class="form-control  col-lg-5" name="lastName" id="LastName" required>
+        <span class="col-lg-4 form-text invalid-feedback">Το πεδίο είναι υποχρεωτικό.</span>
+        <!-- </div> -->
       </div>
-      
+
       <!--date-->
       <div class="form-group row">
-        <label for="apptDate" class="col-sm-2 col-form-label">Επιλέξτε Ημερομηνία<small>*</small>:</label>
-        <div class="col-10">              
+        <label for="apptDate" class="col-sm-3 col-form-label">Επιλέξτε Ημερομηνία <small>*</small>:</label>
+        <div class="col-5">
           <input type="text" name="appointmentDate" id="apptDate" required>
           <div class="invalid-feedback">Η επιλογή ημερομηνίας είναι υποχρεωτική.</div>
         </div>
@@ -102,7 +102,7 @@
       <button type="submit" class="btn btn-primary" id="nextBtn">Επιλογή ώρας</button>
     </form>
   </div>
-          
+
   <script>
     <?php echo "var invalidDates = [";
     for($i = 0; $i < count($fullyBookedDates); $i++){
@@ -113,7 +113,7 @@
     }
     echo "];";
     ?>
-    
+
     $(document).ready(function(){
       $("#apptDate").datepicker({beforeShowDay:nonworkingdates});
       function nonworkingdates(datep){

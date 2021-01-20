@@ -60,11 +60,10 @@ require_once "../top.php";
   <!-- NOTE: contact info section starts here -->
     <form id="suspForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
         <h1>Κλείσιμο Ραντεβού</h1>
-          <h2 class="py-2">Βρείτε παράρτημα με βάση την περιφερειακή σας ενότητα</h2>
+          <h2 class="py-2 lead">Βρείτε παράρτημα με βάση την περιφερειακή σας ενότητα</h2>
           <div class="form-group row">
-            <label for="DOY" class="col-sm-2 col-form-label">Περιφερειακή Ενότητα:</label>
-
-            <select class="select" name="pe" id="DOY">
+            <label for="DOY" class="col-sm-3 col-form-label">Περιφερειακή Ενότητα:</label>
+            <select class="col-lg-5 form-control custom-select" name="pe" id="DOY">
               <?php
                 echo "<option value=\"default\"";
                 if(empty($pesaved) || $pesaved =="default"){
@@ -80,15 +79,14 @@ require_once "../top.php";
                 }
                ?>
             </select>
-
-            <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+            <span class="col-lg-4 form-text invalid-feedback">Το πεδίο είναι υποχρεωτικό.</span>
           </div>
+
           <div class = "tab" style="<?php echo (!empty($toprint)) ? "display: inline;" : "display: none;";?>">
             <div class="form-group row">
-                <label for="BRANCH" class="col-sm-2 col-form-label">Παράρτημα:</label>
+                <label for="BRANCH" class="col-sm-3 col-form-label">Παράρτημα:</label>
                 <!--Branch drop down-->
-
-                <select class="select form-control" name="brn" id="BRANCH">
+                <select class="col-lg-5 form-control custom-select" name="brn" id="BRANCH">
                     <?php
                         echo "<option value=\"default\"";
                         if(empty($toprint) || $toprint == "default"){
@@ -106,7 +104,7 @@ require_once "../top.php";
                     ?>
                 </select>
             </div>
-            <div class="invalid-feedback">Το πεδίο είναι υποχρεωτικό.</div>
+            <span class="col-lg-4 form-text invalid-feedback">Το πεδίο είναι υποχρεωτικό.</span>
           </div>
 
         <button type="submit" class="btn btn-primary" id="nextBtn"><?php echo (empty($pesaved) || $pesaved == "default") ? "Εύρεση παραρτημάτων" : "Εύρεση Ημερομηνιών";?></button>
