@@ -48,3 +48,8 @@ require_once "../config.php";
       }
     ?>
   </div>
+  
+    
+<?php
+  require_once "../bottom.php";
+?>

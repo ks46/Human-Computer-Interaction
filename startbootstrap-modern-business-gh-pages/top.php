@@ -26,8 +26,6 @@ if(!isset($_SESSION)) {
   <link href="../css/styles.css" rel="stylesheet">
   <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
          rel = "stylesheet">
-         
-         
   <script src="../vendor/jquery/jquery.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

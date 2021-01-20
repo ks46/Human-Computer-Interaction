@@ -1,12 +1,11 @@
 <?php
 
-// require_once "../covid19/chromephp-master/ChromePhp.php";
 if(!isset($_SESSION)) {
   session_start();
 }
+require_once "../config.php";
 $title = "Προαπαιτούμενα Αιτήσεων";
 require_once "../top.php";
-require_once "../config.php";
 ?>
 
 

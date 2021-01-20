@@ -139,13 +139,6 @@
 
   </script>
 
-  <!-- NOTE: Footer section starts here -->
-  <footer class="py-0 bg-light">
-    <div class="container">
-      <p class="m-0 text-center">Copyright &copy; Ypakp 2020</p>
-    </div>
-  </footer>
-</body>
-
-</html>      
-    
+<?php
+require_once "../bottom.php";
+?>
