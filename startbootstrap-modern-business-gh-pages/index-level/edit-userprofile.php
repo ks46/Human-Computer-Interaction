@@ -84,8 +84,12 @@
             echo "</div>";
             echo "<div class=\"tab\">";
             echo "<h2>Νέα στοιχεία Επιχείρησης</h2>";
-            echo "<p id=\"newCompanyName\">Νέα Επωνυμία Επιχείρησης: <b><?php echo $myCompany; ?></b></p>"; 
-            echo "<p id=\"newDoy\">Νέα ΔΟΥ: <b><?php echo $myCompanysDoy; ?></b></p>"; 
+            echo "<p id=\"newCompanyName\">Νέα Επωνυμία Επιχείρησης: <b>";
+            echo $myCompany; 
+            echo "</b></p>"; 
+            echo "<p id=\"newDoy\">Νέα ΔΟΥ: <b>";
+            echo $myCompanysDoy; 
+            echo "</b></p>"; 
             echo "<p>Αν είστε σίγουροι για τα νέα στοιχεία, πατήστε 'Υποβολή', αλλιώς πατήστε 'Προηγούμενο' για να τα τροποποιήσετε περαιτέρω.</p>";
             echo "</div>";
           }else{
