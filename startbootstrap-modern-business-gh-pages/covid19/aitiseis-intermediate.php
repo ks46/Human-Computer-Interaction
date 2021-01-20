@@ -22,10 +22,10 @@ require_once "../top.php";
     <?php
       if(!isset($_SESSION["loggedin"])){
         echo "<div class=\"alert alert-warning\" role=\"alert\" style=\"font-size: 20px;\">";
-        echo "Για να αιτηθείτε άδεια ειδικού σκοπού, πρέπει να είστε <b>συνδεδεμένοι</b> στην πλατφόρμα ως <b>εργοδότης</b>.";
-        echo "</br>Συνδεθείτε <a href=\"../index-level/login.php\">εδώ</a> ή αν δεν είστε εγγεγραμμένοι στην πλατφόρμα,</br>";
-        echo "δημιουργήστε έναν λογαριασμό εργαζόμενου <a href=\"../index-level/register.php\">εδώ</a>.";
+        echo "Για να αιτηθείτε άδεια ειδικού σκοπού, πρέπει να είστε <b>συνδεδεμένος</b> στην πλατφόρμα ως <b>εργοδότης</b>.";
         echo "</div>";
+        echo "<button class=\"btn btn-primary\">Σύνδεση</button>";
+        echo "<button class=\"btn btn-primary ml-3\">Εγγραφή</button>";
       }else if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
         $amIEmployee = "SELECT * FROM user WHERE AFM = ".$_SESSION["AFM"];
         $result = mysqli_query($link, $amIEmployee);
@@ -33,9 +33,10 @@ require_once "../top.php";
         if($row[5] == "employee"){
           echo "<div class=\"alert alert-warning\" role=\"alert\" style=\"font-size: 20px;\">";
           echo "Για να αιτηθείτε άδεια ειδικού σκοπού, πρέπει να είστε συνδεδεμένοι στην πλατφόρμα ως <b>εργοδότης</b>.";
-          echo "</br>Αυτή την στιγμή, είστε συνδεδεμένοι με λογαριασμό εργαζόμενου.";
-          echo "</br>Αν δεν είστε εσείς, αποσυνδεθείτε <a href=\"../index-level/logout.php\">εδώ</a> και συνδεθείτε ξανά</a>";
+          echo "</br>Αυτή την στιγμή, είστε συνδεδεμένοι με λογαριασμό <b>εργαζόμενου με το όνομα χρήστη: ".$_SESSION["username"]."</b>.";
           echo "</div>";
+          echo "<a class=\"btn btn-primary\" href=\"../index-level/logout.php\">Αποσύνδεση</a>";
+          echo "<a class=\"btn btn-primary ml-3\" href=\"../index-level/index.php\">Επιστροφή στην Αρχική</a>";
         }else{
           echo "<section>";
           echo "<p style=\"font-size: 20px;\">Θα σας ζητηθεί να επιλέξετε ποιους από τους υπαλλήλους σας θέλετε να εντάξετε σε ειδικό εργασιακό καθεστώς. ";
@@ -44,7 +45,7 @@ require_once "../top.php";
           echo "<div class=\"alert alert-warning\" role=\"alert\" style=\"font-size: 20px;\">Προσοχή: Οι υπάλληλοι που εμφανίζονται στην ακόλουθη φόρμα είναι αυτοί των οποίων η εργασιακή κατάσταση";
           echo "δεν έχει ήδη μεταβληθεί σε ένα από τα 2 ειδικά καθεστώτα και δεν έχουν βρίσκονται σε άδεια ειδικού σκοπού.";
           echo "Αν επιθυμείτε να αλλάξετε την εργασιακή κατάσταση ενός υπαλλήλου από εξ'αποστάσεως απασχόληση σε αναστολή ή το αντίστροφο,";
-          echo "κάνετε πρώτα άρση της τρέχουσας κατάστασής του <a href=\"arsi-anastolis-ergasias.php\">εδώ</a>.\n</div>";
+          echo "κάνετε πρώτα <a href=\"arsi-anastolis-ergasias.php\">άρση της τρέχουσας κατάστασής του εδώ</a>.\n</div>";
           echo "<a class=\"btn btn-primary btn-lg\" href=\"aitisi-anastolis-ergasias.php\" role=\"button\">Συνεχίστε στην αίτηση</a>";
           echo "</section>";
         }

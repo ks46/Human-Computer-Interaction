@@ -117,10 +117,14 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
                   echo "</br>";
       
                   echo "<div class=\"form-check form-check-inline disabled\" id=\"radios$number\">";
-                  echo "<input class=\"form-check-input\" type=\"radio\" name=\"status$number\" id=\"suspended$number\" value=\"suspended\" disabled>";
-                  echo "<label class=\"form-check-label\" for=\"suspended$number\">Αναστολή Σύμβασης</label>";
-                  echo "<input class=\"form-check-input\" type=\"radio\" name=\"status$number\" id=\"remote$number\" value=\"remote\" disabled>";
-                  echo "<label class=\"form-check-label\" for=\"remote$number\">Τηλεργασία</label>";
+                  echo "<div class=\"custom-control custom-radio custom-control-inline\">";
+                  echo "<input class=\"custom-control-input\" type=\"radio\" name=\"status$number\" id=\"suspended$number\" value=\"suspended\" disabled>";
+                  echo "<label class=\"custom-control-label\" for=\"suspended$number\">Αναστολή Σύμβασης</label>";
+                  echo "</div>";
+                  echo "<div class=\"custom-control custom-radio custom-control-inline\">";
+                  echo "<input class=\"custom-control-input\" type=\"radio\" name=\"status$number\" id=\"remote$number\" value=\"remote\" disabled>";
+                  echo "<label class=\"custom-control-label\" for=\"remote$number\">Τηλεργασία</label>";
+                  echo "</div>";
                   echo "<div class=\"invalid-feedback\">Δεν επιλέξατε νέα εργασιακή κατάσταση για τον υπάλληλο!</div>";
                   echo "</div>";
 
@@ -156,7 +160,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
             echo "<div style=\"overflow:auto;\">";
             echo "<div style=\"float:right;\">"; 
             echo "<button type=\"button\" class=\"btn btn-primary\" id=\"prevBtn\" onclick=\"nextPrev(-1)\">Προηγούμενο</button>";
-            echo "<button type=\"button\" class=\"btn btn-primary\" id=\"nextBtn\" onclick=\"nextPrev(1)\">Επόμενο</button>";
+            echo "<button type=\"button\" class=\"btn btn-primary ml-3\" id=\"nextBtn\" onclick=\"nextPrev(1)\">Επόμενο</button>";
             echo "</div>";
             echo  "</div>";
             echo "</div>"; 
@@ -365,9 +369,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
       }
     </script>
 
-    <!-- Bootstrap core JavaScript -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- <script src="../vendor/jquery/jquery.min.js"></script> -->
-    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  </body>
-</html>
+<?php
+  require_once "../bottom.php";
+?>
