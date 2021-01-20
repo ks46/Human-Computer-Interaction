@@ -9,16 +9,16 @@
   if(mysqli_num_rows($accountType) == 0){
     echo "<p>Sth went terribly wrong</p>";
   }else{
-    $accountTypeRow = mysqli_fetch_array($accountType);  
+    $accountTypeRow = mysqli_fetch_array($accountType);
     if($accountTypeRow[0] == "employer"){
       $myCompany = mysqli_query($link, "SELECT Company_Name FROM employer WHERE AFM = ".$_SESSION["AFM"]);
       $myCompany = mysqli_fetch_array($myCompany)[0];
     }else{
-      
+
     }
   }
 
-  
+
   if($_SERVER["REQUEST_METHOD"] == "POST") {
     if($accountTypeRow[0] == "employer"){
       $doy = trim($_POST["_doy"]);
@@ -36,8 +36,8 @@
 ?>
 
 <?php
-  $title = "Αλλαγή - Το προφίλ μου";
-  require_once "../top.php";  
+  $title = "Επεξεργασία στοιχείων προφίλ";
+  require_once "../top.php";
 ?>
 
   <div class="container mt-4">
@@ -49,13 +49,13 @@
         <li class="breadcrumb-item active" aria-current="page">Επεξεργασία στοιχείων</li>
       </ol>
     </nav>
-    
+
     <!-- Sidebar Column -->
-    <h1>Επεξεργασία Στοιχείων</h1>
+    <h1 class="mb-2">Επεξεργασία Στοιχείων</h1>
     <form id="changeInfo" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-        <?php 
+        <?php
           if($accountTypeRow[0] == "employer"){
-            echo "<div class=\"tab\">";      
+            echo "<div class=\"tab\">";
             echo "<p>Οι τιμές στα πεδία είναι αυτές που έχετε μέχρι στιγμής καταχωρήσει στο σύστημα.</br>
             Αν δεν επιθυμείτε να αλλάξατε κάποιο από τα στοιχεία σας, απλά αγνοήστε το.</p>";
             echo "<div class=\"form-group row\">";
@@ -84,8 +84,8 @@
             echo "</div>";
             echo "<div class=\"tab\">";
             echo "<h2>Νέα στοιχεία Επιχείρησης</h2>";
-            echo "<p id=\"newCompanyName\">Νέα Επωνυμία Επιχείρησης: <b><?php echo $myCompany; ?></b></p>"; 
-            echo "<p id=\"newDoy\">Νέα ΔΟΥ: <b><?php echo $myCompanysDoy; ?></b></p>"; 
+            echo "<p id=\"newCompanyName\">Νέα Επωνυμία Επιχείρησης: <b><?php echo $myCompany; ?></b></p>";
+            echo "<p id=\"newDoy\">Νέα ΔΟΥ: <b><?php echo $myCompanysDoy; ?></b></p>";
             echo "<p>Αν είστε σίγουροι για τα νέα στοιχεία, πατήστε 'Υποβολή', αλλιώς πατήστε 'Προηγούμενο' για να τα τροποποιήσετε περαιτέρω.</p>";
             echo "</div>";
           }else{
@@ -93,31 +93,25 @@
             $hasChildUnder12 = "SELECT hasChildYoungerThan12 FROM employee WHERE AFM = ".$_SESSION["AFM"];
             $hasChildUnder12 = mysqli_query($link, $hasChildUnder12);
             $hasChildUnder12 = mysqli_fetch_array($hasChildUnder12)[0];
-            if($hasChildUnder12 == 1){
-              echo "<p>Αν πλέον δεν έχετε τέκνο κάτω των 12 ετών, τότε μπορείτε να το δηλώσετε παρακάτω</p>";
-              echo "<div class=\"form-group row\">";
-              echo "<label for=\"noKidYounger12\" class=\"form-check-label\">Δεν έχω πλέον τέκνο κάτω των 12 ετών</label>";
-              echo "<input type=\"checkbox\" class=\"form-check-input\" id=\"noKidYounger12\" name=\"_Kid\" value=\"0\">";
-              echo "</div>";
-            }else{
-              echo "<p>Αν αποκτήσατε πρόσφατα τέκνο, τότε μπορείτε να το δηλώσετε παρακάτω ώστε να γίνετε δικαιούχοι της άδειας ειδικού σκοπού.</p>";
-              echo "<div class=\"form-group row\">";
-              echo "<label for=\"newKidYounger12\" class=\"form-check-label\">Απέκτησα τέκνο κάτω των 12 ετών</label>";
-              echo "<input type=\"checkbox\" class=\"form-check-input\" id=\"newKidYounger12\" name=\"_Kid\" value=\"1\">";
-              echo "</div>";
-            }
+            echo "<span class=\"form-text\">Αλλαγή στοιχείων παιδιών</span>";
+            echo "<div class=\"form-check form-check-inline\">";
+            echo "<input type=\"checkbox\" class=\"form-check-input\" id=\"noKidYounger12\" name=\"_Kid\" value=\"";
+            echo ($hasChildUnder12 == 1) ? "1" : "0";
+            echo "\">";
+            echo "<label for=\"noKidYounger12\" class=\"form-check-label\">Όλα μου τα παιδιά είναι άνω των 12 ετών</label>";
+            echo "</div>";
             echo "</div>";
           }
         ?>
         <div style="overflow:auto;">
           <div style="float:right;">
             <button type="button" class = "btn btn-primary" id="prevBtn" onclick="nextPrev(-1)">Προηγούμενο</button>
-            <button type="button" class = "btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Επόμενο</button>        
+            <button type="button" class = "btn btn-primary" id="nextBtn" onclick="nextPrev(1)">Επόμενο</button>
           </div>
         </div>
       </div>
-   </form>    
-  
+   </form>
+
   <script>
     var currentTab = 0; // Current tab is set to be the first tab (0)
     showTab(currentTab); // Display the current tab
@@ -163,7 +157,7 @@
       var bold = confirmParagraph.firstElementChild;
       bold.innerHTML = newDoyInput;
     }
-    
+
     function changeNewCompanyName(){
       var newCompanyNameInput = document.getElementById("companyName").value;
       console.log(newCompanyNameInput);
@@ -173,11 +167,11 @@
     }
   </script>
   <!-- Bootstrap core JavaScript -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
   <!-- <script src="../vendor/jquery/jquery.min.js"></script> -->
-  <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  
-  
-<?php 
+  <!-- <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+
+
+<?php
 require_once "../bottom.php";
 ?>
