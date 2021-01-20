@@ -50,6 +50,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         if(!mysqli_stmt_execute($stmt)){
             echo "<h1>".mysqli_stmt_error($stmt)."</h1>";
         }
+        mysqli_stmt_close($stmt);
       }
       $updateWorkStatus = "UPDATE employee SET workStatus = \"normal\" WHERE AFM = ".$_POST["_employee".$checkbox_iterator];
       mysqli_query($link, $updateWorkStatus);
