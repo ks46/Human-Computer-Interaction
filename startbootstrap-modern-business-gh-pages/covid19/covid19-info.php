@@ -18,7 +18,7 @@
   <div class="alert alert-danger alert-dismissible text-center" role="alert">
     <!-- <button type="button" class="close" data-dismiss="alert">&times;</button> -->
     <strong>
-      Το lockdown παρατείνεται σε εθνικό επίπεδο έως τις 07/01/2021.
+      Το lockdown παρατείνεται σε εθνικό επίπεδο έως τις 10/04/2021.
     </strong>
   </div>
   <!-- NOTE: Alert section ends here -->
