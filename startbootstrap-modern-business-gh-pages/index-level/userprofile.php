@@ -96,7 +96,7 @@
                   echo "<p>Από: $day0-$month0-$year0</p>";
                   echo "<p>Έως: $day1-$month1-$year1</p>";
                 }
-                echo "<p>Τέκνο κάτω των 12 ετών: ";
+                echo "<p>Γονέας τέκνων κάτω των 12 ετών: ";
                 if($employeerow[3] == 0){
                   echo "Όχι</p>";
                 }else{
