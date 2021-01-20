@@ -68,7 +68,7 @@ require_once "../top.php";
         <ol class="breadcrumb breadcrumb-bg">
           <li class="breadcrumb-item"><a href="../index-level/index.html">Αρχική</a></li>
           <li class="breadcrumb-item"><a href="adeia-eidikou-skopou-info.php">COVID-19 / Άδεια Ειδικού Σκοπού</a></li>
-          <li class="breadcrumb-item"><a href="adeia-eidikou-skopou-intermediates.php">Προαπαιτούμενα Αίτησης</a></li>
+          <li class="breadcrumb-item"><a href="adeia-eidikou-skopou-intermediate.php">Προαπαιτούμενα Αίτησης</a></li>
           <li class="breadcrumb-item active" aria-current="page">Υποβολή Αίτησης</li>
         </ol>
       </nav>
