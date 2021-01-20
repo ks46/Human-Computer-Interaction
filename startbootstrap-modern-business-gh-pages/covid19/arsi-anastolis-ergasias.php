@@ -48,7 +48,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $param_employerAFM = $employerAFM;
         $param_employeeAFM = $_POST["_employee".$checkbox_iterator];
         if(!mysqli_stmt_execute($stmt)){
-            echo "Problem with deletion.";
+            echo "<h1>".mysqli_stmt_error($stmt)."</h1>";
         }
       }
       $updateWorkStatus = "UPDATE employee SET workStatus = \"normal\" WHERE AFM = ".$_POST["_employee".$checkbox_iterator];
@@ -81,8 +81,9 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
           <h3>Επιλέξτε τους υπαλλήλους των οποίων το ειδικό εργασιακό καθεστώς θέλετε να άρετε.</h3>
           <div class="container mt-4">
             <?php 
-              $fetch_employees = "SELECT * FROM employee WHERE companyName = \"$Company_Name\" AND workStatus <> \"normal\"";
+              $fetch_employees = "SELECT * FROM employee WHERE companyName = \"$Company_Name\" AND workStatus <> \"normal\" AND workStatus <> \"parentalleave\"";
               $employees = mysqli_query($link, $fetch_employees);
+              echo "<h1>".mysqli_error($link)."</h1>";
               $number = 0;
               if(mysqli_num_rows($employees) == 0){
                 echo "<div class=\"alert alert-warning\" role=\"alert\" style=\"font-size: 20px;\">";
