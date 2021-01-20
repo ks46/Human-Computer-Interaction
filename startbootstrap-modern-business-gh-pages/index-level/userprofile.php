@@ -83,7 +83,7 @@
                     echo "<p>Από: $day0-$month0-$year0</p>";
                     echo "<p>Έως: $day1-$month1-$year1</p>";
                   }
-                }else{
+                }else if($employeerow[1] == "parentalleave"){
                   $fetchDates = "SELECT startDate, endDate FROM parentalleavecertificate WHERE employeeAFM = $row[0] ORDER BY startDate DESC";
                   $dates = mysqli_query($link, $fetchDates);
                   $datesrow = mysqli_fetch_array($dates);
