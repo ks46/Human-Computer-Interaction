@@ -1,9 +1,9 @@
 <!-- NOTE: Footer section starts here -->
-<footer class="py-0 bg-light">
+<!-- <footer class="py-0 bg-light">
   <div class="container">
     <p class="m-0 text-center">Copyright &copy; Ypakp 2021</p>
   </div>
-</footer>
+</footer> -->
 <!-- NOTE: Footer section ends here -->
 
 <!-- Contact form JavaScript -->
