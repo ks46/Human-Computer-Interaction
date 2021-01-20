@@ -122,8 +122,7 @@ require_once "../top.php";
         <!-- company name -->
         <div class="form-group row mt-0 <?php if (!empty($Company_Name_err)) echo 'has-danger'; ?>">
           <label for="Company_Name" class="col-sm-3 col-form-label">Εταιρεία Απασχόλησης *</label>
-          <div class="col-lg-5">
-            <select class="custom-select <?php if (!empty($Company_Name_err)) echo 'is-invalid'; ?>" name="Company_Name" id="Company_Name">
+            <select class="col-lg-5 form-control custom-select <?php if (!empty($Company_Name_err)) echo 'is-invalid'; ?>" name="Company_Name" id="Company_Name">
               <option value="default" <?php if (isset($Company_Name) && ($Company_Name == "default" || $Company_Name == "")) echo "selected"; ?>>
                 Επιλέξτε εταιρεία
               </option>
@@ -151,7 +150,6 @@ require_once "../top.php";
               }
               ?>
             </select>
-          </div>
           <span class="col-lg-4 form-text  <?php if (!empty($Company_Name_err)) echo 'invalid-feedback'; ?>">
             <?php echo $Company_Name_err; ?>
           </span>
@@ -188,8 +186,7 @@ require_once "../top.php";
         <!-- DOY -->
         <div class="form-group row mt-0 <?php if (!empty($DOY_err)) echo 'has-danger'; ?>">
           <label for="DOY" class="col-sm-3 col-form-label"><abbr title="Δημόσια Οικονομική Υπηρεσία">Δ.Ο.Υ.</abbr> *</label>
-          <div class="col-lg-5">
-            <select class="custom-select <?php if (!empty($DOY_err)) echo 'is-invalid'; ?>" name="DOY" id="DOY">
+            <select class="col-lg-5 form-control custom-select <?php if (!empty($DOY_err)) echo 'is-invalid'; ?>" name="DOY" id="DOY">
               <option value="deafault" <?php if (isset($DOY) && ($DOY == "default" || $DOY == "")) echo "selected"; ?>>
                 Επιλέξτε ΔΟΥ
               </option>
@@ -217,7 +214,6 @@ require_once "../top.php";
                 }
               ?>
             </select>
-          </div>
           <span class="col-lg-4 form-text  <?php if (!empty($DOY_err)) echo 'invalid-feedback'; ?>">
             <?php echo $DOY_err; ?>
           </span>
